@@ -1,5 +1,40 @@
-# Cache
+# Jekyll Build & Cache
 _site/
 .sass-cache/
 .jekyll-metadata
 .jekyll-cache
+
+# Ruby & Bundler
+vendor/
+.bundle/
+Gemfile.lock
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.bak
+*~
+*.swp
+
+# IDE & Editor
+.specstory/
+.vscode/
+.idea/
+*.code-workspace
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Node modules (if using any JS tools)
+node_modules/
+
+# Personal/Test folders
+New folder/
+ana-cv-github-upload/
+PersonalData/

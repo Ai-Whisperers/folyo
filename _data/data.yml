@@ -1,257 +1,334 @@
-theme_skin: teal
+# =============================================================================
+# ONLINE CV TEMPLATE - CONFIGURATION FILE
+# =============================================================================
+# This template is based on the online-cv Jekyll theme
+# Customize all sections below with your personal information
+# =============================================================================
+
+# Theme configuration
+theme_skin: berry # Available options: blue, turquoise, green, berry, orange, ceramic, teal, oceanstale
+
+# Sidebar configuration
 sidebar:
-  position: right
-  about: False
-  education: False
+  position: right # left or right
+  about: False # Set to True to show About section in sidebar instead of main content
+  education: False # Set to True to show Education section in sidebar instead of main content
 
-  # Profile information
-  name: Kyrian Weiss van der Pol
-  tagline: Aspiring QA Engineer | Data Analyst | Python Developer
-  avatar: ProfilePicKyrian.jpg
+  # =============================================================================
+  # PERSONAL INFORMATION
+  # =============================================================================
+  name: Ana Paula Samaniego
+  tagline: Marketing Professional | Digital Strategy Specialist | Content Creator
+  avatar: ana-paula-profile.jpg # Place your image in assets/images/ folder
+  
+  # Contact Information
+  email: ana.samaniego@email.com
+  phone: '+595 981 234 567' # Include country code
+  timezone: America/Asuncion # Your timezone
+  citizenship: Paraguayan # Optional
+  website: https://anasamaniego.com # Optional
+  linkedin: ana-paula-samaniego # Optional - just the username, not full URL
+  github: ana-samaniego # Optional - just the username, not full URL
+  pdf: "assets/images/ana-paula-resume.pdf" # Optional - link to downloadable PDF resume
 
-  # Sidebar links
-  email: KyrianWeiss.vdP@gmail.com
-  phone: '+595 985 724 135'
-  timezone: America/Asuncion
-  citizenship: Dutch and Paraguayan
-  website: # optional if GitHub Pages available
-  linkedin: # optional if LinkedIn created
-  github: # optional
-  pdf: "https://github.com/IvanWeissVanDerPol/kiki/blob/master/assets/images/kikiresume.pdf"
-
+  # =============================================================================
+  # LANGUAGES
+  # =============================================================================
   languages:
     title: Languages
     info:
       - idiom: Spanish
-        level: Native
-      - idiom: English
+        level: Native # Native, Fluent, Professional, Conversational, Basic
+      - idiom: English  
         level: Fluent
-      - idiom: Dutch
-        level: Fluent
+      - idiom: Portuguese
+        level: Conversational
+      # Add more languages as needed
 
+# =============================================================================
+# INTERESTS/HOBBIES
+# =============================================================================
 interests:
   title: Interests
   info:
-    - item: QA Automation
-    - item: Python Programming
-    - item: Electronics Engineering
-    - item: Sustainable Technology
-    - item: Data Analysis
-    - item: Embedded Systems
-    - item: Web Development
-    - item: Continuous Learning
-    - item: API Testing
+    - item: Digital Marketing
+    - item: Content Strategy
+    - item: Social Media Management
+    - item: Brand Development
+    - item: Creative Design
+    - item: Market Research
+    - item: Photography
+    - item: Travel & Culture
+    # Add more interests as needed
+
+# =============================================================================
+# CAREER PROFILE / SUMMARY
+# =============================================================================
 career-profile:
   title: Career Profile
   summary: |
-    **Motivated** and **detail-oriented** aspiring **Quality Engineer** and **Data Analyst** with hands-on experience in *industrial electronics*, *embedded systems*, and *test automation*. Skilled in **Python**, **C++**, and microcontroller-based development, with a strong foundation in **quality assurance methodologies** and **data-driven decision-making**.
+    **Creative and strategic Marketing Professional** with expertise in *digital marketing*, *content creation*, and *brand development*. 
+    Passionate about crafting compelling **marketing campaigns** that drive engagement and deliver measurable results. 
+    Skilled in **social media strategy**, *content planning*, and *visual design* with a keen eye for emerging digital trends.
+    
+    Proven track record of developing **innovative marketing solutions** that resonate with target audiences and strengthen brand presence. 
+    Experience in **cross-platform campaigns**, *influencer partnerships*, and *data-driven marketing optimization*. 
+    Strong background in **creative problem-solving** and *collaborative team environments*.
+    
+    Seeking opportunities to leverage **digital marketing expertise** and *creative vision* to drive brand growth and customer engagement 
+    in a *dynamic, results-oriented marketing team*.
 
-    I bring a *methodical and analytical mindset* to every challenge, backed by real-world experience leading projects that combine hardware innovation with **sustainable technology**. From **award-winning science fair inventions** to **IoT-driven environmental systems** and collaborative **QA bootcamps**, I’ve developed a passion for building **reliable**, **testable**, and **impactful solutions**.
-
-    I’m eager to contribute to a team where I can apply my skills in **software quality**, **test automation**, and **process improvement** — while continuing to grow technically and professionally in *dynamic, problem-solving environments*.
-
+# =============================================================================
+# EDUCATION
+# =============================================================================
 education:
   title: Education
   info:
-    - degree: Industrial Electronics Technician
-      university: Paraguayan Institute of Telecommunications (IPT)
-      time: 2022 – 2024
+    - degree: Bachelor of Marketing and Communications
+      university: Universidad Nacional de Asunción
+      time: 2019 – 2023
       details: |
-        - Completed a *rigorous technical program* under the Faculty of Engineering's School of Science and Technology (*FIUNA - IPT*).
-        - Gained strong theoretical and hands-on knowledge in:
-
-          • **Core Electronics** – Analog Electronics, Digital Electronics, Power Electronics  
-          • **Programming & Automation** – C/C++ Programming, Arduino & ESP32, PLCs, Microcontrollers  
-          • **Electrical Systems** – Electrical Installations, Circuit Analysis, Safety Standards  
-          • **Instrumentation & Control** – Sensors, Measurement Systems, PID Control  
-          • **Communications & Networking** – Wi-Fi, IoT Fundamentals, Telecom Basics  
-          • **Support Skills** – Technical Drawing, Technical English, Project Management
-        - Designed and built an **automated grill** using Arduino and temperature sensors; won **1st place** in the *IPT Science Fair 2023*.
-        - Frequently used **multimeters**, **oscilloscopes**, and **soldering stations** during labs and final projects.
-        - Collaborated on group-based technical presentations simulating *real-world engineering environments*.
-
+        - **Major**: Marketing with specialization in Digital Communications
+        - **GPA**: 3.7/4.0
+        - **Thesis**: "Impact of Social Media Marketing on Brand Awareness in Paraguay"
+        - **Relevant Coursework**: Consumer Behavior, Digital Marketing, Brand Management, Market Research
+        - **Activities**: Marketing Club Vice President, Volunteer coordinator for university events
+        
     - degree: High School Diploma
-      university: Centro Educativo Sagrado Corazón de Jesús
-      time: 2018 – 2021
+      university: Colegio Privado San José
+      time: 2015 – 2018
       details: |
-        - Specialized in *science and technology* with emphasis on **mathematics**, **physics**, and **logical reasoning**.
-        - Participated in academic competitions and activities including **computer science**, **debate**, and **student council**.
-        - Developed early passion for **automation and electronics** through science fair projects.
+        - **Focus**: Business and Communications track
+        - **Achievements**: Student Council President, Marketing team for school events
+        - **Awards**: Outstanding Student in Communications and Leadership
+        
+    # Add more education entries as needed
 
-    - degree: Primary Education
-      university: Centro Educativo Santa Carolina
-      time: 2013 – 2017
-      details: |
-        - Completed foundational studies with focus on *literacy*, *math*, and *values-based learning*.
-        - Engaged in school-wide **cultural** and **science activities**, setting the foundation for future STEM pursuits.
+# =============================================================================
+# WORK EXPERIENCE
+# =============================================================================
 experiences:
   title: Experiences
   info:
-    - role: Head of Development – Smart Beehive System
-      time: 2023-12 – 2024-02
-      company: T’Polleke Beekeeping (Family Collaboration – Netherlands)
+    - role: Digital Marketing Specialist
+      time: 2023 – Present
+      company: Creativa Marketing Agency
       details: |
-        - Designed and built a **smart, self-regulating beehive** during a visit to the Netherlands to assist a family-owned beekeeping business.
-        - Aimed to optimize **winter hive temperature** to reduce bee energy expenditure on survival and increase honey production in spring.
-        - Used an **ESP32 microcontroller** to collect and transmit sensor data, and to regulate heat output via an internal heating pad.
-        - Installed **four thermostats** (one per corner) for distributed thermal readings and a **humidity sensor** to monitor hive climate conditions.
-        - Collaborated with a **senior programmer** to evaluate and debate heating control strategies:
-            - Considered a simple on/off threshold approach vs. dynamic voltage-based regulation.
-            - Ultimately implemented a **voltage-controlled system** for smoother, more efficient thermal regulation.
-        - Diagnosed multiple **hardware issues**:
-            - Identified a batch of **defective ESP32s**; escalated to supplier and secured replacements.
-            - Troubleshot a **non-functional humidity sensor** with a multimeter; discovered a soldering defect and replaced the unit.
-        - Resolved **Wi-Fi connectivity issues** by deploying signal repeaters for **real-time remote monitoring**.
-        - Created a **live web dashboard** to monitor temperature and humidity metrics.
-        - Post-deployment (6-month impact):
-            - **Significant increase** in bee population.
-            - **Doubling of honey production** in the following spring.
-      tags: ["IoT", "Embedded Systems", "Python", "Microcontrollers", "Hardware Debugging", "Environmental Sensors", "Automation", "QA Mindset", "Remote Monitoring"]
-      icon: "cogs"
+        - **Managed** social media campaigns for 15+ clients, achieving 45% average engagement increase
+        - **Developed** content strategies resulting in 200% follower growth across platforms
+        - **Created** visual content and marketing materials using Adobe Creative Suite
+        - **Analyzed** campaign performance metrics and provided data-driven recommendations
+        - **Collaborated** with design and strategy teams to deliver integrated marketing solutions
+        - **Managed** client relationships and presented monthly performance reports
+      tags: ["Social Media", "Content Creation", "Adobe Creative Suite", "Analytics", "Client Management"]
+      icon: "bullhorn"
 
-    - role: Co-Captain & Robotics Programmer
-      time: 2022-08 – 2023-02
-      company: LEGO Robotics Competition – International STEM Challenge
+    - role: Marketing Assistant & Content Creator
+      time: 2022 – 2023
+      company: Local Business Ventures
       details: |
-        - Programmed an **autonomous robot** to clear obstacle courses using **iterative testing** and **real-time debugging**.
-        - Designed a **clean-energy project** with smart environmental features.
-        - Promoted **team collaboration**, **problem-solving**, and **value-based leadership** under competition pressure.
-        - Balanced **performance**, **reliability**, and **strategy execution** during technical implementation.
-      tags: ["STEM", "Automation", "Robotics", "Testing", "Team Leadership", "Sustainability"]
-      icon: "robot"
+        - **Created** engaging content for Instagram, Facebook, and TikTok platforms
+        - **Managed** brand social media accounts with 10,000+ combined followers
+        - **Designed** promotional materials and marketing campaigns for product launches
+        - **Conducted** market research and competitor analysis for strategy development
+        - **Supported** event marketing coordination and customer engagement initiatives
+      tags: ["Content Creation", "Social Media Management", "Brand Strategy", "Market Research"]
+      icon: "camera"
 
-    - role: Event Staff & Support (Volunteer)
-      time: 2023 – 2024
-      company: LEGO Robotics Competition – International STEM Challenge
+    - role: Marketing Intern
+      time: 2021 – 2022
+      company: Digital Solutions Paraguay
       details: |
-        - Supported overall event logistics by **supervising matches**, coordinating **evaluation processes**, and ensuring **smooth competition flow**.
-        - Assisted with additional on-site responsibilities including **distributing water**, **reorganizing chairs**, and **preparing the event space**—contributing to a professional and efficient environment.
-        - Demonstrated strong **accountability**, **professionalism**, and a high level of **organizational awareness** throughout the event lifecycle.
-        - Cultivated a *QA mindset* by identifying operational gaps, proactively supporting teams, and maintaining a standard of excellence in all assigned and unofficial tasks.
-      tags: ["Event Support", "QA Mindset", "Process Oversight", "Leadership"]
-      icon: "clipboard-list"
+        - **Assisted** with digital marketing campaigns and social media content planning
+        - **Supported** client onboarding processes and campaign tracking
+        - **Learned** Google Analytics, Facebook Ads Manager, and content scheduling tools
+        - **Participated** in creative brainstorming sessions and campaign development
+        - **Gained** hands-on experience in marketing automation and email marketing
+      tags: ["Digital Marketing", "Google Analytics", "Facebook Ads", "Email Marketing"]
+      icon: "chart-line"
 
+    # Add more experience entries as needed
 
-    - role: QA Trainee
-      time: 2024
-      company: Mentormate QA Bootcamp
-      details: |
-        - Completed a **full-time QA Bootcamp** with a focus on **automation tools** and **Agile methodology**.
-        - Hands-on with:
-            - **Postman** (API Testing)
-            - **Selenium** (UI Automation)
-            - **JIRA** (Agile workflows & bug tracking)
-        - Learned **test case creation**, **defect reporting**, and **QA strategy**.
-        - Presented on **White Box vs. Black Box testing**.
-        - Participated in **mock interviews** and **English-language documentation**.
-        - Automated the end-to-end testing of a **Pet Adoption web app**.
-      tags: ["QA Automation", "Postman", "Selenium", "Agile", "Jira", "QA Theory", "Testing", "English", "Interview Training", "Presentation Skills", "Test Automation"]
-      icon: "flask"
+# =============================================================================
+# PROJECTS
+# =============================================================================
 projects:
   title: Projects
   intro: >
-    A selection of personal and science fair projects demonstrating technical skills in automation, embedded systems, web development, and real-world problem solving.
+    Marketing campaigns and creative projects showcasing strategic thinking, creativity, and measurable business impact.
   assignments:
-    - title: Self-Watering System for Plants
-      time: 2022
-      details: |
-        - Designed and built a **low-cost automated irrigation system** using analog soil moisture detection via **electrode probes**.
-        - Controlled a **water pump** through a relay based on moisture sensor input; system activated watering when soil dried beyond threshold.
-        - Applied early **QA analysis** post-build to identify a key limitation—**risk of overwatering**—and proposed integration of additional **environmental sensors** (*humidity, light, temperature*) for smarter decision-making.
-        - Gained foundational experience in **circuit design**, **sensor logic**, and **iterative hardware improvement**.
-
-    - title: Automated Grill
-      time: 2023
-      details: |
-        - Developed a **fully automated gas-powered grill** using an **Arduino Mega**, **matrix keypad**, **LCD interface**, and **AC motor**.
-        - Enabled user control over **cook time**, **grill rotation frequency**, and **target temperature** through a **customizable input interface**.
-        - Integrated an **electrovalve** and **spark ignition system** to automate flame control, with **safety logic** for shutoff upon timer expiration.
-        - Resolved **hardware challenges** during development, including **torque inadequacy** (solved with a higher-power AC motor) and **electrical interference** from the 220V ignition system (resolved via **circuit isolation**).
-        - Conducted **QA testing** to ensure reliability of **timer logic**, **motor rotation control**, and **flame ignition safety** under varied load conditions.
-        - Awarded **1st place** at a *regional science fair* for **engineering innovation** and **automation reliability**.
-
-    - title: Medical Tracker (Remote Health Monitor)
+    - title: '"Sustainable Fashion" Brand Campaign'
       time: 2024
       details: |
-        - Created a **remote healthcare monitoring system** for elderly patients using a wearable **ESP32-based bracelet** and a **Raspberry Pi-powered web server** housed in a **3D-printed bear**.
-        - Sensors on the wearable tracked vital signs: **heart rate**, **blood oxygen (SpO₂)**, and **body temperature**; data was transmitted in real time via **JSON over Wi-Fi**.
-        - Raspberry Pi served both as a **local monitor** (via onboard display) and as a host for a **live web dashboard** accessible by doctors and caregivers.
-        - Built a **lightweight UI** using **HTML**, **Tailwind CSS**, and **SQL backend**; rapidly self-learned necessary web technologies to complete project goals.
-        - Designed system to assist *non-specialist caregivers* and reduce workload in *understaffed senior care homes*, inspired by *pandemic-related challenges*.
-        - Applied **QA techniques** including **simulated sensor data testing**, **connectivity fault simulation**, and **user feedback testing** for *non-technical accessibility*.
+        - **Launched** comprehensive digital campaign for eco-friendly clothing brand
+        - **Developed** multi-platform content strategy across Instagram, TikTok, and Facebook
+        - **Created** 50+ pieces of visual content including photos, videos, and graphics
+        - **Achieved** 300% increase in brand awareness and 150% boost in online sales
+        - **Collaborated** with influencers and sustainable fashion advocates
+        - **Managed** $15,000 advertising budget with 4.2x ROI
+
+    - title: Local Restaurant Digital Transformation
+      time: 2023
+      details: |
+        - **Redesigned** complete digital presence for traditional Paraguayan restaurant
+        - **Built** Instagram and Facebook strategy increasing followers from 200 to 5,000+
+        - **Created** food photography portfolio and menu design materials
+        - **Implemented** online ordering system promotion resulting in 40% revenue increase
+        - **Trained** restaurant staff on social media best practices
+
+    - title: University Marketing Club Campaign
+      time: 2022
+      details: |
+        - **Led** student recruitment campaign for university marketing program
+        - **Organized** creative workshops and networking events for 200+ students
+        - **Designed** promotional materials and social media content
+        - **Results**: 25% increase in program enrollment and enhanced program visibility
+        - **Won** "Best Student Marketing Initiative" award
+
+    # Add more projects as needed
+
+# =============================================================================
+# VOLUNTEER WORK (Optional)
+# =============================================================================
 volunteer:
   title: Volunteer Work
   info:
-    - role: Girl Scout Guide
-      time: Ongoing
+    - role: Marketing Volunteer & Social Media Coordinator
+      time: 2020 – Present
+      company: Fundación Manos Paraguayas (Local Non-Profit)
       details: |
-        - Acted as a **troop guide**, holding responsibility for leading peers, ensuring group cohesion, and modeling *integrity*, *discipline*, and *respect*.
-        - Participated in large-scale community initiatives including **reforestation campaigns**, **public space clean-up**, and **sustainability awareness events**—developing a strong sense of *civic duty* and *environmental stewardship*.
-        - Trained to maintain *calm* and make *strategic decisions under pressure* by prioritizing tasks, setting goals clearly, and leading by example.
-        - Practiced **structured conflict resolution** by respecting chains of communication: first engaging directly, then escalating only when necessary—*valuable for maintaining healthy workplace dynamics*.
-        - Developed *strong emotional regulation* and *assertiveness* by focusing on *outcome-driven communication*, avoiding distractions from ego or frustration.
-        - Applied **discipline** and **accountability** through consistent *on-time performance*, *role clarity*, and *task ownership*—*directly transferable to QA workflows*.
-        - Built a *collaborative, inclusive mindset* by offering help to teammates, mentoring younger scouts, and embracing feedback with a *growth-oriented attitude*.
-        - Felt *pride in achievement and commitment*, symbolized by **earning and wearing merit badges** that represent *skill*, *effort*, and *consistency*.
+        - **Managed** social media campaigns for fundraising events, increasing donations by 60%
+        - **Created** promotional materials and digital content for community awareness campaigns
+        - **Coordinated** marketing efforts for annual charity drives reaching 5,000+ community members
+        - **Developed** volunteer recruitment campaigns that doubled active volunteer participation
+        - **Organized** marketing workshops for other non-profit organizations in the region
+
+    - role: Digital Marketing Consultant (Pro Bono)
+      time: 2023 – Present
+      company: Local Small Businesses Support Initiative
+      details: |
+        - **Provided** free marketing consultations to 10+ small businesses affected by economic challenges
+        - **Created** social media strategies and content calendars for restaurants and retail shops
+        - **Trained** business owners on basic digital marketing tools and social media management
+        - **Helped** businesses establish online presence, resulting in average 40% increase in customer reach
+
+    # Add more volunteer experiences as needed
+
+# =============================================================================
+# SKILLS & PROFICIENCY
+# =============================================================================
 skills:
   title: Skills & Proficiency
   toolset:
-    - name: Programming
-      level: 80%
-      tags: [Python (Automation & Data), C++ (Embedded Systems), Arduino IDE, ESP32 Firmware]
-    - name: QA & Test Automation
-      level: 70%
-      tags: [Manual Testing, Test Case Design, Selenium (UI Automation), Postman (API Testing), Bug Reporting, QA Fundamentals]
-    - name: Web Development
-      level: 55%
-      tags: [HTML5, Tailwind CSS, SQL (Data Storage), JSON (Data Format), REST APIs, Lightweight Dashboards]
-    - name: Electronics & Embedded Engineering
-      level: 85%
-      tags: [Analog/Digital Circuit Design, Embedded Systems, Sensor Integration, PID Control, Soldering & Debugging, Sustainable Tech Solutions]
-    - name: Data Analysis & Visualization
-      level: 60%
-      tags: [Pandas, NumPy, Data Cleaning, Matplotlib, Exploratory Data Analysis, Insight Generation]
-    - name: Agile & Collaboration Tools
-      level: 65%
-      tags: [JIRA (Workflow), Git (Version Control), Mock Interviews, QA Documentation, English Proficiency]
-
-
+    - name: Digital Marketing
+      level: 90%
+      tags: [Social Media Marketing, Content Strategy, Campaign Management, SEO/SEM, Email Marketing]
       
+    - name: Creative Design
+      level: 85%
+      tags: [Adobe Photoshop, Adobe Illustrator, Canva, Visual Branding, Graphic Design]
+      
+    - name: Analytics & Tools
+      level: 80%
+      tags: [Google Analytics, Facebook Ads Manager, Instagram Insights, Hootsuite, Mailchimp]
+      
+    - name: Content Creation
+      level: 88%
+      tags: [Copywriting, Video Editing, Photography, Storytelling, Brand Voice]
+      
+    - name: Marketing Strategy
+      level: 82%
+      tags: [Market Research, Brand Development, Campaign Planning, Competitor Analysis, ROI Analysis]
+
+    # Add more skill categories as needed
+
+# =============================================================================
+# CERTIFICATIONS
+# =============================================================================
 certifications:
   title: Certifications
   list:
-    - name: Introduction to QA & QA Automation
+    - name: Google Ads Certification
       start: 2024
-      organization: Ivan Weiss Bootcamp
+      organization: Google
       details: |
-        Completed a comprehensive, self-paced program designed to transition learners from foundational QA concepts to advanced automation techniques. The curriculum encompassed:
-        - **Quality Assurance Fundamentals**: Understanding QA principles, software development life cycle (SDLC), and various testing methodologies.
-        - **Python Programming**: Gained proficiency in Python, focusing on its application in test automation scenarios.
-        - **Automated Testing Tools**: Hands-on experience with tools like Selenium for browser automation and RESTful API testing.
-        - **Test Case Design & Bug Tracking**: Developed skills in creating effective test cases and managing defects using industry-standard practices.
-        - **Version Control with Git**: Collaborated on projects using Git for version control and code management.
-        Repository: https://github.com/IvanWeissVanDerPol/Introduction-to-QA-and-QA-Automation-Beginner-to-Expert
-
-    - name: Data Science with Python
-      start: 2024
-      organization: Penguin Academy
+        Comprehensive certification in Google Ads platform management and optimization:
+        - **Campaign Creation**: Search, Display, Video, and Shopping campaigns
+        - **Keyword Research**: Advanced targeting and bidding strategies
+        - **Performance Optimization**: A/B testing and conversion tracking
+        - **Analytics Integration**: ROI measurement and reporting
+        
+    - name: Facebook Blueprint Certification
+      start: 2023
+      organization: Meta (Facebook)
       details: |
-        Engaged in a 5-week intensive course focusing on Python's role in data science. Key learnings included:
-        - **Data Cleaning & Transformation**: Utilized libraries like Pandas and NumPy to preprocess and clean datasets.
-        - **Data Analysis & Visualization**: Applied statistical methods and created visualizations using Matplotlib to derive insights from data.
-        - **Real-World Applications**: Worked on projects involving real-world datasets to solidify understanding of data science concepts.
-        - **Problem-Solving Skills**: Enhanced analytical thinking and problem-solving abilities pertinent to QA data validation and automation tasks.
+        Advanced certification in Facebook and Instagram advertising:
+        - **Ad Creation**: Visual design and copywriting for social platforms
+        - **Audience Targeting**: Custom and lookalike audience development
+        - **Campaign Optimization**: Budget management and performance analysis
+        - **Creative Best Practices**: Platform-specific content optimization
 
-    - name: ISTQB Certified Tester – Foundation Level (Planned)
-      start: 2025
-      organization: International Software Testing Qualifications Board (ISTQB)
+    - name: HubSpot Content Marketing Certification
+      start: 2023
+      organization: HubSpot
       details: |
-        Preparing for the ISTQB Certified Tester Foundation Level (CTFL) v4.0 certification, aiming to solidify foundational knowledge in software testing. Areas of focus include:
-        - **Testing Fundamentals**: Understanding the principles and processes of software testing.
-        - **Test Design Techniques**: Learning various test design techniques to create effective test cases.
-        - **Test Management**: Gaining insights into managing test activities and resources efficiently.
-        - **Tool Support for Testing**: Exploring tools that support testing activities, enhancing efficiency and effectiveness.
-        Certification goal set for 2025 to formalize QA knowledge and enhance professional credibility.
+        Strategic content marketing and inbound marketing methodology:
+        - **Content Strategy**: Planning and editorial calendar development
+        - **Lead Generation**: Content-driven customer acquisition
+        - **Marketing Automation**: Email workflows and nurturing campaigns
+        - **Performance Measurement**: Content ROI and engagement analytics
 
+    # Add more certifications as needed
+
+# =============================================================================
+# OPEN SOURCE CONTRIBUTIONS (Optional)
+# =============================================================================
+oss:
+  title: Open Source Contributions
+  intro: >
+    Contributions to open source projects and community involvement.
+  contributions:
+    - title: Popular Library Name
+      details: |
+        - **Contributed** feature improvements and bug fixes
+        - **Added** comprehensive documentation and examples
+        - **Maintained** backward compatibility while enhancing performance
+        - **Impact**: Used by 10,000+ developers globally
+      # Add more contributions as needed
+
+# =============================================================================
+# PUBLICATIONS (Optional)
+# =============================================================================
+publications:
+  title: Publications
+  intro: >
+    Research papers, articles, and technical publications.
+  papers:
+    - title: "Title of Your Research Paper or Article"
+      authors: Your Name, Co-Author Name
+      conference: Conference or Journal Name
+      details: |
+        Brief description of the research, methodology, and key findings.
+        This section is optional and can be removed if not applicable.
+      # Add more publications as needed
+
+# =============================================================================
+# RECOMMENDATIONS (Optional)
+# =============================================================================
+recommendations:
+  title: Recommendations
+  intro: >
+    Professional recommendations and testimonials.
+  testimonials:
+    - name: John Smith
+      title: Senior Manager at Company Name
+      details: |
+        "Brief testimonial highlighting your key strengths, work quality, and professional impact.
+        This is optional and can be used to showcase endorsements from colleagues or supervisors."
+      # Add more recommendations as needed
+
+# =============================================================================
+# FOOTER CUSTOMIZATION
+# =============================================================================
 footer: >
-  Designed with <i class="fas fa-heart"></i> by Kyrian Weiss
+  Designed with <i class="fas fa-heart"></i> by Ana Paula Samaniego

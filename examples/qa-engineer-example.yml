@@ -1,0 +1,154 @@
+# =============================================================================
+# QA ENGINEER CV EXAMPLE  
+# =============================================================================
+# Copy sections from this file to customize your data.yml for QA engineering
+
+theme_skin: green # Professional green theme
+
+sidebar:
+  position: right
+  about: False
+  education: False
+
+  name: Michael Rodriguez
+  tagline: Senior QA Engineer | Test Automation Specialist | Agile Expert
+  avatar: profile-qa.jpg
+  
+  email: michael.rodriguez@gmail.com
+  phone: '+1 (555) 456-7890'
+  timezone: America/Chicago
+  citizenship: American
+  website: https://michaelqa.dev
+  linkedin: michael-rodriguez-qa
+  github: michael-qa
+  pdf: "assets/images/michael-rodriguez-resume.pdf"
+
+  languages:
+    title: Languages
+    info:
+      - idiom: English
+        level: Native
+      - idiom: Spanish
+        level: Native
+
+interests:
+  title: Interests
+  info:
+    - item: Test Automation
+    - item: Quality Assurance
+    - item: Agile Methodologies
+    - item: Performance Testing
+    - item: API Testing
+    - item: DevOps & CI/CD
+    - item: Process Improvement
+    - item: Team Leadership
+
+career-profile:
+  title: Career Profile
+  summary: |
+    **Senior QA Engineer** with 7+ years of experience in *test automation*, *quality assurance*, and *agile development*. 
+    Expertise in building **comprehensive test frameworks** and implementing *CI/CD pipelines* that ensure software quality 
+    while accelerating delivery timelines.
+    
+    Proven track record of reducing **bug escape rate by 85%** and *testing cycle time by 60%* through strategic automation initiatives. 
+    Led QA teams for multiple high-stakes projects, including applications serving **500,000+ users**. Strong advocate for 
+    **shift-left testing** and *continuous quality improvement*.
+    
+    Passionate about mentoring junior QA engineers and establishing **quality engineering culture** that empowers teams 
+    to deliver *reliable*, *scalable*, and *user-centric software solutions*.
+
+experiences:
+  title: Experiences
+  info:
+    - role: Senior QA Engineer / Test Lead
+      time: 2021 – Present
+      company: TechSolutions Pro
+      details: |
+        - **Led QA strategy** for microservices platform handling 500K+ daily transactions
+        - **Designed** comprehensive test automation framework using Selenium, TestNG, and Maven
+        - **Implemented** API testing suite with Postman/Newman integrated into CI/CD pipeline
+        - **Reduced** manual testing effort by 70% through strategic automation initiatives
+        - **Mentored** team of 5 QA engineers and established quality gates for agile process
+        - **Collaborated** with Dev, Product, and DevOps teams to ensure quality throughout SDLC
+        - **Achieved** 99.9% uptime for production releases through robust testing strategies
+      tags: ["Selenium", "TestNG", "Postman", "JIRA", "Jenkins", "Team Leadership", "API Testing"]
+      icon: "flask"
+
+    - role: QA Engineer
+      time: 2019 – 2021
+      company: Digital Dynamics LLC
+      details: |
+        - **Developed** automated test suites for web and mobile applications using Cypress and Appium
+        - **Performed** comprehensive functional, regression, and integration testing
+        - **Created** detailed test plans, test cases, and defect reports using JIRA and TestRail
+        - **Executed** performance testing using JMeter for high-traffic e-commerce platform
+        - **Participated** in sprint planning, daily standups, and retrospectives in Scrum environment
+        - **Improved** defect detection rate by 45% through enhanced testing methodologies
+      tags: ["Cypress", "Appium", "JMeter", "TestRail", "Agile", "Mobile Testing"]
+      icon: "bug"
+
+projects:
+  title: Projects
+  intro: >
+    Automation frameworks and tools developed to improve testing efficiency and software quality.
+  assignments:
+    - title: Comprehensive Test Automation Framework
+      time: 2023
+      details: |
+        - **Built** scalable test automation framework supporting web, API, and mobile testing
+        - **Technologies**: Java, Selenium WebDriver, TestNG, Maven, Allure Reporting
+        - **Features**: Cross-browser testing, parallel execution, data-driven testing, CI/CD integration
+        - **Impact**: Reduced test execution time by 80%, adopted by 3 development teams
+        - **Open Source**: Available on GitHub with detailed documentation
+
+    - title: API Testing Tool with AI-Powered Validation
+      time: 2022
+      details: |
+        - **Developed** intelligent API testing tool with machine learning for response validation
+        - **Technologies**: Python, requests, scikit-learn, Flask, Docker
+        - **Features**: Automatic test generation, anomaly detection, performance monitoring
+        - **Results**: Detected 95% more API issues compared to traditional testing methods
+
+skills:
+  title: Skills & Proficiency
+  toolset:
+    - name: Test Automation
+      level: 95%
+      tags: [Selenium, Cypress, TestNG, JUnit, Appium, WebDriver]
+      
+    - name: API Testing
+      level: 90%
+      tags: [Postman, REST Assured, SoapUI, Newman, Insomnia]
+      
+    - name: Programming
+      level: 85%
+      tags: [Java, Python, JavaScript, C#, SQL]
+      
+    - name: Tools & Frameworks
+      level: 90%
+      tags: [JIRA, TestRail, Jenkins, Git, Maven, Gradle]
+      
+    - name: Performance Testing
+      level: 80%
+      tags: [JMeter, LoadRunner, Gatling, Performance Monitoring]
+
+certifications:
+  title: Certifications
+  list:
+    - name: ISTQB Advanced Test Automation Engineer
+      start: 2023
+      organization: International Software Testing Qualifications Board
+      details: |
+        Advanced certification in test automation covering framework design, tool selection, and maintenance strategies.
+        
+    - name: Certified Agile Testing Professional
+      start: 2022
+      organization: Agile Testing Alliance
+      details: |
+        Comprehensive certification in agile testing methodologies, continuous testing, and quality assurance in DevOps.
+
+    - name: AWS Certified DevOps Engineer - Professional
+      start: 2023
+      organization: Amazon Web Services
+      details: |
+        Expertise in implementing and managing continuous delivery systems on AWS platform.

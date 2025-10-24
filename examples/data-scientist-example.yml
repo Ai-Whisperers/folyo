@@ -1,0 +1,154 @@
+# =============================================================================
+# DATA SCIENTIST CV EXAMPLE
+# =============================================================================
+# Copy sections from this file to customize your data.yml for data science
+
+theme_skin: teal # Professional teal theme
+
+sidebar:
+  position: right
+  about: False
+  education: False
+
+  name: Dr. Sarah Chen
+  tagline: Senior Data Scientist | Machine Learning Expert | PhD in Statistics
+  avatar: profile-ds.jpg
+  
+  email: sarah.chen@gmail.com
+  phone: '+1 (555) 987-6543'
+  timezone: America/Los_Angeles
+  citizenship: American
+  website: https://sarahchen-datascience.com
+  linkedin: sarahchendata
+  github: sarahchen-ds
+  pdf: "assets/images/sarah-chen-resume.pdf"
+
+  languages:
+    title: Languages
+    info:
+      - idiom: English
+        level: Native
+      - idiom: Mandarin
+        level: Native
+      - idiom: Python
+        level: Expert
+
+interests:
+  title: Interests
+  info:
+    - item: Machine Learning
+    - item: Deep Learning
+    - item: Data Visualization
+    - item: Statistical Modeling
+    - item: AI Research
+    - item: Kaggle Competitions
+    - item: Teaching & Mentoring
+    - item: Open Science
+
+career-profile:
+  title: Career Profile
+  summary: |
+    **Experienced Data Scientist** with PhD in Statistics and 6+ years applying *machine learning* and *statistical analysis* 
+    to solve complex business problems. Expertise in **Python**, **R**, and **cloud platforms** with proven ability to 
+    translate data insights into *actionable business strategies*.
+    
+    Led data science initiatives resulting in **$5M+ revenue increase** and *30% cost reduction* across multiple projects. 
+    Published **15+ peer-reviewed papers** and presented at international conferences. Strong background in 
+    **experimental design**, *A/B testing*, and *predictive modeling*.
+    
+    Passionate about leveraging **advanced analytics** and *machine learning* to drive business growth while maintaining 
+    *ethical AI practices* and ensuring *model interpretability* for stakeholders.
+
+experiences:
+  title: Experiences
+  info:
+    - role: Senior Data Scientist
+      time: 2021 – Present
+      company: DataCore Analytics
+      details: |
+        - **Led** cross-functional team developing ML models for customer churn prediction (95% accuracy)
+        - **Implemented** recommendation system increasing user engagement by 40% and revenue by $2M annually
+        - **Built** real-time fraud detection system processing 1M+ transactions daily with 99.9% uptime
+        - **Established** MLOps pipeline using Docker, Kubernetes, and AWS SageMaker for model deployment
+        - **Collaborated** with Product and Engineering teams to integrate ML models into production systems
+        - **Mentored** 3 junior data scientists and conducted regular knowledge sharing sessions
+      tags: ["Python", "TensorFlow", "AWS", "Kubernetes", "MLOps", "Team Leadership"]
+      icon: "chart-line"
+
+    - role: Data Scientist
+      time: 2019 – 2021
+      company: Insight Analytics Corp
+      details: |
+        - **Developed** time series forecasting models for demand planning with 15% improvement in accuracy
+        - **Performed** statistical analysis and A/B testing for product optimization experiments
+        - **Created** automated reporting dashboards using Tableau and Python, saving 20 hours/week
+        - **Built** NLP models for sentiment analysis of customer feedback and social media data
+        - **Collaborated** with stakeholders to define KPIs and success metrics for data products
+      tags: ["R", "Python", "Tableau", "NLP", "Time Series", "A/B Testing"]
+      icon: "database"
+
+projects:
+  title: Projects
+  intro: >
+    Research projects and open-source contributions demonstrating expertise in machine learning and data science.
+  assignments:
+    - title: COVID-19 Spread Prediction Model
+      time: 2020
+      details: |
+        - **Developed** epidemiological model predicting COVID-19 spread across US counties
+        - **Technologies**: Python, SciPy, NumPy, Matplotlib, Jupyter Notebooks
+        - **Impact**: Used by local health departments for resource planning
+        - **Publication**: Featured in Journal of Public Health Analytics
+        - **Open Source**: 500+ GitHub stars, contributed to policy decisions
+
+    - title: Kaggle Competition Winner - House Price Prediction
+      time: 2022
+      details: |
+        - **Achieved** 1st place out of 3,000+ participants in advanced regression competition
+        - **Techniques**: Feature engineering, ensemble methods, cross-validation, hyperparameter tuning
+        - **Technologies**: Python, XGBoost, LightGBM, scikit-learn, pandas
+        - **Results**: RMSE score of 0.11847, comprehensive solution documentation
+
+skills:
+  title: Skills & Proficiency
+  toolset:
+    - name: Programming & Analysis
+      level: 95%
+      tags: [Python, R, SQL, Pandas, NumPy, SciPy, Jupyter]
+      
+    - name: Machine Learning
+      level: 90%
+      tags: [Scikit-learn, TensorFlow, PyTorch, XGBoost, Feature Engineering]
+      
+    - name: Data Visualization
+      level: 85%
+      tags: [Matplotlib, Seaborn, Plotly, Tableau, Power BI, D3.js]
+      
+    - name: Cloud & Big Data
+      level: 80%
+      tags: [AWS, GCP, Spark, Hadoop, Docker, Kubernetes]
+      
+    - name: Statistics & Research
+      level: 95%
+      tags: [Statistical Modeling, A/B Testing, Experimental Design, Time Series]
+
+certifications:
+  title: Certifications
+  list:
+    - name: AWS Certified Machine Learning - Specialty
+      start: 2023
+      organization: Amazon Web Services
+      details: |
+        Expertise in designing, implementing, deploying, and maintaining ML solutions on AWS.
+        
+    - name: Google Cloud Professional Data Engineer
+      start: 2022
+      organization: Google Cloud
+      details: |
+        Certified in designing and building data processing systems and ML models on Google Cloud Platform.
+
+    - name: Kaggle Competitions Master
+      start: 2021
+      organization: Kaggle
+      details: |
+        Achieved Master tier through consistent top performance in machine learning competitions.
