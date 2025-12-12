@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { 
+import {
   PlusIcon,
   DocumentTextIcon,
   EyeIcon,
@@ -71,16 +71,16 @@ export default function DashboardPage() {
   const fetchUserData = async () => {
     try {
       setLoading(true)
-      
+
       const [cvsResponse, analyticsResponse] = await Promise.all([
         fetch('/api/user/cvs', {
           headers: {
-            'x-user-id': session?.user?.id || ''
+            'x-user-id': (session?.user as any)?.id || ''
           }
         }),
         fetch('/api/user/analytics', {
           headers: {
-            'x-user-id': session?.user?.id || ''
+            'x-user-id': (session?.user as any)?.id || ''
           }
         })
       ])
@@ -111,7 +111,7 @@ export default function DashboardPage() {
       const response = await fetch(`/api/cv/${cvId}`, {
         method: 'DELETE',
         headers: {
-          'x-user-id': session?.user?.id || ''
+          'x-user-id': (session?.user as any)?.id || ''
         }
       })
 
@@ -132,13 +132,13 @@ export default function DashboardPage() {
       const response = await fetch(`/api/cv/${cvId}/${endpoint}`, {
         method: 'POST',
         headers: {
-          'x-user-id': session?.user?.id || ''
+          'x-user-id': (session?.user as any)?.id || ''
         }
       })
 
       if (response.ok) {
-        setCvs(prev => prev.map(cv => 
-          cv._id === cvId 
+        setCvs(prev => prev.map(cv =>
+          cv._id === cvId
             ? { ...cv, isPublic: !isCurrentlyPublic, status: !isCurrentlyPublic ? 'published' : 'draft' }
             : cv
         ))
@@ -192,7 +192,7 @@ export default function DashboardPage() {
                 CV Builder Pro
               </Link>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button className="p-2 text-gray-400 hover:text-gray-600">
                 <ChartBarIcon className="h-5 w-5" />
@@ -204,7 +204,7 @@ export default function DashboardPage() {
                 <UserCircleIcon className="h-8 w-8 text-gray-400" />
                 <div>
                   <p className="text-sm font-medium text-gray-900">{session?.user?.name}</p>
-                  <p className="text-xs text-gray-500">{session?.user?.subscription?.plan || 'Free'}</p>
+                  <p className="text-xs text-gray-500">{(session?.user as any)?.subscription?.plan || 'Free'}</p>
                 </div>
               </div>
               <button
@@ -274,27 +274,32 @@ export default function DashboardPage() {
                 <div className="flex bg-gray-100 rounded-lg p-1">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`px-3 py-1 rounded-md text-sm ${
-                      viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-gray-600'
-                    }`}
+                    className={`px-3 py-1 rounded-md text-sm ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-gray-600'
+                      }`}
                   >
                     Grid
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={`px-3 py-1 rounded-md text-sm ${
-                      viewMode === 'list' ? 'bg-white shadow-sm' : 'text-gray-600'
-                    }`}
+                    className={`px-3 py-1 rounded-md text-sm ${viewMode === 'list' ? 'bg-white shadow-sm' : 'text-gray-600'
+                      }`}
                   >
                     List
                   </button>
                 </div>
                 <Link
-                  href="/builder"
-                  className="btn-primary flex items-center"
+                  href="/builder?type=cv"
+                  className="bg-white border text-gray-700 hover:bg-gray-50 flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                >
+                  <DocumentTextIcon className="h-4 w-4 mr-2" />
+                  New CV
+                </Link>
+                <Link
+                  href="/builder?type=portfolio"
+                  className="bg-primary-600 text-white hover:bg-primary-700 flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
                 >
                   <PlusIcon className="h-4 w-4 mr-2" />
-                  New CV
+                  New Portfolio
                 </Link>
               </div>
             </div>
@@ -312,12 +317,12 @@ export default function DashboardPage() {
                 </Link>
               </div>
             ) : (
-              <div className={viewMode === 'grid' 
+              <div className={viewMode === 'grid'
                 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
                 : 'space-y-4'
               }>
                 {cvs.map((cv) => (
-                  <div key={cv._id} className={viewMode === 'grid' 
+                  <div key={cv._id} className={viewMode === 'grid'
                     ? 'border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow'
                     : 'border border-gray-200 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50'
                   }>
@@ -332,18 +337,17 @@ export default function DashboardPage() {
                                 Public
                               </span>
                             )}
-                            <span className={`px-2 py-1 text-xs rounded-full ${
-                              cv.status === 'published' 
-                                ? 'bg-green-100 text-green-800'
-                                : cv.status === 'draft'
+                            <span className={`px-2 py-1 text-xs rounded-full ${cv.status === 'published'
+                              ? 'bg-green-100 text-green-800'
+                              : cv.status === 'draft'
                                 ? 'bg-yellow-100 text-yellow-800'
                                 : 'bg-gray-100 text-gray-800'
-                            }`}>
+                              }`}>
                               {cv.status}
                             </span>
                           </div>
                         </div>
-                        
+
                         <h3 className="font-semibold text-gray-900 mb-1">{cv.title}</h3>
                         {cv.sidebar.name && (
                           <p className="text-sm text-gray-600 mb-2">{cv.sidebar.name}</p>
@@ -351,7 +355,7 @@ export default function DashboardPage() {
                         {cv.sidebar.tagline && (
                           <p className="text-xs text-gray-500 mb-3 line-clamp-2">{cv.sidebar.tagline}</p>
                         )}
-                        
+
                         <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
                           <span>Updated {formatDate(cv.lastEditedAt)}</span>
                           <div className="flex items-center space-x-3">
@@ -413,19 +417,18 @@ export default function DashboardPage() {
                                 <EyeIcon className="h-3 w-3 mr-1" />
                                 {cv.analytics.views} views
                               </span>
-                              <span className={`px-2 py-1 text-xs rounded-full ${
-                                cv.status === 'published' 
-                                  ? 'bg-green-100 text-green-800'
-                                  : cv.status === 'draft'
+                              <span className={`px-2 py-1 text-xs rounded-full ${cv.status === 'published'
+                                ? 'bg-green-100 text-green-800'
+                                : cv.status === 'draft'
                                   ? 'bg-yellow-100 text-yellow-800'
                                   : 'bg-gray-100 text-gray-800'
-                              }`}>
+                                }`}>
                                 {cv.status}
                               </span>
                             </div>
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center space-x-2">
                           <Link
                             href={`/builder?cvId=${cv._id}`}

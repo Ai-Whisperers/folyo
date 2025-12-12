@@ -1,16 +1,20 @@
 'use client'
 
 import { useState } from 'react'
-import { 
-  PlusIcon, 
-  MinusIcon, 
-  UserIcon, 
-  BriefcaseIcon, 
+import {
+  PlusIcon,
+  MinusIcon,
+  UserIcon,
+  BriefcaseIcon,
   AcademicCapIcon,
   SparklesIcon,
   TrophyIcon,
-  HeartIcon
+  HeartIcon,
+  PresentationChartBarIcon
 } from '@heroicons/react/24/outline'
+
+import { PortfolioSection } from './PortfolioSection'
+import { AIAssistant } from './AIAssistant'
 
 interface CVBuilderFormProps {
   data: any
@@ -24,12 +28,12 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
     const keys = path.split('.')
     const newData = { ...data }
     let current = newData
-    
+
     for (let i = 0; i < keys.length - 1; i++) {
       if (!current[keys[i]]) current[keys[i]] = {}
       current = current[keys[i]]
     }
-    
+
     current[keys[keys.length - 1]] = value
     onChange(newData)
   }
@@ -38,12 +42,12 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
     const keys = path.split('.')
     const newData = { ...data }
     let current = newData
-    
+
     for (const key of keys) {
       if (!current[key]) current[key] = []
       current = current[key]
     }
-    
+
     current.push({ ...template })
     onChange(newData)
   }
@@ -52,11 +56,11 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
     const keys = path.split('.')
     const newData = { ...data }
     let current = newData
-    
+
     for (const key of keys) {
       current = current[key]
     }
-    
+
     current.splice(index, 1)
     onChange(newData)
   }
@@ -68,6 +72,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
     { id: 'education', name: 'Education', icon: AcademicCapIcon },
     { id: 'skills', name: 'Skills', icon: TrophyIcon },
     { id: 'projects', name: 'Projects', icon: SparklesIcon },
+    { id: 'portfolio', name: 'Portfolio', icon: PresentationChartBarIcon },
     { id: 'additional', name: 'Additional', icon: HeartIcon },
   ]
 
@@ -83,7 +88,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
           placeholder="Enter your full name"
         />
       </div>
-      
+
       <div>
         <label className="form-label">Professional Tagline</label>
         <input
@@ -94,7 +99,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
           placeholder="e.g., Senior Software Engineer | Full-Stack Developer"
         />
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="form-label">Email *</label>
@@ -117,7 +122,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
           />
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="form-label">Location</label>
@@ -140,7 +145,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
           />
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="form-label">LinkedIn Username</label>
@@ -166,16 +171,39 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
     </div>
   )
 
+  // AI Assistant State
+  const [aiModal, setAiModal] = useState<{ isOpen: boolean, text: string, path: string, section: string } | null>(null)
+
+  const handleAIComplete = (enhancedText: string) => {
+    if (aiModal) {
+      updateField(aiModal.path, enhancedText)
+      setAiModal(null)
+    }
+  }
+
+  const renderAIButton = (path: string, text: string, section: string) => (
+    <button
+      onClick={() => setAiModal({ isOpen: true, text, path, section })}
+      className="absolute right-2 top-2 p-1.5 text-primary-600 hover:bg-primary-50 rounded-md transition-colors"
+      title="Enhance with AI"
+    >
+      <SparklesIcon className="h-4 w-4" />
+    </button>
+  )
+
   const renderCareerProfileSection = () => (
     <div className="space-y-6">
       <div>
         <label className="form-label">Professional Summary</label>
-        <textarea
-          className="form-input h-32"
-          value={data['career-profile']?.summary || ''}
-          onChange={(e) => updateField('career-profile.summary', e.target.value)}
-          placeholder="Write a compelling summary of your professional experience, key skills, and career objectives. Use keywords relevant to your target role."
-        />
+        <div className="relative">
+          <textarea
+            className="form-input h-32 pr-10"
+            value={data['career-profile']?.summary || ''}
+            onChange={(e) => updateField('career-profile.summary', e.target.value)}
+            placeholder="Write a compelling summary of your professional experience, key skills, and career objectives. Use keywords relevant to your target role."
+          />
+          {renderAIButton('career-profile.summary', data['career-profile']?.summary || '', 'summary')}
+        </div>
         <p className="text-xs text-gray-500 mt-1">
           Tip: Include 3-4 sentences highlighting your experience, key achievements, and career goals.
         </p>
@@ -202,7 +230,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
           Add Experience
         </button>
       </div>
-      
+
       {data.experiences?.info?.map((exp: any, index: number) => (
         <div key={index} className="p-4 border border-gray-200 rounded-lg">
           <div className="flex justify-between items-start mb-4">
@@ -214,7 +242,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
               <MinusIcon className="h-4 w-4" />
             </button>
           </div>
-          
+
           <div className="space-y-4">
             <div>
               <label className="form-label">Job Title *</label>
@@ -226,7 +254,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
                 placeholder="e.g., Senior Software Engineer"
               />
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="form-label">Company *</label>
@@ -249,20 +277,23 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
                 />
               </div>
             </div>
-            
+
             <div>
               <label className="form-label">Description & Achievements</label>
-              <textarea
-                className="form-input h-24"
-                value={exp.details || ''}
-                onChange={(e) => updateField(`experiences.info.${index}.details`, e.target.value)}
-                placeholder="• Describe your key responsibilities and achievements using bullet points&#10;• Use action verbs and quantify results where possible&#10;• Focus on impact and outcomes rather than just tasks"
-              />
+              <div className="relative">
+                <textarea
+                  className="form-input h-24 pr-10"
+                  value={exp.details || ''}
+                  onChange={(e) => updateField(`experiences.info.${index}.details`, e.target.value)}
+                  placeholder="• Describe your key responsibilities and achievements using bullet points&#10;• Use action verbs and quantify results where possible&#10;• Focus on impact and outcomes rather than just tasks"
+                />
+                {renderAIButton(`experiences.info.${index}.details`, exp.details || '', 'experience')}
+              </div>
             </div>
           </div>
         </div>
       ))}
-      
+
       {(!data.experiences?.info || data.experiences.info.length === 0) && (
         <div className="text-center py-8 text-gray-500">
           <BriefcaseIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
@@ -290,7 +321,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
           Add Education
         </button>
       </div>
-      
+
       {data.education?.info?.map((edu: any, index: number) => (
         <div key={index} className="p-4 border border-gray-200 rounded-lg">
           <div className="flex justify-between items-start mb-4">
@@ -302,7 +333,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
               <MinusIcon className="h-4 w-4" />
             </button>
           </div>
-          
+
           <div className="space-y-4">
             <div>
               <label className="form-label">Degree *</label>
@@ -314,7 +345,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
                 placeholder="e.g., Bachelor of Computer Science"
               />
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="form-label">Institution *</label>
@@ -337,15 +368,18 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
                 />
               </div>
             </div>
-            
+
             <div>
               <label className="form-label">Additional Details</label>
-              <textarea
-                className="form-input h-20"
-                value={edu.details || ''}
-                onChange={(e) => updateField(`education.info.${index}.details`, e.target.value)}
-                placeholder="• GPA, honors, relevant coursework&#10;• Thesis topic, awards, extracurricular activities"
-              />
+              <div className="relative">
+                <textarea
+                  className="form-input h-20 pr-10"
+                  value={edu.details || ''}
+                  onChange={(e) => updateField(`education.info.${index}.details`, e.target.value)}
+                  placeholder="• GPA, honors, relevant coursework&#10;• Thesis topic, awards, extracurricular activities"
+                />
+                {renderAIButton(`education.info.${index}.details`, edu.details || '', 'education')}
+              </div>
             </div>
           </div>
         </div>
@@ -369,7 +403,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
           Add Skill
         </button>
       </div>
-      
+
       {data.skills?.toolset?.map((skill: any, index: number) => (
         <div key={index} className="p-4 border border-gray-200 rounded-lg">
           <div className="flex justify-between items-start mb-4">
@@ -381,7 +415,7 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
               <MinusIcon className="h-4 w-4" />
             </button>
           </div>
-          
+
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -427,6 +461,13 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
         return renderEducationSection()
       case 'skills':
         return renderSkillsSection()
+      case 'portfolio':
+        return <PortfolioSection
+          data={data}
+          updateField={updateField}
+          addArrayItem={addArrayItem}
+          removeArrayItem={removeArrayItem}
+        />
       default:
         return renderPersonalSection()
     }
@@ -441,11 +482,10 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
             <button
               key={section.id}
               onClick={() => setActiveSection(section.id)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap flex items-center space-x-2 ${
-                activeSection === section.id
-                  ? 'border-primary-500 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap flex items-center space-x-2 ${activeSection === section.id
+                ? 'border-primary-500 text-primary-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
             >
               <section.icon className="h-4 w-4" />
               <span>{section.name}</span>
@@ -458,6 +498,16 @@ export function CVBuilderForm({ data, onChange }: CVBuilderFormProps) {
       <div className="animate-fade-in">
         {renderSection()}
       </div>
+
+      {/* AI Assistant Modal */}
+      {aiModal && (
+        <AIAssistant
+          initialText={aiModal.text}
+          section={aiModal.section}
+          onAccept={handleAIComplete}
+          onClose={() => setAiModal(null)}
+        />
+      )}
     </div>
   )
 }

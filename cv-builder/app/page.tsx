@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { 
-  DocumentTextIcon, 
-  SparklesIcon, 
-  EyeIcon, 
+import {
+  DocumentTextIcon,
+  SparklesIcon,
+  EyeIcon,
   ShareIcon,
   CheckCircleIcon,
   ArrowRightIcon
@@ -93,38 +93,41 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-primary-50 to-white">
+      <div className="relative bg-[#1a1a1a] text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6">
-              Build Your Perfect{' '}
-              <span className="text-primary-600">Professional CV</span>
+            <span className="inline-block px-4 py-1.5 rounded-full bg-primary-900/50 border border-primary-500/30 text-primary-300 text-sm font-medium mb-6 animate-fade-in">
+              ✨ New: Build Video Portfolios & Creative Profiles
+            </span>
+            <h1 className="text-4xl sm:text-6xl font-bold text-white mb-6">
+              The Only <span className="text-primary-400">Portfolio & CV Builder</span>
+              <br className="hidden sm:block" /> You'll Ever Need
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Create stunning, ATS-friendly CVs in minutes with our intuitive builder. 
-              Choose from professional templates, get real-time previews, and land your dream job.
+            <p className="text-xl text-gray-400 mb-8 max-w-3xl mx-auto">
+              Don't just write about your work—show it. Create cinematic video portfolios,
+              interactive galleries, and professional resumes in one unified platform.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-              <Link href="/builder" className="btn-primary text-lg px-8 py-4">
-                Start Building Free
+              <Link href="/builder" className="bg-primary-600 text-white hover:bg-primary-700 px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg shadow-primary-900/20 inline-flex items-center justify-center">
+                Start My Portfolio
                 <ArrowRightIcon className="ml-2 h-5 w-5 inline" />
               </Link>
-              <button className="btn-secondary text-lg px-8 py-4">
-                View Examples
-              </button>
+              <Link href="/cv/demo-user" className="bg-gray-800 text-white hover:bg-gray-700 px-8 py-4 rounded-xl font-bold text-lg transition-all inline-flex items-center justify-center border border-gray-700">
+                <EyeIcon className="mr-2 h-5 w-5 inline" />
+                View Demo Profile
+              </Link>
             </div>
-            
+
             {/* Theme Preview */}
             <div className="max-w-2xl mx-auto">
-              <p className="text-sm text-gray-500 mb-4">Choose from 8 beautiful themes:</p>
+              <p className="text-sm text-gray-500 mb-4">Choose your style:</p>
               <div className="flex justify-center gap-3 mb-8">
                 {themes.map((theme) => (
                   <button
                     key={theme.name}
                     onClick={() => setSelectedTheme(theme.name)}
-                    className={`theme-switcher ${theme.color} ${
-                      selectedTheme === theme.name ? 'active ring-primary-500' : ''
-                    }`}
+                    className={`theme-switcher w-8 h-8 rounded-full border-2 transition-all transform hover:scale-110 ${theme.color} ${selectedTheme === theme.name ? 'border-white scale-110 ring-2 ring-primary-500 ring-offset-2 ring-offset-gray-900' : 'border-transparent'
+                      }`}
                     title={`${theme.name.charAt(0).toUpperCase() + theme.name.slice(1)} theme`}
                   />
                 ))}
@@ -139,14 +142,13 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Everything you need to create an outstanding CV
+              More Than Just A Resume
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Our professional CV builder combines beautiful design with powerful features 
-              to help you stand out from the competition.
+              Designed for filmmakers, developers, designers, and professionals who need to stand out.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature) => (
               <div key={feature.name} className="card text-center animate-slide-up">
@@ -192,7 +194,7 @@ export default function HomePage() {
               See what our users say about their experience
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="card">

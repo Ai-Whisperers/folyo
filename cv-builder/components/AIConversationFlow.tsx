@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
-import { 
+import {
   PaperAirplaneIcon,
   SparklesIcon,
   CheckIcon,
@@ -54,10 +54,10 @@ interface AIConversationFlowProps {
   targetRole?: string
 }
 
-export function AIConversationFlow({ 
-  onComplete, 
-  initialJobDescription, 
-  targetRole 
+export function AIConversationFlow({
+  onComplete,
+  initialJobDescription,
+  targetRole
 }: AIConversationFlowProps) {
   const { data: session } = useSession()
   const [conversation, setConversation] = useState<Conversation | null>(null)
@@ -79,7 +79,7 @@ export function AIConversationFlow({
   }, [conversation?.messages])
 
   useEffect(() => {
-    if (session?.user?.id) {
+    if ((session?.user as any)?.id) {
       startConversation()
     }
   }, [session])
@@ -91,7 +91,7 @@ export function AIConversationFlow({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-user-id': session?.user?.id || ''
+          'x-user-id': (session?.user as any)?.id || ''
         },
         body: JSON.stringify({
           targetRole,
@@ -101,7 +101,7 @@ export function AIConversationFlow({
       })
 
       const data = await response.json()
-      
+
       if (data.success) {
         setConversation(data.conversation)
       } else {
@@ -122,12 +122,12 @@ export function AIConversationFlow({
       setIsLoading(true)
       setIsTyping(true)
       setPendingAnswer(answer)
-      
+
       const response = await fetch(`/api/ai/conversation/${conversation.sessionId}/answer`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-user-id': session?.user?.id || ''
+          'x-user-id': (session?.user as any)?.id || ''
         },
         body: JSON.stringify({
           answer: answer.trim(),
@@ -137,18 +137,18 @@ export function AIConversationFlow({
       })
 
       const data = await response.json()
-      
+
       if (data.success) {
         setConversation(data.conversation)
-        
+
         if (data.enhancement && !skipEnhancement) {
           setShowEnhancement(data.enhancement)
         }
-        
+
         if (data.followUpQuestions && data.followUpQuestions.length > 0) {
           setFollowUpQuestions(data.followUpQuestions)
         }
-        
+
         setCurrentInput('')
         setPendingAnswer('')
       } else {
@@ -196,15 +196,15 @@ export function AIConversationFlow({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-user-id': session?.user?.id || ''
+          'x-user-id': (session?.user as any)?.id || ''
         }
       })
 
       const data = await response.json()
-      
+
       if (data.success) {
         setConversation(data.conversation)
-        
+
         if (data.isCompleted) {
           await completeConversation()
         }
@@ -222,12 +222,12 @@ export function AIConversationFlow({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-user-id': session?.user?.id || ''
+          'x-user-id': (session?.user as any)?.id || ''
         }
       })
 
       const data = await response.json()
-      
+
       if (data.success && onComplete) {
         onComplete(data.cv)
       }
@@ -263,7 +263,7 @@ export function AIConversationFlow({
         <ExclamationTriangleIcon className="h-12 w-12 text-red-500 mx-auto mb-4" />
         <h3 className="text-lg font-medium text-red-800 mb-2">Conversation Error</h3>
         <p className="text-red-600 mb-4">{error}</p>
-        <button 
+        <button
           onClick={() => {
             setError(null)
             startConversation()
@@ -292,12 +292,12 @@ export function AIConversationFlow({
               </p>
             </div>
           </div>
-          
+
           {conversation && (
             <div className="text-right">
               <div className="text-white font-medium">{conversation.overallProgress}%</div>
               <div className="w-24 bg-white/20 rounded-full h-2 mt-1">
-                <div 
+                <div
                   className="bg-white h-2 rounded-full transition-all duration-300"
                   style={{ width: `${conversation.overallProgress}%` }}
                 />
@@ -312,13 +312,11 @@ export function AIConversationFlow({
         {conversation?.messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${
-              message.type === 'user_response' ? 'justify-end' : 'justify-start'
-            }`}
+            className={`flex ${message.type === 'user_response' ? 'justify-end' : 'justify-start'
+              }`}
           >
-            <div className={`max-w-3xl ${
-              message.type === 'user_response' ? 'ml-12' : 'mr-12'
-            }`}>
+            <div className={`max-w-3xl ${message.type === 'user_response' ? 'ml-12' : 'mr-12'
+              }`}>
               {message.type !== 'user_response' && (
                 <div className="flex items-center space-x-2 mb-2">
                   <div className="bg-primary-100 p-1.5 rounded-full">
@@ -327,25 +325,24 @@ export function AIConversationFlow({
                   <span className="text-sm text-gray-600">AI Assistant</span>
                 </div>
               )}
-              
-              <div className={`rounded-lg px-4 py-3 ${
-                message.type === 'user_response'
+
+              <div className={`rounded-lg px-4 py-3 ${message.type === 'user_response'
                   ? 'bg-primary-600 text-white ml-auto'
                   : message.type === 'ai_enhancement'
-                  ? 'bg-green-50 border border-green-200'
-                  : message.type === 'follow_up'
-                  ? 'bg-blue-50 border border-blue-200'
-                  : 'bg-gray-50 border border-gray-200'
-              }`}>
+                    ? 'bg-green-50 border border-green-200'
+                    : message.type === 'follow_up'
+                      ? 'bg-blue-50 border border-blue-200'
+                      : 'bg-gray-50 border border-gray-200'
+                }`}>
                 {message.type === 'ai_enhancement' && (
                   <div className="flex items-center space-x-2 mb-2">
                     <SparklesIcon className="h-4 w-4 text-green-600" />
                     <span className="text-sm font-medium text-green-800">AI Enhanced</span>
                   </div>
                 )}
-                
+
                 <div className="whitespace-pre-wrap">{message.content}</div>
-                
+
                 {message.metadata?.originalInput && (
                   <details className="mt-3">
                     <summary className="text-sm text-gray-600 cursor-pointer">
@@ -357,7 +354,7 @@ export function AIConversationFlow({
                   </details>
                 )}
               </div>
-              
+
               {message.type !== 'user_response' && (
                 <div className="text-xs text-gray-500 mt-1">
                   {new Date(message.timestamp).toLocaleTimeString()}
@@ -377,7 +374,7 @@ export function AIConversationFlow({
                 </div>
                 <span className="text-sm text-gray-600">AI Assistant</span>
               </div>
-              
+
               <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
                 <div className="whitespace-pre-wrap">{conversation.currentQuestion.question}</div>
                 {conversation.currentQuestion.required && (
@@ -443,7 +440,7 @@ export function AIConversationFlow({
                             <span className="text-sm font-medium text-blue-800">
                               Version {alt.version} ({alt.style})
                             </span>
-                            <button 
+                            <button
                               className="text-blue-600 hover:text-blue-800"
                               onClick={() => {
                                 // Copy to clipboard

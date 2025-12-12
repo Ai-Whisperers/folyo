@@ -6,9 +6,9 @@ import { CVPreview } from '../../components/CVPreview'
 import { ThemeSwitcher } from '../../components/ThemeSwitcher'
 import { ExportButton } from '../../components/ExportButton'
 import { SaveButton } from '../../components/SaveButton'
-import { 
-  EyeIcon, 
-  PencilIcon, 
+import {
+  EyeIcon,
+  PencilIcon,
   ArrowDownTrayIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline'
@@ -81,22 +81,36 @@ export default function CVBuilderPage() {
   // Handle client-side rendering
   useEffect(() => {
     setIsClient(true)
-    
+
+    // Check URL params for document type
+    const searchParams = new URLSearchParams(window.location.search)
+    const docType = searchParams.get('type')
+
     // Load saved data from localStorage
     const savedData = localStorage.getItem('cv-data')
     if (savedData) {
       try {
-        setCvData(JSON.parse(savedData))
+        const parsed = JSON.parse(savedData)
+
+        // If creating new portfolio, force switch to that theme regardless of saved state
+        if (docType === 'portfolio') {
+          parsed.theme_skin = 'video-portfolio'
+        }
+
+        setCvData(parsed)
       } catch (error) {
         console.error('Error loading saved CV data:', error)
       }
+    } else if (docType === 'portfolio') {
+      // No saved data, but user wants portfolio -> set default theme
+      setCvData(prev => ({ ...prev, theme_skin: 'video-portfolio' }))
     }
   }, [])
 
   // Auto-save functionality
   useEffect(() => {
     if (!isClient) return
-    
+
     const saveData = () => {
       localStorage.setItem('cv-data', JSON.stringify(cvData))
       setSaveStatus('saved')
@@ -104,7 +118,7 @@ export default function CVBuilderPage() {
     }
 
     const timeoutId = setTimeout(saveData, 1000) // Auto-save after 1 second of inactivity
-    
+
     return () => clearTimeout(timeoutId)
   }, [cvData, isClient])
 
@@ -135,8 +149,52 @@ export default function CVBuilderPage() {
   }
 
   const handleExport = async (format: 'pdf' | 'json' | 'yaml') => {
-    // TODO: Implement export functionality
-    console.log(`Exporting CV as ${format}`)
+    if (format === 'json') {
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(cvData, null, 2))
+      const downloadAnchorNode = document.createElement('a')
+      downloadAnchorNode.setAttribute('href', dataStr)
+      downloadAnchorNode.setAttribute('download', `${cvData.sidebar.name || 'cv'}.json`)
+      document.body.appendChild(downloadAnchorNode)
+      downloadAnchorNode.click()
+      downloadAnchorNode.remove()
+    } else if (format === 'yaml') {
+      // Basic YAML conversion or use a library if available. For now, basic JSON stringify
+      // TODO: Import 'yaml' library properly if installed
+      const dataStr = 'data:text/yaml;charset=utf-8,' + encodeURIComponent(JSON.stringify(cvData, null, 2))
+      const downloadAnchorNode = document.createElement('a')
+      downloadAnchorNode.setAttribute('href', dataStr)
+      downloadAnchorNode.setAttribute('download', `${cvData.sidebar.name || 'cv'}.yaml`)
+      document.body.appendChild(downloadAnchorNode)
+      downloadAnchorNode.click()
+      downloadAnchorNode.remove()
+    } else if (format === 'pdf') {
+      // PDF Generation
+      const html2canvas = (await import('html2canvas')).default
+      const jsPDF = (await import('jspdf')).default
+
+      const element = document.querySelector('.cv-preview-container') as HTMLElement
+      if (!element) return
+
+      const canvas = await html2canvas(element, {
+        scale: 2, // Higher quality
+        useCORS: true,
+        logging: false
+      })
+
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      })
+
+      const imgProps = pdf.getImageProperties(imgData)
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+      pdf.save(`${cvData.sidebar.name || 'cv'}.pdf`)
+    }
   }
 
   if (!isClient) {
@@ -164,28 +222,26 @@ export default function CVBuilderPage() {
                 )}
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               {/* View Toggle */}
               <div className="hidden md:flex bg-gray-100 rounded-lg p-1">
                 <button
                   onClick={() => setActiveView('edit')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    activeView === 'edit'
-                      ? 'bg-white text-primary-600 shadow-sm'
-                      : 'text-gray-600 hover:text-primary-600'
-                  }`}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeView === 'edit'
+                    ? 'bg-white text-primary-600 shadow-sm'
+                    : 'text-gray-600 hover:text-primary-600'
+                    }`}
                 >
                   <PencilIcon className="h-4 w-4 inline mr-2" />
                   Edit
                 </button>
                 <button
                   onClick={() => setActiveView('preview')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    activeView === 'preview'
-                      ? 'bg-white text-primary-600 shadow-sm'
-                      : 'text-gray-600 hover:text-primary-600'
-                  }`}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeView === 'preview'
+                    ? 'bg-white text-primary-600 shadow-sm'
+                    : 'text-gray-600 hover:text-primary-600'
+                    }`}
                 >
                   <EyeIcon className="h-4 w-4 inline mr-2" />
                   Preview
@@ -247,7 +303,7 @@ export default function CVBuilderPage() {
                 </p>
               </div>
               <div className="p-6 h-full overflow-y-auto">
-                <CVPreview 
+                <CVPreview
                   data={cvData}
                   theme={cvData.theme_skin}
                 />

@@ -64,11 +64,11 @@ const certificationSchema = new mongoose.Schema({
 
 const languageSchema = new mongoose.Schema({
   idiom: { type: String, required: true, trim: true },
-  level: { 
-    type: String, 
+  level: {
+    type: String,
     required: true,
     enum: ['Native', 'Fluent', 'Professional', 'Conversational', 'Basic'],
-    trim: true 
+    trim: true
   },
   order: { type: Number, default: 0 }
 }, { _id: false })
@@ -94,7 +94,7 @@ const cvSchema = new mongoose.Schema({
     lowercase: true,
     match: [/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens']
   },
-  
+
   // CV Theme and Layout
   theme: {
     skin: {
@@ -111,7 +111,7 @@ const cvSchema = new mongoose.Schema({
 
   // CV Content Sections
   sidebar: contactInfoSchema,
-  
+
   careerProfile: {
     title: { type: String, default: 'Career Profile' },
     summary: { type: String, trim: true }
@@ -150,7 +150,7 @@ const cvSchema = new mongoose.Schema({
 
   interests: {
     title: { type: String, default: 'Interests' },
-    info: [{ 
+    info: [{
       item: { type: String, trim: true },
       order: { type: Number, default: 0 }
     }]
@@ -181,13 +181,36 @@ const cvSchema = new mongoose.Schema({
     }]
   },
 
+  // Portfolio Section (New)
+  portfolio: {
+    title: { type: String, default: 'Portfolio' },
+    intro: { type: String, trim: true },
+    items: [{
+      type: {
+        type: String,
+        enum: ['video', 'image', 'document', 'link'],
+        required: true
+      },
+      url: { type: String, required: true },
+      thumbnail: { type: String },
+      title: { type: String, trim: true },
+      description: { type: String, trim: true },
+      order: { type: Number, default: 0 }
+    }],
+    layout: {
+      type: String,
+      enum: ['grid', 'carousel', 'list'],
+      default: 'grid'
+    }
+  },
+
   // Metadata and settings
   status: {
     type: String,
     enum: ['draft', 'published', 'archived'],
     default: 'draft'
   },
-  
+
   isPublic: {
     type: Boolean,
     default: false
@@ -236,7 +259,7 @@ const cvSchema = new mongoose.Schema({
     type: Number,
     default: 1
   },
-  
+
   lastEditedAt: {
     type: Date,
     default: Date.now
@@ -247,14 +270,14 @@ const cvSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     default: null
   },
-  
+
   lastAutosave: Date
 
 }, {
   timestamps: true,
   toJSON: {
     virtuals: true,
-    transform: function(doc, ret) {
+    transform: function (doc, ret) {
       ret.id = ret._id
       delete ret._id
       delete ret.__v
@@ -275,22 +298,22 @@ cvSchema.index({ 'analytics.views': -1 })
 cvSchema.index({ lastEditedAt: -1 })
 
 // Virtual for public URL
-cvSchema.virtual('publicUrl').get(function() {
+cvSchema.virtual('publicUrl').get(function () {
   if (!this.isPublic || !this.slug) return null
   return `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/cv/${this.slug}`
 })
 
 // Virtual for owner check
-cvSchema.virtual('isOwner').get(function() {
-  return function(userId) {
+cvSchema.virtual('isOwner').get(function () {
+  return function (userId) {
     return this.userId.toString() === userId.toString()
   }.bind(this)
 })
 
 // Pre-save middleware
-cvSchema.pre('save', function(next) {
+cvSchema.pre('save', function (next) {
   this.lastEditedAt = new Date()
-  
+
   // Generate slug if title changed and no custom slug
   if (this.isModified('title') && !this.slug) {
     this.slug = this.title
@@ -299,54 +322,54 @@ cvSchema.pre('save', function(next) {
       .replace(/\s+/g, '-')
       .substring(0, 50)
   }
-  
+
   next()
 })
 
 // Instance methods
-cvSchema.methods.incrementViews = function() {
+cvSchema.methods.incrementViews = function () {
   this.analytics.views += 1
   this.analytics.lastViewed = new Date()
   return this.save({ validateBeforeSave: false })
 }
 
-cvSchema.methods.incrementDownloads = function() {
+cvSchema.methods.incrementDownloads = function () {
   this.analytics.downloads += 1
   this.analytics.lastDownloaded = new Date()
   return this.save({ validateBeforeSave: false })
 }
 
-cvSchema.methods.publish = function() {
+cvSchema.methods.publish = function () {
   this.status = 'published'
   this.isPublic = true
   return this.save()
 }
 
-cvSchema.methods.unpublish = function() {
+cvSchema.methods.unpublish = function () {
   this.status = 'draft'
   this.isPublic = false
   return this.save()
 }
 
-cvSchema.methods.createAutosave = function(data) {
+cvSchema.methods.createAutosave = function (data) {
   this.autosaveData = data
   this.lastAutosave = new Date()
   return this.save({ validateBeforeSave: false })
 }
 
 // Static methods
-cvSchema.statics.findBySlug = function(slug) {
+cvSchema.statics.findBySlug = function (slug) {
   return this.findOne({ slug, isPublic: true })
 }
 
-cvSchema.statics.findUserCVs = function(userId, limit = 20) {
+cvSchema.statics.findUserCVs = function (userId, limit = 20) {
   return this.find({ userId })
     .sort({ lastEditedAt: -1 })
     .limit(limit)
     .select('-autosaveData')
 }
 
-cvSchema.statics.getPopularCVs = function(limit = 10) {
+cvSchema.statics.getPopularCVs = function (limit = 10) {
   return this.find({ isPublic: true })
     .sort({ 'analytics.views': -1 })
     .limit(limit)

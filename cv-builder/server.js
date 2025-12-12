@@ -36,7 +36,7 @@ app.use('/api/', limiter)
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
+  origin: process.env.NODE_ENV === 'production'
     ? [process.env.NEXT_PUBLIC_APP_URL]
     : ['http://localhost:3000', 'http://localhost:3001'],
   credentials: true,
@@ -59,19 +59,19 @@ const aiService = new CVEnhancementService()
 // Utility functions
 const validateCVData = (data) => {
   const errors = []
-  
+
   if (!data.sidebar?.name?.trim()) {
     errors.push('Name is required')
   }
-  
+
   if (data.sidebar?.email && !/\S+@\S+\.\S+/.test(data.sidebar.email)) {
     errors.push('Invalid email format')
   }
-  
+
   if (!data.title?.trim()) {
     errors.push('CV title is required')
   }
-  
+
   return errors
 }
 
@@ -80,7 +80,7 @@ const logAnalytics = async (eventType, cvId, userId, req, metadata = {}) => {
     const clientIP = req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'] || 'unknown'
     const userAgent = req.get('User-Agent') || 'unknown'
     const referrer = req.get('Referrer') || null
-    
+
     await Analytics.create({
       eventType,
       cvId,
@@ -121,14 +121,14 @@ app.post('/api/cv/save', requireAuth, async (req, res) => {
   try {
     const { cvData, cvId, isAutosave = false } = req.body
     const { userId } = req
-    
+
     // Validate data
     const errors = validateCVData(cvData)
     if (errors.length > 0) {
-      return res.status(400).json({ 
-        success: false, 
+      return res.status(400).json({
+        success: false,
         errors,
-        message: 'Validation failed' 
+        message: 'Validation failed'
       })
     }
 
@@ -156,7 +156,7 @@ app.post('/api/cv/save', requireAuth, async (req, res) => {
       // Update CV data
       Object.assign(cv, cvData)
       cv.lastEditedAt = new Date()
-      
+
       if (isAutosave) {
         cv.lastAutosave = new Date()
       }
@@ -176,7 +176,7 @@ app.post('/api/cv/save', requireAuth, async (req, res) => {
         userId,
         title: cvData.title || 'Untitled CV'
       })
-      
+
       await cv.save()
 
       // Update user usage
@@ -194,18 +194,18 @@ app.post('/api/cv/save', requireAuth, async (req, res) => {
       })
     }
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       cvId: cv._id,
       cv: cv.toJSON(),
       message: isAutosave ? 'CV auto-saved successfully' : 'CV saved successfully'
     })
-    
+
   } catch (error) {
     console.error('Save CV error:', error)
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to save CV' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to save CV'
     })
   }
 })
@@ -215,13 +215,13 @@ app.get('/api/cv/:cvId', async (req, res) => {
   try {
     const { cvId } = req.params
     const userId = req.headers['x-user-id']
-    
+
     const cv = await CV.findById(cvId)
-    
+
     if (!cv) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'CV not found' 
+      return res.status(404).json({
+        success: false,
+        message: 'CV not found'
       })
     }
 
@@ -238,9 +238,9 @@ app.get('/api/cv/:cvId', async (req, res) => {
       await cv.incrementViews()
       await logAnalytics('cv_view', cv._id, userId || null, req)
     }
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       cv: cv.toJSON(),
       metadata: {
         id: cv._id,
@@ -253,12 +253,12 @@ app.get('/api/cv/:cvId', async (req, res) => {
         analytics: cv.analytics
       }
     })
-    
+
   } catch (error) {
     console.error('Load CV error:', error)
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to load CV' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to load CV'
     })
   }
 })
@@ -268,12 +268,12 @@ app.get('/api/user/cvs', requireAuth, async (req, res) => {
   try {
     const { userId } = req
     const { limit = 20, page = 1 } = req.query
-    
+
     const cvs = await CV.findUserCVs(userId, parseInt(limit))
       .skip((parseInt(page) - 1) * parseInt(limit))
-    
+
     const total = await CV.countDocuments({ userId })
-    
+
     res.json({
       success: true,
       cvs,
@@ -284,7 +284,7 @@ app.get('/api/user/cvs', requireAuth, async (req, res) => {
         pages: Math.ceil(total / parseInt(limit))
       }
     })
-    
+
   } catch (error) {
     console.error('Get user CVs error:', error)
     res.status(500).json({
@@ -299,23 +299,23 @@ app.delete('/api/cv/:cvId', requireAuth, async (req, res) => {
   try {
     const { cvId } = req.params
     const { userId } = req
-    
+
     const cv = await CV.findOne({ _id: cvId, userId })
-    
+
     if (!cv) {
       return res.status(404).json({
         success: false,
         message: 'CV not found or access denied'
       })
     }
-    
+
     await CV.findByIdAndDelete(cvId)
-    
+
     res.json({
       success: true,
       message: 'CV deleted successfully'
     })
-    
+
   } catch (error) {
     console.error('Delete CV error:', error)
     res.status(500).json({
@@ -330,9 +330,9 @@ app.post('/api/cv/export/yaml', requireAuth, async (req, res) => {
   try {
     const { cvId } = req.body
     const { userId } = req
-    
+
     const cv = await CV.findOne({ _id: cvId, userId })
-    
+
     if (!cv) {
       return res.status(404).json({
         success: false,
@@ -346,19 +346,19 @@ app.post('/api/cv/export/yaml', requireAuth, async (req, res) => {
       lineWidth: 0,
       minContentWidth: 0
     })
-    
+
     res.setHeader('Content-Type', 'application/x-yaml')
     res.setHeader('Content-Disposition', `attachment; filename="${cv.slug || cv.title || 'cv-data'}.yml"`)
     res.send(yamlContent)
 
     // Log analytics
     await logAnalytics('export_yaml', cv._id, userId, req)
-    
+
   } catch (error) {
     console.error('Export YAML error:', error)
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to export YAML' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to export YAML'
     })
   }
 })
@@ -368,28 +368,28 @@ app.post('/api/cv/export/json', requireAuth, async (req, res) => {
   try {
     const { cvId } = req.body
     const { userId } = req
-    
+
     const cv = await CV.findOne({ _id: cvId, userId })
-    
+
     if (!cv) {
       return res.status(404).json({
         success: false,
         message: 'CV not found or access denied'
       })
     }
-    
+
     res.setHeader('Content-Type', 'application/json')
     res.setHeader('Content-Disposition', `attachment; filename="${cv.slug || cv.title || 'cv-data'}.json"`)
     res.json(cv.toJSON())
 
     // Log analytics
     await logAnalytics('export_json', cv._id, userId, req)
-    
+
   } catch (error) {
     console.error('Export JSON error:', error)
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to export JSON' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to export JSON'
     })
   }
 })
@@ -398,26 +398,26 @@ app.post('/api/cv/export/json', requireAuth, async (req, res) => {
 app.post('/api/cv/generate-site', async (req, res) => {
   try {
     const { cvData, theme = 'teal' } = req.body
-    
+
     // In a real implementation, this would:
     // 1. Copy the Jekyll template
     // 2. Update _data/data.yml with cvData  
     // 3. Update _config.yml with theme
     // 4. Generate the site using Jekyll
     // 5. Return the generated site files or deployment URL
-    
-    res.json({ 
+
+    res.json({
       success: true,
       message: 'Site generation feature coming soon!',
       siteUrl: `https://cv-${Date.now()}.github.io`,
       preview: true
     })
-    
+
   } catch (error) {
     console.error('Generate site error:', error)
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to generate site' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate site'
     })
   }
 })
@@ -434,14 +434,14 @@ app.get('/api/themes', (req, res) => {
     { name: 'teal', label: 'Cool Teal', color: '#20c997' },
     { name: 'oceanstale', label: 'Neutral Gray', color: '#6c757d' },
   ]
-  
+
   res.json({ themes })
 })
 
 // Placeholder image endpoint
 app.get('/api/placeholder/:width/:height', (req, res) => {
   const { width, height } = req.params
-  
+
   // Generate a simple SVG placeholder
   const svg = `
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
@@ -452,7 +452,7 @@ app.get('/api/placeholder/:width/:height', (req, res) => {
       </text>
     </svg>
   `.trim()
-  
+
   res.setHeader('Content-Type', 'image/svg+xml')
   res.send(svg)
 })
@@ -479,18 +479,18 @@ app.post('/api/cv/:cvId/publish', requireAuth, async (req, res) => {
   try {
     const { cvId } = req.params
     const { userId } = req
-    
+
     const cv = await CV.findOne({ _id: cvId, userId })
-    
+
     if (!cv) {
       return res.status(404).json({
         success: false,
         message: 'CV not found or access denied'
       })
     }
-    
+
     await cv.publish()
-    
+
     res.json({
       success: true,
       message: 'CV published successfully',
@@ -499,7 +499,7 @@ app.post('/api/cv/:cvId/publish', requireAuth, async (req, res) => {
 
     // Log analytics
     await logAnalytics('cv_published', cv._id, userId, req)
-    
+
   } catch (error) {
     console.error('Publish CV error:', error)
     res.status(500).json({
@@ -513,18 +513,18 @@ app.post('/api/cv/:cvId/unpublish', requireAuth, async (req, res) => {
   try {
     const { cvId } = req.params
     const { userId } = req
-    
+
     const cv = await CV.findOne({ _id: cvId, userId })
-    
+
     if (!cv) {
       return res.status(404).json({
         success: false,
         message: 'CV not found or access denied'
       })
     }
-    
+
     await cv.unpublish()
-    
+
     res.json({
       success: true,
       message: 'CV unpublished successfully'
@@ -532,7 +532,7 @@ app.post('/api/cv/:cvId/unpublish', requireAuth, async (req, res) => {
 
     // Log analytics
     await logAnalytics('cv_unpublished', cv._id, userId, req)
-    
+
   } catch (error) {
     console.error('Unpublish CV error:', error)
     res.status(500).json({
@@ -546,7 +546,7 @@ app.post('/api/cv/:cvId/unpublish', requireAuth, async (req, res) => {
 app.get('/api/user/profile', requireAuth, async (req, res) => {
   try {
     const { userId } = req
-    
+
     const user = await User.findById(userId)
     if (!user) {
       return res.status(404).json({
@@ -554,12 +554,12 @@ app.get('/api/user/profile', requireAuth, async (req, res) => {
         message: 'User not found'
       })
     }
-    
+
     res.json({
       success: true,
       user: user.toJSON()
     })
-    
+
   } catch (error) {
     console.error('Get user profile error:', error)
     res.status(500).json({
@@ -574,10 +574,10 @@ app.get('/api/user/analytics', requireAuth, async (req, res) => {
   try {
     const { userId } = req
     const { timeframe = '30d' } = req.query
-    
+
     const userCVs = await CV.find({ userId }).select('_id')
     const cvIds = userCVs.map(cv => cv._id)
-    
+
     const analytics = await Analytics.aggregate([
       {
         $match: {
@@ -594,7 +594,7 @@ app.get('/api/user/analytics', requireAuth, async (req, res) => {
         }
       }
     ])
-    
+
     res.json({
       success: true,
       analytics: analytics.reduce((acc, item) => {
@@ -603,7 +603,7 @@ app.get('/api/user/analytics', requireAuth, async (req, res) => {
       }, {}),
       timeframe
     })
-    
+
   } catch (error) {
     console.error('Get user analytics error:', error)
     res.status(500).json({
@@ -622,7 +622,7 @@ app.post('/api/ai/conversation/start', requireAuth, async (req, res) => {
   try {
     const { userId } = req
     const { targetRole, jobDescription, experienceLevel } = req.body
-    
+
     // Check if user already has an active conversation
     const existingConversation = await Conversation.findActiveConversation(userId)
     if (existingConversation) {
@@ -632,13 +632,13 @@ app.post('/api/ai/conversation/start', requireAuth, async (req, res) => {
         message: 'Resuming existing conversation'
       })
     }
-    
+
     const targetingInfo = {
       targetRole,
       jobDescription,
       experienceLevel
     }
-    
+
     // Analyze job description if provided
     if (jobDescription) {
       const analysis = await aiService.analyzeJobDescription(jobDescription)
@@ -646,15 +646,15 @@ app.post('/api/ai/conversation/start', requireAuth, async (req, res) => {
         targetingInfo.analyzedRequirements = analysis.analysis
       }
     }
-    
+
     const conversation = await Conversation.createNewConversation(userId, targetingInfo)
-    
+
     res.json({
       success: true,
       conversation,
       message: 'New AI conversation started'
     })
-    
+
   } catch (error) {
     console.error('Start conversation error:', error)
     res.status(500).json({
@@ -669,25 +669,25 @@ app.get('/api/ai/conversation/:sessionId', requireAuth, async (req, res) => {
   try {
     const { sessionId } = req.params
     const { userId } = req
-    
-    const conversation = await Conversation.findOne({ 
-      sessionId, 
-      userId 
+
+    const conversation = await Conversation.findOne({
+      sessionId,
+      userId
     }).populate('userId', 'name email')
-    
+
     if (!conversation) {
       return res.status(404).json({
         success: false,
         message: 'Conversation not found'
       })
     }
-    
+
     res.json({
       success: true,
       conversation,
       currentQuestion: conversation.currentQuestion
     })
-    
+
   } catch (error) {
     console.error('Get conversation error:', error)
     res.status(500).json({
@@ -703,7 +703,7 @@ app.post('/api/ai/conversation/:sessionId/answer', requireAuth, async (req, res)
     const { sessionId } = req.params
     const { userId } = req
     const { answer, skipEnhancement = false, requestAlternatives = false } = req.body
-    
+
     const conversation = await Conversation.findOne({ sessionId, userId })
     if (!conversation) {
       return res.status(404).json({
@@ -711,51 +711,51 @@ app.post('/api/ai/conversation/:sessionId/answer', requireAuth, async (req, res)
         message: 'Conversation not found'
       })
     }
-    
+
     // Add user response message
     await conversation.addMessage('user_response', answer, {
       section: conversation.currentSection,
       questionId: conversation.currentQuestion?.questionId
     })
-    
+
     let aiEnhanced = null
     let alternatives = []
     let followUpQuestions = []
-    
+
     // AI Enhancement (unless skipped)
     if (!skipEnhancement && process.env.OPENAI_API_KEY) {
       const enhancement = await aiService.enhanceContent(
-        answer, 
+        answer,
         conversation.currentSection,
         { jobDescription: conversation.targeting?.jobDescription }
       )
-      
+
       if (enhancement.success) {
         aiEnhanced = enhancement.enhanced
-        
+
         // Add AI enhancement message
         await conversation.addMessage('ai_enhancement', aiEnhanced, {
           section: conversation.currentSection,
           originalInput: answer,
           confidence: 0.8 // Could be calculated based on AI response
         })
-        
+
         // Update AI metadata
         conversation.aiMetadata.totalEnhancements += 1
         conversation.aiMetadata.tokensUsed += enhancement.usage?.total_tokens || 0
       }
-      
+
       // Generate alternatives if requested
       if (requestAlternatives) {
         const alternativesResult = await aiService.generateAlternatives(
-          answer, 
+          answer,
           conversation.currentSection
         )
         if (alternativesResult.success) {
           alternatives = alternativesResult.alternatives
         }
       }
-      
+
       // Generate follow-up questions
       const followUpResult = await aiService.generateFollowUpQuestions(
         answer,
@@ -765,11 +765,11 @@ app.post('/api/ai/conversation/:sessionId/answer', requireAuth, async (req, res)
         followUpQuestions = followUpResult.questions
       }
     }
-    
+
     // Answer current question in conversation
     await conversation.answerCurrentQuestion(answer, aiEnhanced, alternatives)
     await conversation.updateProgress()
-    
+
     // Add follow-up questions if any
     if (followUpQuestions.length > 0) {
       for (const followUp of followUpQuestions) {
@@ -778,7 +778,7 @@ app.post('/api/ai/conversation/:sessionId/answer', requireAuth, async (req, res)
         })
       }
     }
-    
+
     res.json({
       success: true,
       conversation,
@@ -790,7 +790,7 @@ app.post('/api/ai/conversation/:sessionId/answer', requireAuth, async (req, res)
       followUpQuestions,
       progress: conversation.overallProgress
     })
-    
+
   } catch (error) {
     console.error('Answer question error:', error)
     res.status(500).json({
@@ -800,12 +800,35 @@ app.post('/api/ai/conversation/:sessionId/answer', requireAuth, async (req, res)
   }
 })
 
+// Direct AI Enhance Endpoint
+app.post('/api/ai/enhance', requireAuth, async (req, res) => {
+  try {
+    const { text, section } = req.body
+
+    if (!text) {
+      return res.status(400).json({ success: false, message: 'Text is required' })
+    }
+
+    // Use AI service to enhance
+    const completion = await aiService.enhanceContent(text, section || 'general')
+
+    if (completion.success) {
+      res.json({ success: true, enhanced: completion.enhanced })
+    } else {
+      res.status(500).json({ success: false, message: 'AI Enhancement failed' })
+    }
+  } catch (error) {
+    console.error('Enhance error:', error)
+    res.status(500).json({ success: false, message: 'Server error' })
+  }
+})
+
 // Move to next question
 app.post('/api/ai/conversation/:sessionId/next', requireAuth, async (req, res) => {
   try {
     const { sessionId } = req.params
     const { userId } = req
-    
+
     const conversation = await Conversation.findOne({ sessionId, userId })
     if (!conversation) {
       return res.status(404).json({
@@ -813,16 +836,16 @@ app.post('/api/ai/conversation/:sessionId/next', requireAuth, async (req, res) =
         message: 'Conversation not found'
       })
     }
-    
+
     await conversation.moveToNextQuestion()
-    
+
     res.json({
       success: true,
       conversation,
       currentQuestion: conversation.currentQuestion,
       isCompleted: conversation.status === 'completed'
     })
-    
+
   } catch (error) {
     console.error('Next question error:', error)
     res.status(500).json({
@@ -837,7 +860,7 @@ app.post('/api/ai/conversation/:sessionId/complete', requireAuth, async (req, re
   try {
     const { sessionId } = req.params
     const { userId } = req
-    
+
     const conversation = await Conversation.findOne({ sessionId, userId })
     if (!conversation) {
       return res.status(404).json({
@@ -845,10 +868,10 @@ app.post('/api/ai/conversation/:sessionId/complete', requireAuth, async (req, re
         message: 'Conversation not found'
       })
     }
-    
+
     // Extract final CV data from conversation
     await conversation.extractFinalCVData()
-    
+
     // Create new CV record
     const cv = new CV({
       ...conversation.extractedCVData,
@@ -856,34 +879,34 @@ app.post('/api/ai/conversation/:sessionId/complete', requireAuth, async (req, re
       title: `AI Generated CV - ${new Date().toLocaleDateString()}`,
       status: 'draft'
     })
-    
+
     await cv.save()
-    
+
     // Update conversation with CV ID and mark as completed
     conversation.cvId = cv._id
     conversation.status = 'completed'
     await conversation.save()
-    
+
     // Update user usage
     const user = await User.findById(userId)
     if (user) {
       user.usage.cvsCreated += 1
       await user.save()
     }
-    
+
     // Log analytics
     await logAnalytics('cv_created', cv._id, userId, req, {
       source: 'ai_conversation',
       sessionId: conversation.sessionId
     })
-    
+
     res.json({
       success: true,
       conversation,
       cv: cv.toJSON(),
       message: 'CV created successfully from AI conversation'
     })
-    
+
   } catch (error) {
     console.error('Complete conversation error:', error)
     res.status(500).json({
@@ -897,22 +920,22 @@ app.post('/api/ai/conversation/:sessionId/complete', requireAuth, async (req, re
 app.post('/api/ai/enhance', requireAuth, async (req, res) => {
   try {
     const { content, section, context = {} } = req.body
-    
+
     if (!content || !section) {
       return res.status(400).json({
         success: false,
         message: 'Content and section are required'
       })
     }
-    
+
     const enhancement = await aiService.enhanceContent(content, section, context)
-    
+
     res.json({
       success: enhancement.success,
       enhancement,
       message: enhancement.success ? 'Content enhanced successfully' : 'Enhancement failed'
     })
-    
+
   } catch (error) {
     console.error('Content enhancement error:', error)
     res.status(500).json({
@@ -926,22 +949,22 @@ app.post('/api/ai/enhance', requireAuth, async (req, res) => {
 app.post('/api/ai/analyze-job', requireAuth, async (req, res) => {
   try {
     const { jobDescription } = req.body
-    
+
     if (!jobDescription) {
       return res.status(400).json({
         success: false,
         message: 'Job description is required'
       })
     }
-    
+
     const analysis = await aiService.analyzeJobDescription(jobDescription)
-    
+
     res.json({
       success: analysis.success,
       analysis: analysis.analysis,
       message: analysis.success ? 'Job description analyzed successfully' : 'Analysis failed'
     })
-    
+
   } catch (error) {
     console.error('Job analysis error:', error)
     res.status(500).json({
@@ -955,22 +978,22 @@ app.post('/api/ai/analyze-job', requireAuth, async (req, res) => {
 app.post('/api/ai/evaluate-cv', requireAuth, async (req, res) => {
   try {
     const { cvData, jobDescription = null } = req.body
-    
+
     if (!cvData) {
       return res.status(400).json({
         success: false,
         message: 'CV data is required'
       })
     }
-    
+
     const evaluation = await aiService.evaluateContent(cvData, jobDescription)
-    
+
     res.json({
       success: evaluation.success,
       evaluation: evaluation.evaluation,
       message: evaluation.success ? 'CV evaluated successfully' : 'Evaluation failed'
     })
-    
+
   } catch (error) {
     console.error('CV evaluation error:', error)
     res.status(500).json({

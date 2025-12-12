@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { AIConversationFlow } from '../../components/AIConversationFlow'
 import { CVPreview } from '../../components/CVPreview'
-import { 
+import {
   SparklesIcon,
   DocumentTextIcon,
   ArrowLeftIcon,
@@ -31,14 +31,14 @@ export default function AIBuilderPage() {
     targetRole: '',
     experienceLevel: 'mid'
   })
-  const [generatedCV, setGeneratedCV] = useState(null)
+  const [generatedCV, setGeneratedCV] = useState<any>(null)
   const [activeView, setActiveView] = useState<'chat' | 'preview'>('chat')
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [analysisResult, setAnalysisResult] = useState(null)
 
   useEffect(() => {
     if (status === 'loading') return
-    
+
     if (!session) {
       router.push('/auth/signin')
     }
@@ -52,12 +52,12 @@ export default function AIBuilderPage() {
 
     try {
       setIsAnalyzing(true)
-      
+
       const response = await fetch('/api/ai/analyze-job', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-user-id': session?.user?.id || ''
+          'x-user-id': (session?.user as any)?.id || ''
         },
         body: JSON.stringify({
           jobDescription: jobInfo.jobDescription
@@ -65,11 +65,11 @@ export default function AIBuilderPage() {
       })
 
       const data = await response.json()
-      
+
       if (data.success) {
         setAnalysisResult(data.analysis)
       }
-      
+
       setStep('conversation')
     } catch (error) {
       console.error('Error analyzing job description:', error)
@@ -223,8 +223,8 @@ export default function AIBuilderPage() {
               </button>
 
               <div className="text-center">
-                <Link 
-                  href="/builder" 
+                <Link
+                  href="/builder"
                   className="text-sm text-gray-600 hover:text-primary-600 underline"
                 >
                   Prefer the traditional form-based builder?
@@ -265,22 +265,20 @@ export default function AIBuilderPage() {
               <div className="hidden md:flex bg-gray-100 rounded-lg p-1">
                 <button
                   onClick={() => setActiveView('chat')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    activeView === 'chat'
-                      ? 'bg-white text-primary-600 shadow-sm'
-                      : 'text-gray-600 hover:text-primary-600'
-                  }`}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeView === 'chat'
+                    ? 'bg-white text-primary-600 shadow-sm'
+                    : 'text-gray-600 hover:text-primary-600'
+                    }`}
                 >
                   <ChatBubbleLeftRightIcon className="h-4 w-4 inline mr-2" />
                   Conversation
                 </button>
                 <button
                   onClick={() => setActiveView('preview')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    activeView === 'preview'
-                      ? 'bg-white text-primary-600 shadow-sm'
-                      : 'text-gray-600 hover:text-primary-600'
-                  }`}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeView === 'preview'
+                    ? 'bg-white text-primary-600 shadow-sm'
+                    : 'text-gray-600 hover:text-primary-600'
+                    }`}
                 >
                   <EyeIcon className="h-4 w-4 inline mr-2" />
                   Preview
@@ -399,7 +397,7 @@ export default function AIBuilderPage() {
                 <Link href="/dashboard" className="btn-secondary">
                   Back to Dashboard
                 </Link>
-                <Link 
+                <Link
                   href={`/builder?cvId=${generatedCV?.id}`}
                   className="btn-primary"
                 >
@@ -444,14 +442,14 @@ export default function AIBuilderPage() {
               >
                 Create Another CV
               </button>
-              <Link 
+              <Link
                 href={`/builder?cvId=${generatedCV?.id}`}
                 className="btn-primary"
               >
                 Continue Editing CV
               </Link>
             </div>
-            
+
             <p className="text-sm text-gray-600">
               Your CV has been saved to your dashboard and you can access it anytime.
             </p>

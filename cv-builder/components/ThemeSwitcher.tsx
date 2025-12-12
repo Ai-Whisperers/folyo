@@ -9,6 +9,7 @@ interface ThemeSwitcherProps {
 }
 
 const themes = [
+  { name: 'video-portfolio', label: 'Dark Portfolio', color: '#1a1a1a' },
   { name: 'blue', label: 'Professional Blue', color: '#2E86AB' },
   { name: 'turquoise', label: 'Modern Turquoise', color: '#17a2b8' },
   { name: 'green', label: 'Fresh Green', color: '#28a745' },
@@ -42,17 +43,17 @@ export function ThemeSwitcher({ currentTheme, onThemeChange }: ThemeSwitcherProp
       {isOpen && (
         <>
           {/* Backdrop */}
-          <div 
-            className="fixed inset-0 z-10" 
+          <div
+            className="fixed inset-0 z-10"
             onClick={() => setIsOpen(false)}
           />
-          
+
           {/* Dropdown */}
           <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-20 py-2">
             <div className="px-4 py-2 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
               Choose Theme
             </div>
-            
+
             <div className="max-h-64 overflow-y-auto">
               {themes.map((theme) => (
                 <button
@@ -61,9 +62,8 @@ export function ThemeSwitcher({ currentTheme, onThemeChange }: ThemeSwitcherProp
                     onThemeChange(theme.name)
                     setIsOpen(false)
                   }}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 text-sm text-left hover:bg-gray-50 transition-colors ${
-                    currentTheme === theme.name ? 'bg-primary-50 text-primary-700' : 'text-gray-700'
-                  }`}
+                  className={`w-full flex items-center space-x-3 px-4 py-3 text-sm text-left hover:bg-gray-50 transition-colors ${currentTheme === theme.name ? 'bg-primary-50 text-primary-700' : 'text-gray-700'
+                    }`}
                 >
                   <div
                     className="w-5 h-5 rounded-full border border-gray-300 flex-shrink-0"
@@ -79,7 +79,7 @@ export function ThemeSwitcher({ currentTheme, onThemeChange }: ThemeSwitcherProp
                 </button>
               ))}
             </div>
-            
+
             <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-100 mt-2">
               More themes coming soon!
             </div>
