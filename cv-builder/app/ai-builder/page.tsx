@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { AIConversationFlow } from '../../components/AIConversationFlow'
-import { CVPreview } from '../../components/CVPreview'
+import { AIConversationFlow } from '../../components/ai/AIConversationFlow'
+import { CVPreview } from '../../components/cv/CVPreview'
 import {
   SparklesIcon,
   DocumentTextIcon,

@@ -1,4 +1,4 @@
-import { CVPreview } from '../../../components/CVPreview'
+import { CVPreview } from '../../../components/cv/CVPreview'
 
 // Mock fetching function - in real app this would call API/Database
 async function getCV(slug: string) {

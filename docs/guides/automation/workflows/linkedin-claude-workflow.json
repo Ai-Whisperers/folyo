@@ -1,0 +1,183 @@
+{
+  "name": "LinkedIn Post Generator - Claude AI",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "✨ Crear Post de LinkedIn con IA",
+        "formDescription": "Ingresa el tema de tu post y Claude AI generará contenido profesional automáticamente",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Tema o Título del Post",
+              "fieldType": "text",
+              "requiredField": true,
+              "placeholder": "Ejemplo: Cómo la IA está transformando el marketing digital"
+            }
+          ]
+        },
+        "options": {
+          "formSubmittedText": "⏳ Claude está generando tu post profesional..."
+        }
+      },
+      "id": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
+      "name": "Formulario de Entrada",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.1,
+      "position": [220, 300],
+      "webhookId": "crear-post-linkedin"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-3-5-sonnet-20241022\",\n  \"max_tokens\": 1200,\n  \"temperature\": 0.7,\n  \"system\": \"Eres un estratega experto en contenido de LinkedIn. Creas posts profesionales, atractivos y que generan alto engagement. Tu estilo es auténtico, valioso y accionable.\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Crea un post profesional y atractivo para LinkedIn sobre el siguiente tema:\\n\\n📌 TEMA: {{ $json['formField:Tema o Título del Post'] }}\\n\\n📋 REQUISITOS:\\n\\n1. HOOK INICIAL (Primeras 2 líneas):\\n   - Debe capturar atención inmediatamente\\n   - Plantea una pregunta, dato sorprendente o afirmación provocativa\\n   - Usa emojis estratégicamente (máximo 2-3)\\n\\n2. DESARROLLO (Cuerpo principal):\\n   - Estructura en párrafos cortos (2-3 líneas máximo)\\n   - Incluye 3-5 insights valiosos o tips prácticos\\n   - Usa viñetas o numeración cuando sea apropiado\\n   - Agrega espacios en blanco para facilitar lectura\\n   - Sé específico y concreto, evita generalidades\\n\\n3. CALL-TO-ACTION (Final):\\n   - Invita a la conversación o acción\\n   - Haz una pregunta para fomentar comentarios\\n   - Mantén un tono cercano y profesional\\n\\n4. HASHTAGS:\\n   - Incluye 3-5 hashtags relevantes\\n   - Mezcla hashtags populares y de nicho\\n   - Colócalos al final del post\\n\\n5. ESTILO:\\n   - Longitud: 150-300 palabras\\n   - Tono: Profesional pero cercano\\n   - Perspectiva: Primera persona cuando sea apropiado\\n   - Emojis: Úsalos con moderación (5-8 en total)\\n\\n⚠️ IMPORTANTE: Devuelve ÚNICAMENTE el texto del post listo para publicar. No incluyas comentarios, explicaciones o texto adicional.\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "b2c3d4e5-f6a7-5b6c-9d0e-1f2a3b4c5d6e",
+      "name": "Generar con Claude AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300],
+      "credentials": {
+        "anthropicApi": {
+          "id": "claude-api-credential",
+          "name": "Claude API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "extract-post",
+              "name": "contenidoPost",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "extract-model",
+              "name": "modeloUsado",
+              "value": "={{ $json.model }}",
+              "type": "string"
+            },
+            {
+              "id": "extract-tokens",
+              "name": "tokensUsados",
+              "value": "={{ $json.usage.input_tokens + $json.usage.output_tokens }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c3d4e5f6-a7b8-6c7d-0e1f-2a3b4c5d6e7f",
+      "name": "Extraer Contenido",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "text": "={{ $json.contenidoPost }}",
+        "additionalFields": {}
+      },
+      "id": "d4e5f6a7-b8c9-7d8e-1f2a-3b4c5d6e7f8a",
+      "name": "Publicar en LinkedIn",
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [940, 300],
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "linkedin-oauth-credential",
+          "name": "Mi Cuenta de LinkedIn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=🎉 ¡Post Publicado Exitosamente en LinkedIn!\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n{{ $json.contenidoPost }}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📊 INFORMACIÓN:\n🔗 Post ID: {{ $json.id || 'Publicado correctamente' }}\n🤖 Modelo: Claude 3.5 Sonnet\n📈 Tokens usados: {{ $json.tokensUsados || 'N/A' }}\n💰 Costo aproximado: ${{ ((($json.tokensUsados || 0) / 1000000) * 3).toFixed(4) }}\n\n👉 Revisa tu perfil de LinkedIn para ver el post publicado!\n\n💡 ¿Quieres crear otro post? Recarga esta página.",
+        "options": {}
+      },
+      "id": "e5f6a7b8-c9d0-8e9f-2a3b-4c5d6e7f8a9b",
+      "name": "Mostrar Confirmación",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1180, 300]
+    }
+  ],
+  "connections": {
+    "Formulario de Entrada": {
+      "main": [
+        [
+          {
+            "node": "Generar con Claude AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar con Claude AI": {
+      "main": [
+        [
+          {
+            "node": "Extraer Contenido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer Contenido": {
+      "main": [
+        [
+          {
+            "node": "Publicar en LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publicar en LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "Mostrar Confirmación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-24T00:00:00.000Z",
+  "versionId": "claude-optimized-v1"
+}

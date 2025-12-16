@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn AI Post Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #0077B5;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e1e4e8;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0077B5;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: #0077B5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #005582;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 119, 181, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f6f8fa;
+            border-radius: 8px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .result.loading {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+        }
+
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-content {
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #856404;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .example {
+            background: #f6f8fa;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .example strong {
+            color: #333;
+        }
+
+        .config-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e1e4e8;
+        }
+
+        .config-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .config-note {
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🤖</div>
+            <h1>LinkedIn AI Post Generator</h1>
+            <p>Enter a topic and let AI create engaging content for you</p>
+        </div>
+
+        <form id="postForm">
+            <div class="form-group">
+                <label for="postTitle">Post Title or Topic *</label>
+                <input
+                    type="text"
+                    id="postTitle"
+                    placeholder="e.g., The Future of AI in Business"
+                    required
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="example">
+                <strong>💡 Examples:</strong><br>
+                • "5 Leadership Lessons from 2024"<br>
+                • "Why Remote Work is Here to Stay"<br>
+                • "The Impact of AI on Marketing"
+            </div>
+
+            <button type="submit" class="btn" id="submitBtn">
+                ✨ Generate & Post to LinkedIn
+            </button>
+        </form>
+
+        <div id="result" class="result">
+            <div class="result-title" id="resultTitle"></div>
+            <div class="result-content" id="resultContent"></div>
+        </div>
+
+        <!-- Configuration Section -->
+        <div class="config-section">
+            <h3>⚙️ Configuration</h3>
+            <div class="config-note">
+                <strong>⚠️ Important:</strong> Before using this form, update the webhook URL below with your n8n workflow webhook URL.
+            </div>
+            <div class="form-group">
+                <label for="webhookUrl">n8n Webhook URL</label>
+                <input
+                    type="text"
+                    id="webhookUrl"
+                    placeholder="https://your-n8n-instance.com/webhook/linkedin-post"
+                    value=""
+                >
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('postForm');
+        const resultDiv = document.getElementById('result');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultContent = document.getElementById('resultContent');
+        const submitBtn = document.getElementById('submitBtn');
+        const webhookUrlInput = document.getElementById('webhookUrl');
+
+        // Load saved webhook URL from localStorage
+        const savedWebhookUrl = localStorage.getItem('webhookUrl');
+        if (savedWebhookUrl) {
+            webhookUrlInput.value = savedWebhookUrl;
+        }
+
+        // Save webhook URL on change
+        webhookUrlInput.addEventListener('change', () => {
+            localStorage.setItem('webhookUrl', webhookUrlInput.value);
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const postTitle = document.getElementById('postTitle').value.trim();
+            const webhookUrl = webhookUrlInput.value.trim();
+
+            // Validate webhook URL
+            if (!webhookUrl) {
+                showResult('error', '❌ Error', 'Please configure your n8n webhook URL in the Configuration section below.');
+                return;
+            }
+
+            if (!webhookUrl.startsWith('http')) {
+                showResult('error', '❌ Invalid URL', 'Webhook URL must start with http:// or https://');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Generating...';
+            showResult('loading', '⏳ Processing', 'Generating your LinkedIn post with AI...');
+
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ postTitle: postTitle })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.text();
+
+                // Show success
+                showResult('success', '✅ Success!', data || 'Your post has been published to LinkedIn!');
+
+                // Clear the form
+                document.getElementById('postTitle').value = '';
+
+            } catch (error) {
+                console.error('Error:', error);
+                showResult('error', '❌ Error',
+                    `Failed to generate and post: ${error.message}\n\n` +
+                    'Please check:\n' +
+                    '• Webhook URL is correct\n' +
+                    '• n8n workflow is active\n' +
+                    '• All credentials are configured\n' +
+                    '• Network connection is stable'
+                );
+            } finally {
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✨ Generate & Post to LinkedIn';
+            }
+        });
+
+        function showResult(type, title, content) {
+            resultDiv.className = `result ${type} show`;
+
+            if (type === 'loading') {
+                resultTitle.innerHTML = `<span class="spinner"></span> ${title}`;
+            } else {
+                resultTitle.textContent = title;
+            }
+
+            resultContent.textContent = content;
+
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Auto-save webhook URL on input
+        webhookUrlInput.addEventListener('input', () => {
+            localStorage.setItem('webhookUrl', webhookUrlInput.value);
+        });
+    </script>
+</body>
+</html>
+

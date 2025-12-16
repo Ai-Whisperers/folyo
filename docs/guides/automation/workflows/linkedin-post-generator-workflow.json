@@ -1,0 +1,163 @@
+{
+  "name": "LinkedIn Post Generator with AI",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Create LinkedIn Post",
+        "formDescription": "Enter a post title and we'll generate AI-powered content for LinkedIn",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Post Title",
+              "fieldType": "text",
+              "requiredField": true,
+              "fieldId": "postTitle"
+            }
+          ]
+        },
+        "options": {
+          "formSubmittedText": "Processing your request..."
+        }
+      },
+      "id": "receive-post-title",
+      "name": "Receive Post Title",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2,
+      "position": [250, 300],
+      "webhookId": "generate-linkedin-post"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a professional LinkedIn content creator. Based on the following post title, create an engaging LinkedIn post with:\n\n1. A compelling hook in the first line\n2. Well-structured body content with insights\n3. Relevant hashtags\n4. A call-to-action at the end\n\nPost Title: {{ $json.postTitle }}\n\nCreate a professional, engaging post that will perform well on LinkedIn.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an expert LinkedIn content strategist who creates viral, professional posts."
+        }
+      },
+      "id": "generate-content",
+      "name": "Generate AI Content",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "model": "gemini-pro",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 1000
+        }
+      },
+      "id": "google-gemini-model",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [500, 500]
+    },
+    {
+      "parameters": {},
+      "id": "output-parser",
+      "name": "Format AI Output",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1,
+      "position": [700, 500]
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "visibility": "PUBLIC"
+        }
+      },
+      "id": "post-to-linkedin",
+      "name": "Post to LinkedIn",
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [850, 300],
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "your-linkedin-credential-id",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Post Created Successfully!",
+        "formDescription": "=Your LinkedIn post has been created and published.\n\nPost Content:\n{{ $json.text }}\n\nPost ID: {{ $json.id }}",
+        "options": {
+          "buttonLabel": "Create Another Post"
+        }
+      },
+      "id": "show-confirmation",
+      "name": "Show Confirmation",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1100, 300]
+    }
+  ],
+  "connections": {
+    "Receive Post Title": {
+      "main": [
+        [
+          {
+            "node": "Generate AI Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate AI Content": {
+      "main": [
+        [
+          {
+            "node": "Post to LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "ai_languageModel": [
+        [
+          {
+            "node": "Google Gemini Chat Model",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ],
+      "ai_outputParser": [
+        [
+          {
+            "node": "Format AI Output",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "Show Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-23T00:00:00.000Z",
+  "versionId": "1"
+}

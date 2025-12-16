@@ -14,6 +14,8 @@ __pycache__/
 *.pyc
 *.pyo
 .pytest_cache/
+venv/
+.venv/
 
 # Temporary files
 *.tmp
@@ -26,15 +28,51 @@ __pycache__/
 .vscode/
 .idea/
 *.code-workspace
+.cursorindexingignore
 
 # OS Files
 .DS_Store
 Thumbs.db
 
-# Node modules (if using any JS tools)
+# Node modules
 node_modules/
 
-# Personal/Test folders
-New folder/
-ana-cv-github-upload/
+# Personal/Private Data (do not commit)
 PersonalData/
+ana-cv-github-upload/
+
+# Next.js Build Output
+cv-builder/.next/
+cv-builder/out/
+
+# Environment Files (NEVER COMMIT)
+.env
+.env.*
+!.env.example
+cv-builder/.env*
+!cv-builder/.env.example
+
+# Build Logs
+*.log
+build_log*.txt
+
+# Claude Code Configuration (personal settings - not shared)
+.claude/CLAUDE.local.md
+.claude/settings.local.json
+
+# Credentials & Secrets (NEVER COMMIT)
+**/credentials.json
+**/credentials.yml
+**/kaggle.json
+**/.aws/
+**/.ssh/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Large files (use download scripts instead)
+*.csv
+*.xlsx
+*.zip
+datasets/

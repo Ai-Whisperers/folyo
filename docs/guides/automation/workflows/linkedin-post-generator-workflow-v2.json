@@ -1,0 +1,187 @@
+{
+  "name": "LinkedIn Post Generator with AI - Simple",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Create LinkedIn Post",
+        "formDescription": "Enter a post title and we'll generate AI-powered content for LinkedIn",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Post Title",
+              "fieldType": "text",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "formSubmittedText": "Processing your request..."
+        }
+      },
+      "id": "3fb6c9e8-9c4e-4d3b-9f3e-8a5b2c1d4e5f",
+      "name": "Receive Post Title",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "linkedin-post-form"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "={{ $credentials.apiKey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "contents[0].parts[0].text",
+              "value": "=You are a professional LinkedIn content creator. Create an engaging LinkedIn post based on this title:\n\n{{ $json['formField:Post Title'] }}\n\nInclude:\n1. Compelling hook\n2. Valuable insights\n3. Relevant hashtags\n4. Call-to-action"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4ac7d0f9-0d5e-4e4c-0f4f-9b6c3d2e5f6g",
+      "name": "Generate with Gemini",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "gemini-api-key",
+          "name": "Google Gemini API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "generatedPost",
+              "value": "={{ $json.candidates[0].content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5bd8e1g0-1e6f-5f5d-1g5g-0c7d4e3f6g7h",
+      "name": "Extract Post Content",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "text": "={{ $json.generatedPost }}",
+        "additionalFields": {}
+      },
+      "id": "6ce9f2h1-2f7g-6g6e-2h6h-1d8e5f4g7h8i",
+      "name": "Post to LinkedIn",
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        900,
+        300
+      ],
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "linkedin-oauth",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=✅ Post Created Successfully!\n\nYour LinkedIn post has been published:\n\n{{ $json.generatedPost }}\n\nPost ID: {{ $json.id || 'Published' }}",
+        "options": {}
+      },
+      "id": "7dfag3i2-3g8h-7h7f-3i7i-2e9f6g5h8i9j",
+      "name": "Show Confirmation",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Receive Post Title": {
+      "main": [
+        [
+          {
+            "node": "Generate with Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate with Gemini": {
+      "main": [
+        [
+          {
+            "node": "Extract Post Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Post Content": {
+      "main": [
+        [
+          {
+            "node": "Post to LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "Show Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-24T00:00:00.000Z",
+  "versionId": "2"
+}

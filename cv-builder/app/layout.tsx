@@ -5,12 +5,22 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Professional CV Builder - Create Your Perfect Resume',
-  description: 'Build professional CVs and resumes with our intuitive online builder. Choose from beautiful templates, real-time preview, and export to multiple formats.',
-  keywords: 'CV builder, resume maker, professional CV, online resume builder, job application, career',
+  title: 'Folyo - Create Living Portfolios That Get You Hired',
+  description: 'Stop downloading PDFs. Create beautiful, shareable web portfolios with videos, galleries, and analytics. Built for creative professionals, developers, and anyone who wants to stand out.',
+  keywords: 'portfolio builder, CV builder, resume maker, video portfolio, online portfolio, professional profile, career website',
+  openGraph: {
+    title: 'Folyo - Living Portfolios for Professionals',
+    description: 'Create beautiful, shareable web portfolios with videos, galleries, and real-time analytics.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Folyo - Living Portfolios for Professionals',
+    description: 'Create beautiful, shareable web portfolios with videos, galleries, and real-time analytics.',
+  },
 }
 
-import { Providers } from '../components/Providers'
+import { Providers } from '../components/common/Providers'
 
 export default function RootLayout({
   children,

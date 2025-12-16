@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Shared Claude Code settings for the project (team configuration)",
+  "env": {
+    "PYTHONPATH": ".:./scripts",
+    "APP_ENV": "development"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(ls:*)",
+      "Bash(pwd:*)",
+      "Bash(mkdir:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(diff:*)",
+      "Bash(echo:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(bundle:*)",
+      "Bash(jekyll:*)",
+      "Bash(bash scripts/:*)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/credentials.*)",
+      "Read(**/.aws/*)",
+      "Read(**/.ssh/*)",
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Write(.env)",
+      "Write(.env.*)",
+      "Bash(rm -rf /:*)",
+      "Bash(rm -rf ~:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(sudo:*)",
+      "Bash(su:*)"
+    ],
+    "ask": [
+      "Bash(pip install:*)",
+      "Bash(npm install:*)",
+      "Bash(git push:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(rm -rf:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash(git commit:*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/development/check_repo_organization.sh",
+            "timeout": 30000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write(*.py)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Python file created. Consider running tests.'",
+            "timeout": 1000
+          }
+        ]
+      },
+      {
+        "matcher": "Edit(*.py)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Python file modified. Verify with tests.'",
+            "timeout": 1000
+          }
+        ]
+      }
+    ]
+  }
+}
