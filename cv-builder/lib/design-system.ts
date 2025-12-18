@@ -16,11 +16,12 @@ export const colors = {
   },
 
   // Theme Colors (for CV themes)
+  // PRD-specified colors for 8 core themes (Section 7.3)
   themes: {
-    // ========== CLASSIC PROFESSIONAL ==========
+    // ========== CORE 8 THEMES (PRD-specified) ==========
     teal: {
-      primary: '#0D9488',
-      secondary: '#14B8A6',
+      primary: '#20c997',      // PRD: Finance, Analytics
+      secondary: '#3dd9ad',
       text: '#1F2937',
       bg: '#FFFFFF',
       accent: '#F0FDFA',
@@ -28,8 +29,8 @@ export const colors = {
       label: 'Cool Teal',
     },
     blue: {
-      primary: '#2563EB',
-      secondary: '#3B82F6',
+      primary: '#2E86AB',      // PRD: Corporate, Business
+      secondary: '#4A9EC2',
       text: '#1F2937',
       bg: '#FFFFFF',
       accent: '#EFF6FF',
@@ -37,8 +38,8 @@ export const colors = {
       label: 'Professional Blue',
     },
     turquoise: {
-      primary: '#06B6D4',
-      secondary: '#22D3EE',
+      primary: '#17a2b8',      // PRD: Tech, Startups
+      secondary: '#2fc4da',
       text: '#1F2937',
       bg: '#FFFFFF',
       accent: '#ECFEFF',
@@ -46,8 +47,8 @@ export const colors = {
       label: 'Modern Turquoise',
     },
     green: {
-      primary: '#16A34A',
-      secondary: '#22C55E',
+      primary: '#28a745',      // PRD: Environment, Health
+      secondary: '#3dc75e',
       text: '#1F2937',
       bg: '#FFFFFF',
       accent: '#F0FDF4',
@@ -55,19 +56,19 @@ export const colors = {
       label: 'Fresh Green',
     },
     oceanstale: {
-      primary: '#0EA5E9',
-      secondary: '#38BDF8',
+      primary: '#6c757d',      // PRD: Conservative, Legal
+      secondary: '#868e96',
       text: '#1F2937',
       bg: '#FFFFFF',
-      accent: '#F0F9FF',
+      accent: '#F8F9FA',
       category: 'professional',
-      label: 'Ocean Blue',
+      label: 'Neutral Gray',
     },
 
-    // ========== CREATIVE & BOLD ==========
+    // ========== CREATIVE & BOLD (PRD-specified) ==========
     berry: {
-      primary: '#DB2777',
-      secondary: '#EC4899',
+      primary: '#8e44ad',      // PRD: Design, Creative
+      secondary: '#a855c9',
       text: '#1F2937',
       bg: '#FFFFFF',
       accent: '#FDF2F8',
@@ -75,8 +76,8 @@ export const colors = {
       label: 'Creative Berry',
     },
     orange: {
-      primary: '#EA580C',
-      secondary: '#F97316',
+      primary: '#fd7e14',      // PRD: Marketing, Sales
+      secondary: '#fd9a47',
       text: '#1F2937',
       bg: '#FFFFFF',
       accent: '#FFF7ED',
@@ -113,11 +114,11 @@ export const colors = {
 
     // ========== MINIMAL & NEUTRAL ==========
     ceramic: {
-      primary: '#78716C',
-      secondary: '#A8A29E',
+      primary: '#d4926d',      // PRD: Consulting, Education
+      secondary: '#dfab8c',
       text: '#1F2937',
       bg: '#FFFFFF',
-      accent: '#FAFAF9',
+      accent: '#FDF8F5',
       category: 'minimal',
       label: 'Warm Ceramic',
     },

@@ -16,8 +16,8 @@ sidebar:
   # =============================================================================
   # PERSONAL INFORMATION
   # =============================================================================
-  name: Milagros Mabel Aguilera Báez
-  tagline: Estudiante de Administración | Asistente Administrativa | Líder Scout
+  name: Milagros Mabel Aguilera Baez
+  tagline: Estudiante de Administracion | Asistente Administrativa | Lider Scout
   avatar: # Optional - add profile photo to assets/images/
 
   # Contact Information
@@ -36,10 +36,10 @@ sidebar:
   languages:
     title: Idiomas
     info:
-      - idiom: Español
+      - idiom: Espanol
         level: Nativo
-      - idiom: Inglés
-        level: Básico
+      - idiom: Ingles
+        level: Basico
 
 # =============================================================================
 # INTERESTS/HOBBIES
@@ -47,13 +47,13 @@ sidebar:
 interests:
   title: Intereses
   info:
-    - item: Administración de Empresas
-    - item: Gestión Administrativa
-    - item: Liderazgo y Coordinación
+    - item: Administracion de Empresas
+    - item: Gestion Administrativa
+    - item: Liderazgo y Coordinacion
     - item: Movimiento Scout
     - item: Trabajo Comunitario
-    - item: Organización de Eventos
-    - item: Lettering y Diseño Creativo
+    - item: Organizacion de Eventos
+    - item: Lettering y Diseno Creativo
 
 # =============================================================================
 # CAREER PROFILE / SUMMARY
@@ -61,47 +61,47 @@ interests:
 career-profile:
   title: Perfil Profesional
   summary: |
-    Soy estudiante de **Administración** en la Universidad Nacional - Sede Central, próxima a iniciar 3er año.
+    Soy estudiante de **Administracion** en la Universidad Nacional - Sede Central, proxima a iniciar 3er ano.
     Me considero una persona *organizada*, *comunicativa* y con habilidades de **liderazgo**.
 
-    Durante mi trayectoria académica y laboral he desarrollado competencias en **gestión administrativa**,
-    *coordinación de proyectos* y *manejo de grupos*, tanto en entornos educativos como laborales.
+    Durante mi trayectoria academica y laboral he desarrollado competencias en **gestion administrativa**,
+    *coordinacion de proyectos* y *manejo de grupos*, tanto en entornos educativos como laborales.
 
-    Busco seguir aprendiendo y creciendo profesionalmente y personalmente en el área administrativa,
+    Busco seguir aprendiendo y creciendo profesionalmente y personalmente en el area administrativa,
     aportando **responsabilidad**, *proactividad* y *compromiso* en cada tarea que realizo.
 
 # =============================================================================
 # EDUCATION
 # =============================================================================
 education:
-  title: Formación Académica
+  title: Formacion Academica
   info:
-    - degree: Licenciatura en Administración (En curso)
+    - degree: Licenciatura en Administracion (En curso)
       university: Universidad Nacional - Sede Central
       time: 2023 - Presente
       details: |
-        - **Estado**: Próxima a iniciar 3er año
-        - **Actividades**: Participación activa en grupo de estudio para reforzar materias y mejorar rendimiento académico
+        - **Estado**: Proxima a iniciar 3er ano
+        - **Actividades**: Participacion activa en grupo de estudio para reforzar materias y mejorar rendimiento academico
 
-    - degree: Bachillerato Técnico en Administración de Empresas
-      university: Escuela Nacional de Comercio Nº 2
+    - degree: Bachillerato Tecnico en Administracion de Empresas
+      university: Escuela Nacional de Comercio No 2
       time: 2021 - 2023
       details: |
-        - **Especialización**: Administración de Empresas
-        - **Proyecto destacado**: "Impact Printer" - seleccionado entre los mejores del año
-        - **Logro**: Primer puesto en exposición sobre la civilización maya
+        - **Especializacion**: Administracion de Empresas
+        - **Proyecto destacado**: "Impact Printer" - seleccionado entre los mejores del ano
+        - **Logro**: Primer puesto en exposicion sobre la civilizacion maya
 
-    - degree: Educación Secundaria
-      university: Colegio Nacional Zenón Franco
+    - degree: Educacion Secundaria
+      university: Colegio Nacional Zenon Franco
       time: 2020 - 2021
       details: |
-        - Continuación de estudios secundarios
+        - Continuacion de estudios secundarios
 
-    - degree: Educación Básica
-      university: Colegio San Miguel Arcángel
+    - degree: Educacion Basica
+      university: Colegio San Miguel Arcangel
       time: 2015 - 2019
       details: |
-        - Formación básica y media
+        - Formacion basica y media
 
 # =============================================================================
 # WORK EXPERIENCE
@@ -116,20 +116,20 @@ experiences:
         - **Apoyo** a gerencia en tareas administrativas diarias
         - **Control** de documentos, facturas y registro de compras
         - **Manejo** de stock y seguimiento de proveedores
-        - **Coordinación** interna del equipo y atención a clientes
-        - **Elaboración** de informes y reportes administrativos
-      tags: ["Gestión Administrativa", "Control de Stock", "Atención al Cliente", "Reportes"]
+        - **Coordinacion** interna del equipo y atencion a clientes
+        - **Elaboracion** de informes y reportes administrativos
+      tags: ["Gestion Administrativa", "Control de Stock", "Atencion al Cliente", "Reportes"]
       icon: "briefcase"
 
     - role: Secretaria Administrativa
-      time: 3 años
+      time: 3 anos
       company: Consultora Agropecuaria S.I.D.T.A
       details: |
-        - **Coordinación** de agenda ejecutiva
-        - **Manejo** de documentación y archivos administrativos
-        - **Comunicación** con proveedores y clientes
+        - **Coordinacion** de agenda ejecutiva
+        - **Manejo** de documentacion y archivos administrativos
+        - **Comunicacion** con proveedores y clientes
         - **Apoyo** general en tareas administrativas
-      tags: ["Secretariado", "Gestión Documental", "Coordinación de Agenda", "Atención a Proveedores"]
+      tags: ["Secretariado", "Gestion Documental", "Coordinacion de Agenda", "Atencion a Proveedores"]
       icon: "file-alt"
 
 # =============================================================================
@@ -139,80 +139,80 @@ volunteer:
   title: Experiencia de Liderazgo - Scout
   info:
     - role: Subjefa de Unidad
-      time: 10 años de trayectoria
-      company: Movimiento Scout - Grupo Nº 1 Capitán Figari
+      time: 10 anos de trayectoria
+      company: Movimiento Scout - Grupo No 1 Capitan Figari
       details: |
         - **Lidero** y coordino personas en actividades y campamentos
-        - **Organicé** un campamento para 40 personas, desde la planeación hasta la ejecución de actividades
-        - **Participación** en Plantatón Nacional 2022
-        - **Coordinación** de cursos, eventos y servicios comunitarios
+        - **Organize** un campamento para 40 personas, desde la planeacion hasta la ejecucion de actividades
+        - **Participacion** en Plantaton Nacional 2022
+        - **Coordinacion** de cursos, eventos y servicios comunitarios
         - **Reconocimiento**: Insignia BSP - Boy Scout de la Patria, lograda tras superar pruebas de primeros auxilios, historia y otras competencias
-        - **Desarrollo** de habilidades de comunicación, liderazgo, planificación y resolución de problemas
+        - **Desarrollo** de habilidades de comunicacion, liderazgo, planificacion y resolucion de problemas
 
 # =============================================================================
 # PROJECTS
 # =============================================================================
 projects:
-  title: Proyectos Académicos y de Extensión
+  title: Proyectos Academicos y de Extension
   intro: >
-    Proyectos destacados durante mi formación académica y actividades de extensión universitaria.
+    Proyectos destacados durante mi formacion academica y actividades de extension universitaria.
   assignments:
     - title: Proyecto "Impact Printer"
-      time: 2023 (3er año técnico)
+      time: 2023 (3er ano tecnico)
       details: |
-        - **Proyecto** de Administración seleccionado entre los mejores del año
+        - **Proyecto** de Administracion seleccionado entre los mejores del ano
         - **Desarrollo** de plan de negocio completo
-        - **Presentación** ante jurado académico
+        - **Presentacion** ante jurado academico
 
-    - title: Diagnóstico y Evaluación del Clima Laboral en Organizaciones
+    - title: Diagnostico y Evaluacion del Clima Laboral en Organizaciones
       time: Universidad
       details: |
-        - **Diagnóstico** y análisis en empresa real
-        - **Elaboración** de conclusiones y recomendaciones
-        - **Aplicación** de metodologías de investigación organizacional
+        - **Diagnostico** y analisis en empresa real
+        - **Elaboracion** de conclusiones y recomendaciones
+        - **Aplicacion** de metodologias de investigacion organizacional
 
-    - title: Proyecto "Ahorro y Reforestación"
-      time: Extensión Educativa
+    - title: Proyecto "Ahorro y Reforestacion"
+      time: Extension Educativa
       details: |
         - **Actividades** en escuela nacional
-        - **Explicación** sobre ahorro y reforestación
-        - **Plantación** de árboles con estudiantes
+        - **Explicacion** sobre ahorro y reforestacion
+        - **Plantacion** de arboles con estudiantes
 
 # =============================================================================
 # CERTIFICATIONS
 # =============================================================================
 certifications:
-  title: Certificaciones y Formación Complementaria
+  title: Certificaciones y Formacion Complementaria
   list:
-    - name: Certificado de Inglés Básico
+    - name: Certificado de Ingles Basico
       start: 2023
       organization: Instituto de Idiomas
       details: |
-        - 1 año de estudio de inglés
-        - Nivel básico de comunicación
+        - 1 ano de estudio de ingles
+        - Nivel basico de comunicacion
 
     - name: Certificado de Relaciones con Facultades Extranjeras
       start: 2023
       organization: Universidad
       details: |
-        - **Participación** en viaje académico a Camboriú, Brasil
-        - **Visita** a distintas facultades e instituciones de educación superior
-        - **Conocimiento** de programas universitarios, procesos de admisión y áreas de estudio
+        - **Participacion** en viaje academico a Camboriu, Brasil
+        - **Visita** a distintas facultades e instituciones de educacion superior
+        - **Conocimiento** de programas universitarios, procesos de admision y areas de estudio
 
     - name: Curso de Lettering
       start: 2022
-      organization: Formación Complementaria
+      organization: Formacion Complementaria
       details: |
-        - Escritura y diseño creativo
-        - Técnicas de caligrafía artística
+        - Escritura y diseno creativo
+        - Tecnicas de caligrafia artistica
 
     - name: Insignia BSP - Boy Scout de la Patria
       start: 2020
       organization: Movimiento Scout
       details: |
         - Reconocimiento por superar pruebas de primeros auxilios
-        - Evaluación de conocimientos históricos
-        - Demostración de competencias diversas
+        - Evaluacion de conocimientos historicos
+        - Demostracion de competencias diversas
 
 # =============================================================================
 # SKILLS & PROFICIENCY
@@ -220,28 +220,28 @@ certifications:
 skills:
   title: Habilidades
   toolset:
-    - name: Gestión Administrativa
+    - name: Gestion Administrativa
       level: 85%
-      tags: [Coordinación de Agenda, Documentación, Archivos, Atención al Cliente]
+      tags: [Coordinacion de Agenda, Documentacion, Archivos, Atencion al Cliente]
 
-    - name: Herramientas Ofimáticas
+    - name: Herramientas Ofimaticas
       level: 75%
-      tags: [Word, Excel (básico), PowerPoint, Google Drive, Gmail, Google Calendar]
+      tags: [Word, Excel (basico), PowerPoint, Google Drive, Gmail, Google Calendar]
 
-    - name: Diseño y Presentaciones
+    - name: Diseno y Presentaciones
       level: 70%
-      tags: [Canva, Elaboración de Informes, Planillas, Reportes]
+      tags: [Canva, Elaboracion de Informes, Planillas, Reportes]
 
-    - name: Liderazgo y Coordinación
+    - name: Liderazgo y Coordinacion
       level: 90%
-      tags: [Trabajo en Equipo, Organización de Eventos, Manejo de Grupos, Comunicación]
+      tags: [Trabajo en Equipo, Organizacion de Eventos, Manejo de Grupos, Comunicacion]
 
     - name: Habilidades Blandas
       level: 95%
-      tags: [Organización, Responsabilidad, Proactividad, Adaptabilidad, Comunicación]
+      tags: [Organizacion, Responsabilidad, Proactividad, Adaptabilidad, Comunicacion]
 
 # =============================================================================
 # FOOTER
 # =============================================================================
 footer: >
-  CV de Milagros Mabel Aguilera Báez | Disponibilidad: Tiempo completo | Mariano Roque Alonso, Paraguay
+  CV de Milagros Mabel Aguilera Baez | Disponibilidad: Tiempo completo | Mariano Roque Alonso, Paraguay

@@ -1,8 +1,12 @@
 const OpenAI = require('openai')
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+// Make OpenAI optional - only initialize if API key is present
+let openai = null
+if (process.env.OPENAI_API_KEY) {
+  openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  })
+}
 
 // CV Section Enhancement Prompts
 const ENHANCEMENT_PROMPTS = {
@@ -106,6 +110,17 @@ class CVEnhancementService {
    * Enhance user input for a specific CV section
    */
   async enhanceContent(userInput, section, context = {}) {
+    // Return original content if OpenAI is not configured
+    if (!openai) {
+      return {
+        success: true,
+        original: userInput,
+        enhanced: userInput,
+        section,
+        note: 'OpenAI not configured - returning original content'
+      }
+    }
+
     try {
       const prompt = ENHANCEMENT_PROMPTS[section] || ENHANCEMENT_PROMPTS.general
       const enhancedPrompt = prompt.replace('{userInput}', userInput)
@@ -152,6 +167,17 @@ class CVEnhancementService {
    * Generate intelligent follow-up questions
    */
   async generateFollowUpQuestions(userInput, section, context = {}) {
+    // Return empty questions if OpenAI is not configured
+    if (!openai) {
+      return {
+        success: true,
+        questions: [],
+        section,
+        originalInput: userInput,
+        note: 'OpenAI not configured - no follow-up questions generated'
+      }
+    }
+
     try {
       const prompt = FOLLOWUP_PROMPTS.general
         .replace('{section}', section)
@@ -201,6 +227,16 @@ class CVEnhancementService {
    * Analyze job description and extract key requirements
    */
   async analyzeJobDescription(jobDescription) {
+    // Return null analysis if OpenAI is not configured
+    if (!openai) {
+      return {
+        success: true,
+        analysis: null,
+        originalJD: jobDescription,
+        note: 'OpenAI not configured - job description analysis unavailable'
+      }
+    }
+
     try {
       const prompt = `Analyze this job description and extract key information that should be emphasized in a CV:
 
@@ -266,6 +302,21 @@ Format as JSON with clear categories.`
    * Generate multiple alternative versions of enhanced content
    */
   async generateAlternatives(userInput, section, count = 3) {
+    // Return original content as single alternative if OpenAI is not configured
+    if (!openai) {
+      return {
+        success: true,
+        original: userInput,
+        alternatives: [{
+          version: 1,
+          style: 'original',
+          content: userInput
+        }],
+        section,
+        note: 'OpenAI not configured - returning original content only'
+      }
+    }
+
     try {
       const alternatives = await Promise.all(
         Array.from({ length: count }, async (_, index) => {
@@ -323,6 +374,16 @@ Style: Make this version ${variation}.`
    * Evaluate CV content and provide ATS score and recommendations
    */
   async evaluateContent(cvData, jobDescription = null) {
+    // Return null evaluation if OpenAI is not configured
+    if (!openai) {
+      return {
+        success: true,
+        evaluation: null,
+        hasJobDescription: !!jobDescription,
+        note: 'OpenAI not configured - CV evaluation unavailable'
+      }
+    }
+
     try {
       const prompt = `Evaluate this CV content for ATS optimization and professional quality:
 

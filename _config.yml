@@ -36,3 +36,19 @@ compress_html: # - http://jch.penibelst.de/
 port: 4000
 host: 0.0.0.0
 safe: false
+
+# Exclude directories from Jekyll processing
+exclude:
+  - cv-builder
+  - node_modules
+  - vendor
+  - .git
+  - .github
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - CHANGELOG.md
+  - CONTRIBUTING.md
+  - scripts
+  - docs
+  - templates

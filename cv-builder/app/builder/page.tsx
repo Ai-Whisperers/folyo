@@ -21,7 +21,10 @@ import {
   DevicePhoneMobileIcon,
   ComputerDesktopIcon,
   ArrowLeftIcon,
+  QrCodeIcon,
+  LinkIcon,
 } from '@heroicons/react/24/outline'
+import { QRCodeModal } from '../../components/ui/QRCodeDisplay'
 
 // Default CV data structure matching the Jekyll template
 const defaultCVData = {
@@ -101,6 +104,8 @@ export default function CVBuilderPage() {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [isClient, setIsClient] = useState(false)
+  const [showQRModal, setShowQRModal] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   // Calculate completed sections for progress indicator
   const completedSections = useMemo(() => {
@@ -234,6 +239,35 @@ export default function CVBuilderPage() {
       theme_skin: theme
     }))
   }, [])
+
+  // Generate portfolio URL based on user's name (slug)
+  const portfolioSlug = useMemo(() => {
+    const name = cvData.sidebar?.name || ''
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')
+      || 'my-portfolio'
+  }, [cvData.sidebar?.name])
+
+  const portfolioUrl = useMemo(() => {
+    // Use Jekyll site URL for portfolios (same domain in production, port 4000 in dev)
+    const portfolioBaseUrl = process.env.NEXT_PUBLIC_PORTFOLIO_URL
+      || (typeof window !== 'undefined' && window.location.port === '3000'
+          ? 'http://localhost:4000'
+          : window?.location?.origin || 'http://localhost:4000')
+    return `${portfolioBaseUrl}/portfolio/${portfolioSlug}/`
+  }, [portfolioSlug])
+
+  const handleCopyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(portfolioUrl)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }, [portfolioUrl])
 
   const handleSave = async () => {
     setIsSaving(true)
@@ -411,6 +445,23 @@ export default function CVBuilderPage() {
 
               {/* Action Buttons */}
               <div className="flex items-center space-x-2">
+                {/* Share/QR buttons */}
+                <button
+                  onClick={handleCopyLink}
+                  className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                  title="Copy portfolio link"
+                >
+                  <LinkIcon className="h-4 w-4" />
+                  {copied ? 'Copied!' : 'Link'}
+                </button>
+                <button
+                  onClick={() => setShowQRModal(true)}
+                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                  title="Generate QR code"
+                >
+                  <QrCodeIcon className="h-4 w-4" />
+                  <span className="hidden sm:inline">QR</span>
+                </button>
                 <SaveButton
                   onSave={handleSave}
                   isSaving={isSaving}
@@ -536,6 +587,15 @@ export default function CVBuilderPage() {
           </button>
         </div>
       </main>
+
+      {/* QR Code Modal */}
+      <QRCodeModal
+        isOpen={showQRModal}
+        onClose={() => setShowQRModal(false)}
+        url={portfolioUrl}
+        theme={cvData.theme_skin}
+        title={`${cvData.sidebar?.name || 'Portfolio'} QR Code`}
+      />
     </div>
   )
 }

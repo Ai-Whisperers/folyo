@@ -6,12 +6,13 @@ const path = require('path')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
 const morgan = require('morgan')
-const { connectDB } = require('./lib/database')
+const { connectDB, isDbConnected } = require('./lib/database')
 const User = require('./models/User')
 const CV = require('./models/CV')
 const Analytics = require('./models/Analytics')
 const Conversation = require('./models/Conversation')
 const { CVEnhancementService } = require('./lib/openai')
+const { generateQRCodeDataURL, generateQRCodeBuffer, generateQRCodeSVG, buildPortfolioURL, THEME_COLORS } = require('./lib/qrcode')
 require('dotenv').config()
 
 const app = express()
@@ -47,10 +48,14 @@ app.use(cors(corsOptions))
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true }))
 
-// Connect to database
-connectDB().catch(err => {
-  console.error('Failed to connect to database:', err)
-  process.exit(1)
+// Connect to database (non-blocking - continues even if DB is unavailable)
+connectDB().then(conn => {
+  if (!conn) {
+    console.log('⚠️  Server running without database - save/load features disabled')
+  }
+}).catch(err => {
+  console.error('Database connection failed:', err.message)
+  console.log('⚠️  Server running without database - save/load features disabled')
 })
 
 // Initialize AI service
@@ -109,15 +114,32 @@ const requireAuth = (req, res, next) => {
   next()
 }
 
+// Middleware to check if database is available
+const requireDB = (req, res, next) => {
+  if (!isDbConnected()) {
+    return res.status(503).json({
+      success: false,
+      message: 'Database is not available. This feature requires a database connection.',
+      dbRequired: true
+    })
+  }
+  next()
+}
+
 // Routes
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() })
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    database: isDbConnected() ? 'connected' : 'disconnected',
+    ai: process.env.OPENAI_API_KEY ? 'enabled' : 'disabled'
+  })
 })
 
 // Save CV data
-app.post('/api/cv/save', requireAuth, async (req, res) => {
+app.post('/api/cv/save', requireDB, requireAuth, async (req, res) => {
   try {
     const { cvData, cvId, isAutosave = false } = req.body
     const { userId } = req
@@ -211,7 +233,7 @@ app.post('/api/cv/save', requireAuth, async (req, res) => {
 })
 
 // Load CV data
-app.get('/api/cv/:cvId', async (req, res) => {
+app.get('/api/cv/:cvId', requireDB, async (req, res) => {
   try {
     const { cvId } = req.params
     const userId = req.headers['x-user-id']
@@ -264,7 +286,7 @@ app.get('/api/cv/:cvId', async (req, res) => {
 })
 
 // Get user's CVs
-app.get('/api/user/cvs', requireAuth, async (req, res) => {
+app.get('/api/user/cvs', requireDB, requireAuth, async (req, res) => {
   try {
     const { userId } = req
     const { limit = 20, page = 1 } = req.query
@@ -295,7 +317,7 @@ app.get('/api/user/cvs', requireAuth, async (req, res) => {
 })
 
 // Delete CV
-app.delete('/api/cv/:cvId', requireAuth, async (req, res) => {
+app.delete('/api/cv/:cvId', requireDB, requireAuth, async (req, res) => {
   try {
     const { cvId } = req.params
     const { userId } = req
@@ -326,7 +348,7 @@ app.delete('/api/cv/:cvId', requireAuth, async (req, res) => {
 })
 
 // Export CV as YAML (Jekyll compatible)
-app.post('/api/cv/export/yaml', requireAuth, async (req, res) => {
+app.post('/api/cv/export/yaml', requireDB, requireAuth, async (req, res) => {
   try {
     const { cvId } = req.body
     const { userId } = req
@@ -364,7 +386,7 @@ app.post('/api/cv/export/yaml', requireAuth, async (req, res) => {
 })
 
 // Export CV as JSON
-app.post('/api/cv/export/json', requireAuth, async (req, res) => {
+app.post('/api/cv/export/json', requireDB, requireAuth, async (req, res) => {
   try {
     const { cvId } = req.body
     const { userId } = req
@@ -438,6 +460,165 @@ app.get('/api/themes', (req, res) => {
   res.json({ themes })
 })
 
+// =============================================================================
+// QR CODE ENDPOINTS
+// =============================================================================
+
+// Generate QR code for a URL (no auth required for public URLs)
+app.get('/api/qrcode', async (req, res) => {
+  try {
+    const { url, theme, format = 'dataurl', width = 200 } = req.query
+
+    if (!url) {
+      return res.status(400).json({
+        success: false,
+        message: 'URL is required'
+      })
+    }
+
+    const options = {
+      width: Math.min(Math.max(parseInt(width) || 200, 50), 500),
+      theme: theme && THEME_COLORS[theme] ? theme : null
+    }
+
+    if (format === 'svg') {
+      const svg = await generateQRCodeSVG(url, options)
+      res.setHeader('Content-Type', 'image/svg+xml')
+      res.send(svg)
+    } else if (format === 'png') {
+      const buffer = await generateQRCodeBuffer(url, options)
+      res.setHeader('Content-Type', 'image/png')
+      res.setHeader('Content-Disposition', 'attachment; filename="qrcode.png"')
+      res.send(buffer)
+    } else {
+      // Default: dataurl
+      const dataURL = await generateQRCodeDataURL(url, options)
+      res.json({
+        success: true,
+        qrCode: dataURL,
+        url,
+        theme: options.theme,
+        width: options.width
+      })
+    }
+  } catch (error) {
+    console.error('QR Code generation error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate QR code'
+    })
+  }
+})
+
+// Generate QR code for a portfolio by slug
+app.get('/api/qrcode/portfolio/:slug', async (req, res) => {
+  try {
+    const { slug } = req.params
+    const { theme, format = 'dataurl', width = 200 } = req.query
+
+    const portfolioUrl = buildPortfolioURL(slug)
+
+    const options = {
+      width: Math.min(Math.max(parseInt(width) || 200, 50), 500),
+      theme: theme && THEME_COLORS[theme] ? theme : null
+    }
+
+    if (format === 'svg') {
+      const svg = await generateQRCodeSVG(portfolioUrl, options)
+      res.setHeader('Content-Type', 'image/svg+xml')
+      res.send(svg)
+    } else if (format === 'png') {
+      const buffer = await generateQRCodeBuffer(portfolioUrl, options)
+      res.setHeader('Content-Type', 'image/png')
+      res.setHeader('Content-Disposition', `attachment; filename="portfolio-${slug}-qr.png"`)
+      res.send(buffer)
+    } else {
+      const dataURL = await generateQRCodeDataURL(portfolioUrl, options)
+      res.json({
+        success: true,
+        qrCode: dataURL,
+        portfolioUrl,
+        slug,
+        theme: options.theme,
+        width: options.width
+      })
+    }
+  } catch (error) {
+    console.error('Portfolio QR Code error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate portfolio QR code'
+    })
+  }
+})
+
+// Generate QR code for a CV by ID (requires auth if CV is private)
+app.get('/api/cv/:cvId/qrcode', requireDB, async (req, res) => {
+  try {
+    const { cvId } = req.params
+    const { theme, format = 'dataurl', width = 200 } = req.query
+    const userId = req.headers['x-user-id']
+
+    const cv = await CV.findById(cvId)
+
+    if (!cv) {
+      return res.status(404).json({
+        success: false,
+        message: 'CV not found'
+      })
+    }
+
+    // Check if CV is public or user owns it
+    if (!cv.isPublic && (!userId || cv.userId.toString() !== userId)) {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied'
+      })
+    }
+
+    // Build URL using slug or ID
+    const portfolioUrl = buildPortfolioURL(cv.slug || cv._id.toString())
+
+    const options = {
+      width: Math.min(Math.max(parseInt(width) || 200, 50), 500),
+      theme: theme && THEME_COLORS[theme] ? theme : (cv.theme?.skin || null)
+    }
+
+    if (format === 'svg') {
+      const svg = await generateQRCodeSVG(portfolioUrl, options)
+      res.setHeader('Content-Type', 'image/svg+xml')
+      res.send(svg)
+    } else if (format === 'png') {
+      const buffer = await generateQRCodeBuffer(portfolioUrl, options)
+      res.setHeader('Content-Type', 'image/png')
+      res.setHeader('Content-Disposition', `attachment; filename="cv-${cv.slug || cvId}-qr.png"`)
+      res.send(buffer)
+    } else {
+      const dataURL = await generateQRCodeDataURL(portfolioUrl, options)
+      res.json({
+        success: true,
+        qrCode: dataURL,
+        portfolioUrl,
+        cvId,
+        slug: cv.slug,
+        theme: options.theme,
+        width: options.width
+      })
+    }
+
+    // Log analytics if it's not the owner
+    if (!userId || cv.userId.toString() !== userId) {
+      await logAnalytics('qrcode_generated', cv._id, userId || null, req)
+    }
+  } catch (error) {
+    console.error('CV QR Code error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate CV QR code'
+    })
+  }
+})
+
 // Placeholder image endpoint
 app.get('/api/placeholder/:width/:height', (req, res) => {
   const { width, height } = req.params
@@ -475,7 +656,7 @@ app.use((req, res) => {
 })
 
 // Publish/Unpublish CV
-app.post('/api/cv/:cvId/publish', requireAuth, async (req, res) => {
+app.post('/api/cv/:cvId/publish', requireDB, requireAuth, async (req, res) => {
   try {
     const { cvId } = req.params
     const { userId } = req
@@ -509,7 +690,7 @@ app.post('/api/cv/:cvId/publish', requireAuth, async (req, res) => {
   }
 })
 
-app.post('/api/cv/:cvId/unpublish', requireAuth, async (req, res) => {
+app.post('/api/cv/:cvId/unpublish', requireDB, requireAuth, async (req, res) => {
   try {
     const { cvId } = req.params
     const { userId } = req
@@ -543,7 +724,7 @@ app.post('/api/cv/:cvId/unpublish', requireAuth, async (req, res) => {
 })
 
 // Get user profile and subscription info
-app.get('/api/user/profile', requireAuth, async (req, res) => {
+app.get('/api/user/profile', requireDB, requireAuth, async (req, res) => {
   try {
     const { userId } = req
 
@@ -570,7 +751,7 @@ app.get('/api/user/profile', requireAuth, async (req, res) => {
 })
 
 // Get analytics for user's CVs
-app.get('/api/user/analytics', requireAuth, async (req, res) => {
+app.get('/api/user/analytics', requireDB, requireAuth, async (req, res) => {
   try {
     const { userId } = req
     const { timeframe = '30d' } = req.query
@@ -618,7 +799,7 @@ app.get('/api/user/analytics', requireAuth, async (req, res) => {
 // =============================================================================
 
 // Start new AI conversation
-app.post('/api/ai/conversation/start', requireAuth, async (req, res) => {
+app.post('/api/ai/conversation/start', requireDB, requireAuth, async (req, res) => {
   try {
     const { userId } = req
     const { targetRole, jobDescription, experienceLevel } = req.body
@@ -665,7 +846,7 @@ app.post('/api/ai/conversation/start', requireAuth, async (req, res) => {
 })
 
 // Get current conversation state
-app.get('/api/ai/conversation/:sessionId', requireAuth, async (req, res) => {
+app.get('/api/ai/conversation/:sessionId', requireDB, requireAuth, async (req, res) => {
   try {
     const { sessionId } = req.params
     const { userId } = req
@@ -698,7 +879,7 @@ app.get('/api/ai/conversation/:sessionId', requireAuth, async (req, res) => {
 })
 
 // Answer current question
-app.post('/api/ai/conversation/:sessionId/answer', requireAuth, async (req, res) => {
+app.post('/api/ai/conversation/:sessionId/answer', requireDB, requireAuth, async (req, res) => {
   try {
     const { sessionId } = req.params
     const { userId } = req
@@ -824,7 +1005,7 @@ app.post('/api/ai/enhance', requireAuth, async (req, res) => {
 })
 
 // Move to next question
-app.post('/api/ai/conversation/:sessionId/next', requireAuth, async (req, res) => {
+app.post('/api/ai/conversation/:sessionId/next', requireDB, requireAuth, async (req, res) => {
   try {
     const { sessionId } = req.params
     const { userId } = req
@@ -856,7 +1037,7 @@ app.post('/api/ai/conversation/:sessionId/next', requireAuth, async (req, res) =
 })
 
 // Complete conversation and generate CV
-app.post('/api/ai/conversation/:sessionId/complete', requireAuth, async (req, res) => {
+app.post('/api/ai/conversation/:sessionId/complete', requireDB, requireAuth, async (req, res) => {
   try {
     const { sessionId } = req.params
     const { userId } = req
