@@ -15,8 +15,12 @@ import {
   UserCircleIcon,
   Cog6ToothIcon,
   ArrowTopRightOnSquareIcon,
-  ClockIcon
+  ClockIcon,
+  QrCodeIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline'
+import { ShareSection } from '@/components/cv/ShareSection'
+import { AnalyticsCard } from '@/components/cv/AnalyticsCard'
 
 interface CV {
   _id: string
@@ -56,6 +60,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [selectedCvs, setSelectedCvs] = useState<Set<string>>(new Set())
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [expandedCV, setExpandedCV] = useState<string | null>(null)
 
   useEffect(() => {
     if (status === 'loading') return
@@ -375,18 +380,29 @@ export default function DashboardPage() {
                             <Link
                               href={`/builder?cvId=${cv._id}`}
                               className="text-primary-600 hover:text-primary-700"
+                              title="Edit"
                             >
                               <PencilIcon className="h-4 w-4" />
                             </Link>
                             {cv.isPublic && cv.slug && (
-                              <a
-                                href={`/cv/${cv.slug}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-600 hover:text-gray-700"
-                              >
-                                <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-                              </a>
+                              <>
+                                <a
+                                  href={`/cv/${cv.slug}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gray-600 hover:text-gray-700"
+                                  title="View Portfolio"
+                                >
+                                  <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+                                </a>
+                                <button
+                                  onClick={() => setExpandedCV(expandedCV === cv._id ? null : cv._id)}
+                                  className="text-teal-600 hover:text-teal-700"
+                                  title="Share & Analytics"
+                                >
+                                  <QrCodeIcon className="h-4 w-4" />
+                                </button>
+                              </>
                             )}
                             <button
                               onClick={() => handleTogglePublish(cv._id, cv.isPublic)}
@@ -398,11 +414,35 @@ export default function DashboardPage() {
                             <button
                               onClick={() => handleDeleteCV(cv._id)}
                               className="text-red-600 hover:text-red-700"
+                              title="Delete"
                             >
                               <TrashIcon className="h-4 w-4" />
                             </button>
                           </div>
                         </div>
+
+                        {/* Expanded Share & Analytics Section */}
+                        {expandedCV === cv._id && cv.isPublic && cv.slug && (
+                          <div className="mt-4 pt-4 border-t border-gray-200">
+                            <div className="flex justify-between items-center mb-3">
+                              <h4 className="text-sm font-medium text-gray-900">Share & Analytics</h4>
+                              <button
+                                onClick={() => setExpandedCV(null)}
+                                className="text-gray-400 hover:text-gray-600"
+                              >
+                                <XMarkIcon className="h-4 w-4" />
+                              </button>
+                            </div>
+                            <ShareSection
+                              slug={cv.slug}
+                              theme={cv.theme.skin}
+                              name={cv.sidebar?.name || cv.title}
+                            />
+                            <div className="mt-4">
+                              <AnalyticsCard cvId={cv._id} />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       // List View

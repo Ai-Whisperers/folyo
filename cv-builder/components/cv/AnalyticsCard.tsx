@@ -13,14 +13,11 @@ interface AnalyticsCardProps {
 }
 
 interface AnalyticsData {
-  summary?: {
-    views?: number
-    downloads?: number
-    uniqueVisitors?: number
-    lastViewed?: string
-  }
-  dailyViews?: Array<{ _id: string; views: number }>
-  slug?: string
+  views?: number
+  downloads?: number
+  uniqueVisitors?: number
+  lastViewed?: string
+  dailyStats?: Array<{ date: string; views: number; downloads: number }>
 }
 
 export function AnalyticsCard({ cvId }: AnalyticsCardProps) {
@@ -56,29 +53,21 @@ export function AnalyticsCard({ cvId }: AnalyticsCardProps) {
   const stats = [
     {
       label: 'Total Views',
-      value: analytics.summary?.views || 0,
+      value: analytics.views || 0,
       icon: EyeIcon,
       color: 'text-blue-600 bg-blue-100'
     },
     {
       label: 'Downloads',
-      value: analytics.summary?.downloads || 0,
+      value: analytics.downloads || 0,
       icon: ArrowDownTrayIcon,
       color: 'text-green-600 bg-green-100'
     },
     {
       label: 'Unique Visitors',
-      value: analytics.summary?.uniqueVisitors || 0,
+      value: analytics.uniqueVisitors || 0,
       icon: UserGroupIcon,
       color: 'text-purple-600 bg-purple-100'
-    },
-    {
-      label: 'Last Viewed',
-      value: analytics.summary?.lastViewed
-        ? new Date(analytics.summary.lastViewed).toLocaleDateString()
-        : 'Never',
-      icon: CalendarIcon,
-      color: 'text-orange-600 bg-orange-100'
     }
   ]
 
@@ -88,7 +77,7 @@ export function AnalyticsCard({ cvId }: AnalyticsCardProps) {
         Portfolio Analytics
       </h3>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         {stats.map((stat) => (
           <div key={stat.label} className="text-center">
             <div className={`inline-flex p-2 rounded-lg ${stat.color} mb-2`}>
