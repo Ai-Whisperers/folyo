@@ -1,3 +1,8 @@
 export { CVBuilderForm } from './CVBuilderForm'
 export { CVPreview } from './CVPreview'
 export { PortfolioSection } from './PortfolioSection'
+export { ShareSection } from './ShareSection'
+export { AnalyticsCard } from './AnalyticsCard'
+export { VideoPortfolioSection } from './VideoPortfolioSection'
+export { ImageGallerySection } from './ImageGallerySection'
+export { DeveloperProfileSection } from './DeveloperProfileSection'
