@@ -499,8 +499,8 @@ export async function generateStaticParams() {
       .select('slug')
       .lean()
 
-    const params = portfolios.map((p: { slug: string }) => ({
-      slug: p.slug
+    const params = portfolios.map((p: { slug?: string }) => ({
+      slug: p.slug || "demo"
     }))
 
     // Always include demo

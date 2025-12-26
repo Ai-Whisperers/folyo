@@ -115,7 +115,7 @@ const userSchema = new mongoose.Schema({
 })
 
 // Index for performance
-userSchema.index({ email: 1 })
+// Note: email already has an index via unique: true in schema definition
 userSchema.index({ createdAt: -1 })
 userSchema.index({ 'subscription.plan': 1 })
 

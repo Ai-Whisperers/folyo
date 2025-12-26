@@ -2,7 +2,7 @@
 
 import { useMemo, memo } from 'react'
 import { UserCircleIcon } from '@heroicons/react/24/outline'
-import { colors } from '@/lib/design-system'
+import { getThemeColors, isDarkTheme as isDarkThemeUtil, type ThemeColors } from '@/lib/utils/theme'
 
 interface CVPreviewProps {
   data: any
@@ -11,28 +11,26 @@ interface CVPreviewProps {
   className?: string
 }
 
-// Type for theme data
-type ThemeData = {
-  primary: string
-  secondary: string
-  text: string
-  bg: string
-  accent: string
-  category: string
-  label: string
-  gradient?: string
-}
+// Type alias for backward compatibility
+type ThemeData = ThemeColors & { gradient?: string }
 
-// Get theme data from design system
+// Get theme data using shared utility
 const getThemeData = (theme: string): ThemeData => {
-  const themeData = colors.themes[theme as keyof typeof colors.themes] as ThemeData | undefined
-  return themeData || (colors.themes.teal as ThemeData)
+  const colors = getThemeColors(theme)
+  return {
+    ...colors,
+    primary: colors.primary,
+    secondary: colors.secondary,
+    text: colors.text,
+    bg: colors.bg,
+    accent: colors.accent,
+    label: colors.name,
+  }
 }
 
-// Check if theme is dark
+// Check if theme is dark using shared utility
 const isDarkTheme = (theme: ThemeData): boolean => {
-  return theme.category === 'dark' || theme.category === 'tech' ||
-         theme.bg?.startsWith('#0') || theme.bg?.startsWith('#1')
+  return isDarkThemeUtil(theme)
 }
 
 // =============================================================================
@@ -321,7 +319,7 @@ const renderDeveloperProfileSection = (data: any, theme: ThemeData, isDark: bool
 const renderDarkTheme = (data: any, theme: ThemeData, themeName: string) => {
   const isTerminalGreen = themeName === 'terminal-green'
   const isArtGallery = themeName === 'art-gallery' || themeName === 'noir-elegant' || themeName === 'neon-nights'
-  const isCinema = themeName === 'midnight-cinema' || themeName === 'video-portfolio'
+  const isCinema = ['video-portfolio', 'midnight-cinema', 'director-cut', 'film-noir', 'documentary-style', 'broadcast-red', 'drone-aerial'].includes(themeName)
   const isDeveloper = themeName === 'developer-dark' || themeName === 'github-style' || themeName === 'vscode-dark'
 
   // Special font styling for terminal theme
@@ -888,7 +886,7 @@ function CVPreviewComponent({ data, theme, scale = 1, className = '' }: CVPrevie
     const category = themeData.category
 
     // Dark themes (including tech themes)
-    if (category === 'dark' || category === 'tech') {
+    if (category === 'dark' || category === 'tech' || category === 'videography') {
       return renderDarkTheme(data, themeData, theme)
     }
 

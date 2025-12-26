@@ -1,9 +1,9 @@
 /* ======= Base Styles ======= */
 
-// Typography
+// Typography - Using Inter font (standardized across all Folyo platforms)
 body {
   color: $text-color-secondary;
-  font-family: "Roboto", sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 1rem; // 16px
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;

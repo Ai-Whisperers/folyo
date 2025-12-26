@@ -5,21 +5,19 @@ import Link from 'next/link'
 import {
   DocumentTextIcon,
   SparklesIcon,
-  EyeIcon,
-  ShareIcon,
   CheckCircleIcon,
   ArrowRightIcon,
   PlayCircleIcon,
   GlobeAltIcon,
   ChartBarIcon,
-  PaintBrushIcon,
   VideoCameraIcon,
   PhotoIcon,
   LinkIcon,
-  StarIcon
 } from '@heroicons/react/24/outline'
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid'
 import { THEME_CONFIGS } from '../lib/types/cv'
+import { Navbar } from '../components/common/Navbar'
+import { Footer } from '../components/common/Footer'
 
 const features = [
   {
@@ -117,33 +115,7 @@ export default function HomePage() {
 
   return (
     <div className="bg-white">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-500/20">
-                <SparklesIcon className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-gray-900">Folyo</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <Link href="/templates" className="text-gray-600 hover:text-gray-900 font-medium hidden sm:block">
-                Templates
-              </Link>
-              <Link href="/auth/signin" className="text-gray-600 hover:text-gray-900 font-medium">
-                Sign In
-              </Link>
-              <Link
-                href="/templates"
-                className="bg-teal-600 text-white hover:bg-teal-700 px-5 py-2.5 rounded-xl font-semibold transition-all hover:shadow-lg hover:shadow-teal-500/25"
-              >
-                Get Started Free
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <div className="relative overflow-hidden">
@@ -424,27 +396,8 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-teal-600 rounded-lg flex items-center justify-center">
-                <SparklesIcon className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold">Folyo</span>
-            </div>
-
-            <p className="text-gray-400 text-center">
-              Your career, beautifully presented.
-            </p>
-
-            <div className="text-sm text-gray-500">
-              © {new Date().getFullYear()} Folyo. All rights reserved.
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Footer - Using consistent component */}
+      <Footer variant="dark" />
     </div>
   )
 }

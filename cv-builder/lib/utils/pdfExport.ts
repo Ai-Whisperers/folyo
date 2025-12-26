@@ -267,3 +267,4 @@ export async function exportCVToPrintPDF(cvData: any): Promise<void> {
   printWindow.document.write(printHTML)
   printWindow.document.close()
 }
+

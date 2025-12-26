@@ -17,6 +17,39 @@ export type ThemeSkin =
   | 'teal'
   | 'oceanstale'
   | 'video-portfolio'
+  // New portfolio-inspired themes
+  | 'midnight'
+  | 'sunset'
+  | 'forest'
+  | 'lavender'
+  | 'coral'
+  | 'slate'
+  | 'gold'
+  | 'rose'
+  | 'indigo'
+  | 'emerald'
+  | 'amber'
+  | 'crimson'
+  | 'arctic'
+  | 'charcoal'
+  | 'mint'
+  | 'peach'
+  | 'navy'
+  | 'burgundy'
+  | 'sage'
+  | 'copper'
+  | 'plum'
+  | 'sand'
+  | 'graphite'
+  | 'cobalt'
+  | 'rust'
+  | 'olive'
+  | 'mauve'
+  | 'steel'
+  | 'wine'
+  | 'honey'
+  | 'aqua'
+  | 'mocha'
 
 export type SidebarPosition = 'left' | 'right'
 
@@ -434,6 +467,7 @@ export interface ThemeConfig {
 }
 
 export const THEME_CONFIGS: ThemeConfig[] = [
+  // === PROFESSIONAL THEMES ===
   {
     id: 'teal',
     name: 'Teal',
@@ -457,6 +491,63 @@ export const THEME_CONFIGS: ThemeConfig[] = [
     category: 'professional'
   },
   {
+    id: 'oceanstale',
+    name: 'Ocean',
+    primaryColor: '#0EA5E9',
+    secondaryColor: '#38BDF8',
+    textColor: '#1F2937',
+    bgColor: '#FFFFFF',
+    accentColor: '#F0F9FF',
+    description: 'Calm and professional',
+    category: 'professional'
+  },
+  {
+    id: 'navy',
+    name: 'Navy Executive',
+    primaryColor: '#1E3A5F',
+    secondaryColor: '#2D5A87',
+    textColor: '#1F2937',
+    bgColor: '#FFFFFF',
+    accentColor: '#F1F5F9',
+    description: 'Executive sophistication',
+    category: 'professional'
+  },
+  {
+    id: 'slate',
+    name: 'Slate Pro',
+    primaryColor: '#475569',
+    secondaryColor: '#64748B',
+    textColor: '#1E293B',
+    bgColor: '#FFFFFF',
+    accentColor: '#F8FAFC',
+    description: 'Corporate elegance',
+    category: 'professional'
+  },
+  {
+    id: 'cobalt',
+    name: 'Cobalt',
+    primaryColor: '#0047AB',
+    secondaryColor: '#2563EB',
+    textColor: '#1F2937',
+    bgColor: '#FFFFFF',
+    accentColor: '#EEF2FF',
+    description: 'Confident and bold',
+    category: 'professional'
+  },
+  {
+    id: 'steel',
+    name: 'Steel',
+    primaryColor: '#4B5563',
+    secondaryColor: '#6B7280',
+    textColor: '#111827',
+    bgColor: '#FFFFFF',
+    accentColor: '#F3F4F6',
+    description: 'Industrial strength',
+    category: 'professional'
+  },
+
+  // === CREATIVE THEMES ===
+  {
     id: 'turquoise',
     name: 'Turquoise',
     primaryColor: '#06B6D4',
@@ -468,6 +559,107 @@ export const THEME_CONFIGS: ThemeConfig[] = [
     category: 'creative'
   },
   {
+    id: 'video-portfolio',
+    name: 'Portfolio Dark',
+    primaryColor: '#8B5CF6',
+    secondaryColor: '#A78BFA',
+    textColor: '#F9FAFB',
+    bgColor: '#1A1A1A',
+    accentColor: '#2D2D2D',
+    description: 'Perfect for creatives',
+    category: 'creative'
+  },
+  {
+    id: 'midnight',
+    name: 'Midnight Studio',
+    primaryColor: '#6366F1',
+    secondaryColor: '#818CF8',
+    textColor: '#F8FAFC',
+    bgColor: '#0F172A',
+    accentColor: '#1E293B',
+    description: 'Dark mode elegance',
+    category: 'creative'
+  },
+  {
+    id: 'sunset',
+    name: 'Sunset Gradient',
+    primaryColor: '#F97316',
+    secondaryColor: '#FB923C',
+    textColor: '#1F2937',
+    bgColor: '#FFFBF5',
+    accentColor: '#FFF7ED',
+    description: 'Warm creative energy',
+    category: 'creative'
+  },
+  {
+    id: 'lavender',
+    name: 'Lavender Dream',
+    primaryColor: '#9333EA',
+    secondaryColor: '#A855F7',
+    textColor: '#1F2937',
+    bgColor: '#FEFBFF',
+    accentColor: '#F3E8FF',
+    description: 'Artistic and unique',
+    category: 'creative'
+  },
+  {
+    id: 'coral',
+    name: 'Coral Reef',
+    primaryColor: '#F43F5E',
+    secondaryColor: '#FB7185',
+    textColor: '#1F2937',
+    bgColor: '#FFFBFC',
+    accentColor: '#FFE4E6',
+    description: 'Vibrant personality',
+    category: 'creative'
+  },
+  {
+    id: 'indigo',
+    name: 'Indigo Night',
+    primaryColor: '#4F46E5',
+    secondaryColor: '#6366F1',
+    textColor: '#F9FAFB',
+    bgColor: '#1E1B4B',
+    accentColor: '#312E81',
+    description: 'Deep creative vibes',
+    category: 'creative'
+  },
+  {
+    id: 'rose',
+    name: 'Rose Garden',
+    primaryColor: '#E11D48',
+    secondaryColor: '#F43F5E',
+    textColor: '#1F2937',
+    bgColor: '#FFF1F3',
+    accentColor: '#FFE4E6',
+    description: 'Elegant and bold',
+    category: 'creative'
+  },
+  {
+    id: 'plum',
+    name: 'Plum',
+    primaryColor: '#7C3AED',
+    secondaryColor: '#8B5CF6',
+    textColor: '#F9FAFB',
+    bgColor: '#2E1065',
+    accentColor: '#4C1D95',
+    description: 'Rich and luxurious',
+    category: 'creative'
+  },
+  {
+    id: 'aqua',
+    name: 'Aqua',
+    primaryColor: '#0891B2',
+    secondaryColor: '#06B6D4',
+    textColor: '#1F2937',
+    bgColor: '#F0FDFE',
+    accentColor: '#CFFAFE',
+    description: 'Cool and refreshing',
+    category: 'creative'
+  },
+
+  // === MINIMAL THEMES ===
+  {
     id: 'green',
     name: 'Green',
     primaryColor: '#16A34A',
@@ -478,6 +670,129 @@ export const THEME_CONFIGS: ThemeConfig[] = [
     description: 'Natural and balanced',
     category: 'minimal'
   },
+  {
+    id: 'ceramic',
+    name: 'Ceramic',
+    primaryColor: '#78716C',
+    secondaryColor: '#A8A29E',
+    textColor: '#1F2937',
+    bgColor: '#FFFFFF',
+    accentColor: '#FAFAF9',
+    description: 'Elegant and timeless',
+    category: 'minimal'
+  },
+  {
+    id: 'forest',
+    name: 'Forest',
+    primaryColor: '#166534',
+    secondaryColor: '#15803D',
+    textColor: '#1F2937',
+    bgColor: '#FEFFFE',
+    accentColor: '#DCFCE7',
+    description: 'Organic simplicity',
+    category: 'minimal'
+  },
+  {
+    id: 'emerald',
+    name: 'Emerald',
+    primaryColor: '#059669',
+    secondaryColor: '#10B981',
+    textColor: '#1F2937',
+    bgColor: '#FFFFFF',
+    accentColor: '#D1FAE5',
+    description: 'Fresh minimalism',
+    category: 'minimal'
+  },
+  {
+    id: 'arctic',
+    name: 'Arctic',
+    primaryColor: '#0284C7',
+    secondaryColor: '#0EA5E9',
+    textColor: '#1F2937',
+    bgColor: '#FAFEFF',
+    accentColor: '#E0F2FE',
+    description: 'Clean and crisp',
+    category: 'minimal'
+  },
+  {
+    id: 'charcoal',
+    name: 'Charcoal',
+    primaryColor: '#374151',
+    secondaryColor: '#4B5563',
+    textColor: '#F9FAFB',
+    bgColor: '#111827',
+    accentColor: '#1F2937',
+    description: 'Dark minimalism',
+    category: 'minimal'
+  },
+  {
+    id: 'mint',
+    name: 'Mint',
+    primaryColor: '#2DD4BF',
+    secondaryColor: '#5EEAD4',
+    textColor: '#1F2937',
+    bgColor: '#F0FDFA',
+    accentColor: '#CCFBF1',
+    description: 'Light and airy',
+    category: 'minimal'
+  },
+  {
+    id: 'sage',
+    name: 'Sage',
+    primaryColor: '#65A30D',
+    secondaryColor: '#84CC16',
+    textColor: '#1F2937',
+    bgColor: '#FEFFF5',
+    accentColor: '#ECFCCB',
+    description: 'Earthy and calm',
+    category: 'minimal'
+  },
+  {
+    id: 'sand',
+    name: 'Sand',
+    primaryColor: '#A16207',
+    secondaryColor: '#CA8A04',
+    textColor: '#1F2937',
+    bgColor: '#FFFDF7',
+    accentColor: '#FEF9C3',
+    description: 'Warm neutrals',
+    category: 'minimal'
+  },
+  {
+    id: 'graphite',
+    name: 'Graphite',
+    primaryColor: '#52525B',
+    secondaryColor: '#71717A',
+    textColor: '#FAFAFA',
+    bgColor: '#18181B',
+    accentColor: '#27272A',
+    description: 'Sleek monochrome',
+    category: 'minimal'
+  },
+  {
+    id: 'olive',
+    name: 'Olive',
+    primaryColor: '#4D7C0F',
+    secondaryColor: '#65A30D',
+    textColor: '#1F2937',
+    bgColor: '#FEFFF8',
+    accentColor: '#D9F99D',
+    description: 'Nature inspired',
+    category: 'minimal'
+  },
+  {
+    id: 'mauve',
+    name: 'Mauve',
+    primaryColor: '#9D174D',
+    secondaryColor: '#BE185D',
+    textColor: '#1F2937',
+    bgColor: '#FFF5F8',
+    accentColor: '#FCE7F3',
+    description: 'Soft sophistication',
+    category: 'minimal'
+  },
+
+  // === BOLD THEMES ===
   {
     id: 'berry',
     name: 'Berry',
@@ -501,37 +816,114 @@ export const THEME_CONFIGS: ThemeConfig[] = [
     category: 'bold'
   },
   {
-    id: 'ceramic',
-    name: 'Ceramic',
-    primaryColor: '#78716C',
-    secondaryColor: '#A8A29E',
+    id: 'gold',
+    name: 'Gold Luxe',
+    primaryColor: '#B45309',
+    secondaryColor: '#D97706',
     textColor: '#1F2937',
-    bgColor: '#FFFFFF',
-    accentColor: '#FAFAF9',
-    description: 'Elegant and timeless',
-    category: 'minimal'
+    bgColor: '#FFFCF5',
+    accentColor: '#FEF3C7',
+    description: 'Premium and luxurious',
+    category: 'bold'
   },
   {
-    id: 'oceanstale',
-    name: 'Ocean',
-    primaryColor: '#0EA5E9',
-    secondaryColor: '#38BDF8',
+    id: 'amber',
+    name: 'Amber',
+    primaryColor: '#D97706',
+    secondaryColor: '#F59E0B',
     textColor: '#1F2937',
-    bgColor: '#FFFFFF',
-    accentColor: '#F0F9FF',
-    description: 'Calm and professional',
-    category: 'professional'
+    bgColor: '#FFFBEB',
+    accentColor: '#FDE68A',
+    description: 'Warm and inviting',
+    category: 'bold'
   },
   {
-    id: 'video-portfolio',
-    name: 'Portfolio Dark',
-    primaryColor: '#8B5CF6',
-    secondaryColor: '#A78BFA',
+    id: 'crimson',
+    name: 'Crimson',
+    primaryColor: '#DC2626',
+    secondaryColor: '#EF4444',
     textColor: '#F9FAFB',
-    bgColor: '#1A1A1A',
-    accentColor: '#2D2D2D',
-    description: 'Perfect for creatives',
-    category: 'creative'
+    bgColor: '#450A0A',
+    accentColor: '#7F1D1D',
+    description: 'Powerful and intense',
+    category: 'bold'
+  },
+  {
+    id: 'peach',
+    name: 'Peach',
+    primaryColor: '#F97316',
+    secondaryColor: '#FB923C',
+    textColor: '#1F2937',
+    bgColor: '#FFF8F5',
+    accentColor: '#FFEDD5',
+    description: 'Friendly and warm',
+    category: 'bold'
+  },
+  {
+    id: 'burgundy',
+    name: 'Burgundy',
+    primaryColor: '#881337',
+    secondaryColor: '#9F1239',
+    textColor: '#FECDD3',
+    bgColor: '#4C0519',
+    accentColor: '#881337',
+    description: 'Rich and sophisticated',
+    category: 'bold'
+  },
+  {
+    id: 'copper',
+    name: 'Copper',
+    primaryColor: '#C2410C',
+    secondaryColor: '#EA580C',
+    textColor: '#1F2937',
+    bgColor: '#FFF7F5',
+    accentColor: '#FFEDD5',
+    description: 'Metallic warmth',
+    category: 'bold'
+  },
+  {
+    id: 'rust',
+    name: 'Rust',
+    primaryColor: '#B45309',
+    secondaryColor: '#D97706',
+    textColor: '#FEFCE8',
+    bgColor: '#451A03',
+    accentColor: '#78350F',
+    description: 'Earthy and bold',
+    category: 'bold'
+  },
+  {
+    id: 'wine',
+    name: 'Wine',
+    primaryColor: '#7F1D1D',
+    secondaryColor: '#991B1B',
+    textColor: '#FEF2F2',
+    bgColor: '#450A0A',
+    accentColor: '#7F1D1D',
+    description: 'Classic elegance',
+    category: 'bold'
+  },
+  {
+    id: 'honey',
+    name: 'Honey',
+    primaryColor: '#CA8A04',
+    secondaryColor: '#EAB308',
+    textColor: '#1F2937',
+    bgColor: '#FEFCE8',
+    accentColor: '#FEF08A',
+    description: 'Sweet and bold',
+    category: 'bold'
+  },
+  {
+    id: 'mocha',
+    name: 'Mocha',
+    primaryColor: '#78350F',
+    secondaryColor: '#92400E',
+    textColor: '#FEF3C7',
+    bgColor: '#451A03',
+    accentColor: '#78350F',
+    description: 'Rich coffee tones',
+    category: 'bold'
   }
 ]
 

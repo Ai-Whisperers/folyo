@@ -40,3 +40,4 @@ echo "   npm run dev"
 echo ""
 echo "📚 Don't forget to set up environment variables if using server-side PDF generation:"
 echo "   NEXT_PUBLIC_APP_URL=http://localhost:3000"
+

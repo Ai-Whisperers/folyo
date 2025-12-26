@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes)
 
     // Process image with Sharp for optimization
-    let processedBuffer = buffer
+    let processedBuffer: Buffer
 
     if (type === 'profile') {
       // For profile pictures: resize to 400x400, optimize
@@ -163,3 +163,4 @@ export async function DELETE(request: NextRequest) {
     )
   }
 }
+

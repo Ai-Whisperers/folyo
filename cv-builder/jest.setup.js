@@ -1,5 +1,34 @@
 import '@testing-library/jest-dom'
 
+// Polyfills for Node.js environment (needed for Next.js API route testing)
+if (typeof Request === 'undefined') {
+  global.Request = class Request {
+    constructor(input, init) {
+      this.url = typeof input === 'string' ? input : input.url
+      this.method = init?.method || 'GET'
+      this.headers = new Map(Object.entries(init?.headers || {}))
+      this._body = init?.body
+    }
+    async json() {
+      return JSON.parse(this._body)
+    }
+  }
+}
+
+if (typeof Response === 'undefined') {
+  global.Response = class Response {
+    constructor(body, init) {
+      this._body = body
+      this.status = init?.status || 200
+      this.ok = this.status >= 200 && this.status < 300
+      this.headers = new Map(Object.entries(init?.headers || {}))
+    }
+    async json() {
+      return JSON.parse(this._body)
+    }
+  }
+}
+
 // Mock next/navigation
 jest.mock('next/navigation', () => ({
   useRouter() {

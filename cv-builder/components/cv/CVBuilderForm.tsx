@@ -30,7 +30,7 @@ interface CVBuilderFormProps {
 }
 
 // Theme type mappings
-const VIDEO_THEMES = ['video-portfolio', 'midnight-cinema']
+const VIDEO_THEMES = ['video-portfolio', 'midnight-cinema', 'director-cut', 'film-noir', 'documentary-style', 'broadcast-red', 'drone-aerial']
 const DESIGN_THEMES = ['art-gallery', 'noir-elegant', 'neon-nights']
 const DEVELOPER_THEMES = ['github-style', 'vscode-dark', 'terminal-green', 'developer-dark']
 

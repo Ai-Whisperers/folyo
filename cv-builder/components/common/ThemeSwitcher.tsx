@@ -26,6 +26,7 @@ const categoryConfig = {
   professional: { label: 'Professional', icon: '💼', description: 'Clean and corporate' },
   creative: { label: 'Creative & Bold', icon: '🎨', description: 'Vibrant and expressive' },
   minimal: { label: 'Minimal', icon: '✨', description: 'Simple and refined' },
+  videography: { label: 'Videography', icon: '🎬', description: 'For video professionals' },
   dark: { label: 'Dark Mode', icon: '🌙', description: 'Elegant dark themes' },
   executive: { label: 'Executive', icon: '👔', description: 'Luxury and prestige' },
   tech: { label: 'Tech & Developer', icon: '💻', description: 'For developers' },
@@ -56,7 +57,7 @@ function getThemesFromDesignSystem() {
 // Group themes by category
 function groupThemesByCategory(themes: ReturnType<typeof getThemesFromDesignSystem>) {
   const grouped: Record<string, typeof themes> = {}
-  const categoryOrder: CategoryKey[] = ['professional', 'creative', 'minimal', 'dark', 'executive', 'tech', 'gradient']
+  const categoryOrder: CategoryKey[] = ['professional', 'creative', 'minimal', 'videography', 'dark', 'executive', 'tech', 'gradient']
 
   for (const category of categoryOrder) {
     grouped[category] = themes.filter(t => t.category === category)
@@ -79,7 +80,7 @@ export function ThemeSwitcher({ currentTheme, onThemeChange }: ThemeSwitcherProp
   // Create flat list for keyboard navigation
   const flatThemes = useMemo(() => {
     const flat: typeof themes = []
-    const categoryOrder: CategoryKey[] = ['professional', 'creative', 'minimal', 'dark', 'executive', 'tech', 'gradient']
+    const categoryOrder: CategoryKey[] = ['professional', 'creative', 'minimal', 'videography', 'dark', 'executive', 'tech', 'gradient']
     for (const category of categoryOrder) {
       flat.push(...(groupedThemes[category] || []))
     }
@@ -93,7 +94,7 @@ export function ThemeSwitcher({ currentTheme, onThemeChange }: ThemeSwitcherProp
   const isDarkTheme = currentThemeData?.bgColor?.startsWith('#0') ||
                       currentThemeData?.bgColor?.startsWith('#1') ||
                       currentThemeData?.category === 'dark' ||
-                      currentThemeData?.category === 'tech'
+                      currentThemeData?.category === 'tech' || currentThemeData?.category === 'videography'
 
   // Close dropdown when clicking outside
   useEffect(() => {

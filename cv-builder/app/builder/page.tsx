@@ -15,6 +15,7 @@ import {
   BUILDER_ONBOARDING_STEPS,
 } from '../../components/ui'
 import { useUnsavedChanges } from '../../lib/hooks'
+import { useAuth } from '@/lib/contexts/AuthContext'
 import {
   EyeIcon,
   PencilIcon,
@@ -23,8 +24,15 @@ import {
   ArrowLeftIcon,
   QrCodeIcon,
   LinkIcon,
+  ArrowTopRightOnSquareIcon,
+  UserCircleIcon,
 } from '@heroicons/react/24/outline'
 import { QRCodeModal } from '../../components/ui/QRCodeDisplay'
+
+// Helper to get user-specific storage key
+const getStorageKey = (userId?: string) => {
+  return userId ? `cv-data-${userId}` : 'cv-data'
+}
 
 // Default CV data structure matching the Jekyll template
 const defaultCVData = {
@@ -96,6 +104,7 @@ const CV_SECTIONS = [
 ]
 
 export default function CVBuilderPage() {
+  const { user, isLoading: authLoading } = useAuth()
   const [cvData, setCvData] = useState(defaultCVData)
   const [initialData, setInitialData] = useState(defaultCVData)
   const [activeView, setActiveView] = useState<'edit' | 'preview'>('edit')
@@ -106,6 +115,9 @@ export default function CVBuilderPage() {
   const [isClient, setIsClient] = useState(false)
   const [showQRModal, setShowQRModal] = useState(false)
   const [copied, setCopied] = useState(false)
+
+  // Storage key changes based on user
+  const storageKey = useMemo(() => getStorageKey(user?.id), [user?.id])
 
   // Calculate completed sections for progress indicator
   const completedSections = useMemo(() => {
@@ -167,23 +179,33 @@ export default function CVBuilderPage() {
   // Handle client-side rendering
   useEffect(() => {
     setIsClient(true)
+  }, [])
+
+  // Load data when user/auth state changes
+  useEffect(() => {
+    if (!isClient || authLoading) return
 
     // Check URL params for document type and theme
     const searchParams = new URLSearchParams(window.location.search)
     const docType = searchParams.get('type')
     const themeParam = searchParams.get('theme')
 
-    // Load saved data from localStorage
-    const savedData = localStorage.getItem('cv-data')
-    if (savedData) {
+    // Load saved data from localStorage (user-specific if logged in)
+    const savedData = localStorage.getItem(storageKey)
+
+    // Also check legacy 'cv-data' key for migration if user just logged in
+    const legacyData = !user && localStorage.getItem('cv-data')
+
+    const dataToLoad = savedData || legacyData
+
+    if (dataToLoad) {
       try {
-        const parsed = JSON.parse(savedData)
+        const parsed = JSON.parse(dataToLoad)
 
         // If a specific theme is requested via URL, use it
         if (themeParam) {
           parsed.theme_skin = themeParam
         } else if (docType === 'portfolio') {
-          // If creating new portfolio, force switch to that theme regardless of saved state
           parsed.theme_skin = 'video-portfolio'
         }
 
@@ -200,11 +222,21 @@ export default function CVBuilderPage() {
       } else if (docType === 'portfolio') {
         initialTheme = 'video-portfolio'
       }
-      const newData = { ...defaultCVData, theme_skin: initialTheme }
+
+      // Pre-fill name and email if user is logged in
+      const newData = {
+        ...defaultCVData,
+        theme_skin: initialTheme,
+        sidebar: {
+          ...defaultCVData.sidebar,
+          name: user?.name || '',
+          email: user?.email || ''
+        }
+      }
       setCvData(newData)
       setInitialData(newData)
     }
-  }, [])
+  }, [isClient, authLoading, user, storageKey])
 
   // Auto-save functionality with debounce
   useEffect(() => {
@@ -214,6 +246,9 @@ export default function CVBuilderPage() {
 
     const saveData = () => {
       try {
+        // Save to user-specific storage key
+        localStorage.setItem(storageKey, JSON.stringify(cvData))
+        // Also save to legacy key for portfolio page compatibility
         localStorage.setItem('cv-data', JSON.stringify(cvData))
         setInitialData(cvData)
         setSaveStatus('saved')
@@ -227,7 +262,7 @@ export default function CVBuilderPage() {
     const timeoutId = setTimeout(saveData, 1500) // Auto-save after 1.5 seconds of inactivity
 
     return () => clearTimeout(timeoutId)
-  }, [cvData, isClient, hasUnsavedChanges])
+  }, [cvData, isClient, hasUnsavedChanges, storageKey])
 
   const handleDataChange = useCallback((newData: typeof cvData) => {
     setCvData(newData)
@@ -254,8 +289,8 @@ export default function CVBuilderPage() {
     // Use Jekyll site URL for portfolios (same domain in production, port 4000 in dev)
     const portfolioBaseUrl = process.env.NEXT_PUBLIC_PORTFOLIO_URL
       || (typeof window !== 'undefined' && window.location.port === '3000'
-          ? 'http://localhost:4000'
-          : window?.location?.origin || 'http://localhost:4000')
+          ? 'http://localhost:3000'
+          : 'http://localhost:3000')
     return `${portfolioBaseUrl}/portfolio/${portfolioSlug}/`
   }, [portfolioSlug])
 
@@ -275,6 +310,9 @@ export default function CVBuilderPage() {
     try {
       // TODO: Implement API call to save CV data
       await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+      // Save to user-specific storage key
+      localStorage.setItem(storageKey, JSON.stringify(cvData))
+      // Also save to legacy key for portfolio page compatibility
       localStorage.setItem('cv-data', JSON.stringify(cvData))
       setInitialData(cvData)
       setSaveStatus('saved')
@@ -319,7 +357,7 @@ export default function CVBuilderPage() {
     }
   }
 
-  if (!isClient) {
+  if (!isClient || authLoading) {
     // Prevent hydration mismatch
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -446,6 +484,16 @@ export default function CVBuilderPage() {
               {/* Action Buttons */}
               <div className="flex items-center space-x-2">
                 {/* Share/QR buttons */}
+                <a
+                  href={portfolioUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors"
+                  title="View your portfolio website"
+                >
+                  <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+                  <span className="hidden sm:inline">View Site</span>
+                </a>
                 <button
                   onClick={handleCopyLink}
                   className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"

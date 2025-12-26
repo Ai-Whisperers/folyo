@@ -290,10 +290,11 @@ const cvSchema = new mongoose.Schema({
 })
 
 // Indexes for performance
-cvSchema.index({ userId: 1, createdAt: -1 })
-cvSchema.index({ slug: 1 })
+// Note: slug and userId already have indexes via schema definition
+// (unique: true creates an index, and userId has index: true)
+cvSchema.index({ userId: 1, createdAt: -1 }) // Compound index for user's CVs sorted by date
 cvSchema.index({ status: 1 })
-cvSchema.index({ isPublic: 1 })
+cvSchema.index({ isPublic: 1, status: 1 }) // Compound for public portfolio queries
 cvSchema.index({ 'analytics.views': -1 })
 cvSchema.index({ lastEditedAt: -1 })
 
