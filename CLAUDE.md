@@ -5,7 +5,7 @@ This file provides Claude Code with project context and enforces development rul
 ## Project Overview
 
 **Project**: Professional Online CV Template / Portfolio Webpage Builder
-**Tech Stack**: Jekyll (Ruby), HTML/SCSS, JavaScript, Next.js (cv-builder)
+**Tech Stack**: Next.js 14 (App Router), TypeScript, Tailwind CSS, Framer Motion
 **Branch**: AnaCV (active development)
 **Main Branch**: master
 
@@ -18,28 +18,49 @@ kiki/
 │   ├── skills/                 # Auto-activating skills
 │   ├── settings.json           # Shared team settings (committed)
 │   └── settings.local.json     # Personal settings (gitignored)
-├── cv-builder/                 # Next.js CV builder app
-│   ├── app/                    # Next.js app directory
+├── cv-builder/                 # Next.js CV builder app (MAIN APP)
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── page.tsx            # Homepage with animations
+│   │   ├── cv/[slug]/          # CV viewer pages
+│   │   └── portfolio/[slug]/   # Portfolio pages
 │   ├── components/             # React components
 │   │   ├── ai/                 # AI-related components
 │   │   ├── common/             # Shared components
 │   │   ├── cv/                 # CV-specific components
+│   │   ├── portfolio/          # Portfolio components (PortfolioView)
 │   │   └── ui/                 # UI primitives
-│   └── lib/                    # Utilities and types
-├── _data/                      # Jekyll data files (data.yml)
-├── _layouts/                   # Jekyll layout templates
-├── _includes/                  # Jekyll includes
-├── _sass/                      # SCSS stylesheets
+│   ├── lib/                    # Utilities and types
+│   │   └── utils/              # Animation, theme, YAML utilities
+│   └── data/                   # CV and portfolio data
+│       ├── cvs/                # YAML CV data files
+│       └── portfolios/         # Portfolio JSON data
+├── archive/                    # Legacy Jekyll files (gitignored)
+│   └── jekyll/                 # Original Jekyll templates
 ├── assets/                     # Static assets (images, CSS)
 ├── docs/                       # Documentation
 │   ├── guides/                 # How-to guides
 │   └── planning/               # Planning documents
 ├── scripts/                    # Utility scripts
-│   ├── development/            # Dev tools (check_repo_organization.sh)
-│   └── validation/             # Validation scripts (cv_validator.py)
+│   ├── development/            # Dev tools
+│   └── validation/             # Validation scripts
 └── templates/                  # CV templates
     └── cv-examples/            # Example CV data files
 ```
+
+## Tech Stack Details
+
+### Core Technologies
+- **Next.js 14**: App Router, Server Components
+- **TypeScript**: Full type safety
+- **Tailwind CSS**: Utility-first styling
+- **Framer Motion**: Animations and transitions
+- **Radix UI**: Accessible component primitives
+
+### Animation System
+- `lib/utils/animations.ts` - Reusable animation variants
+- Scroll-based animations with `useScroll` and `useTransform`
+- Mouse-following effects with spring physics
+- Staggered child animations
 
 ## Critical Rules
 
@@ -63,22 +84,17 @@ Critical decisions: sonnet with extended thinking (5%)
 
 ### 3. Code Style
 
-**Python** (if applicable):
-- Max line length: 100 characters
-- Type hints: Always
-- Imports: Absolute imports only
-- Docstrings: Google format
-
-**TypeScript/JavaScript** (cv-builder):
+**TypeScript/JavaScript**:
 - Style: Functional components
-- State management: Hooks
+- State management: React hooks
 - Naming: camelCase variables, PascalCase components
 - Props: Always destructure
+- Animations: Use Framer Motion variants
 
-**SCSS**:
-- Use variables from `_variables.scss`
-- Follow BEM naming convention
+**Tailwind CSS**:
+- Use design tokens from design-system.ts
 - Mobile-first responsive design
+- Dark mode support with `dark:` prefix
 
 ### 4. Git Workflow
 
@@ -129,35 +145,33 @@ Critical decisions: sonnet with extended thinking (5%)
 
 ## Key Files
 
-### Jekyll Configuration
-- `_config.yml` - Site configuration
-- `_data/data.yml` - CV data
-
 ### CV Builder (Next.js)
-- `cv-builder/app/` - Next.js app directory
-- `cv-builder/components/` - React components
-- `cv-builder/lib/` - Utilities and types
+- `cv-builder/app/page.tsx` - Homepage with animations
+- `cv-builder/components/portfolio/PortfolioView.tsx` - Main portfolio component
+- `cv-builder/lib/utils/animations.ts` - Animation utilities
+- `cv-builder/lib/design-system.ts` - Design tokens
+
+### Data Files
+- `cv-builder/data/cvs/*.yml` - CV data in YAML format
+- `cv-builder/data/portfolios/*.json` - Portfolio data in JSON
 
 ### Styles
-- `_sass/_variables.scss` - Theme variables
-- `_sass/_print.scss` - Print styles
-- `cv-builder/app/globals.css` - CV builder styles
+- `cv-builder/app/globals.css` - Global styles
+- `cv-builder/tailwind.config.ts` - Tailwind configuration
 
 ## Common Workflows
 
-### 1. Edit CV Content
-```bash
-# Edit data file
-_data/data.yml
-
-# Preview locally
-bundle exec jekyll serve --livereload
-```
-
-### 2. CV Builder Development
+### 1. Development
 ```bash
 cd cv-builder
 npm run dev
+```
+
+### 2. Build & Deploy
+```bash
+cd cv-builder
+npm run build
+npm start
 ```
 
 ### 3. Before Committing
@@ -177,8 +191,8 @@ git commit -m "feat: description"
 ### Pre-Commit
 - Runs `scripts/development/check_repo_organization.sh`
 
-### Post Python Edit
-- Reminds to run `/run-tests`
+### Post TypeScript Edit
+- Reminds to run tests
 
 ### Post Documentation Edit
 - Reminds to review for completeness
@@ -202,16 +216,10 @@ git commit -m "feat: description"
 
 1. **Batch Operations**: Read multiple files in single request
 2. **3-File Rule**: Keep context minimal
-3. **Extended Thinking**: Use for complex Excel/formatting bugs
+3. **Extended Thinking**: Use for complex animations/formatting bugs
 4. **Screenshots**: Drag and drop for visual debugging
 
 ## Troubleshooting
-
-### Jekyll Issues
-```bash
-bundle install
-bundle exec jekyll serve
-```
 
 ### CV Builder Issues
 ```bash
@@ -226,8 +234,13 @@ git status
 git diff
 ```
 
+### Animation Issues
+- Check Framer Motion variants in `lib/utils/animations.ts`
+- Verify `motion` components have proper `initial`, `animate`, `exit` props
+
 ---
 
-**Version**: 1.0.0
-**Last Updated**: 2025-12-15
+**Version**: 2.0.0
+**Last Updated**: 2025-12-26
+**Architecture**: Next.js 14 (migrated from Jekyll)
 **Configuration**: See `.claude/` directory for detailed settings

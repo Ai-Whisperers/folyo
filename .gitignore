@@ -1,13 +1,9 @@
-# Jekyll Build & Cache
-_site/
-.sass-cache/
-.jekyll-metadata
-.jekyll-cache
+# Next.js Build Output
+cv-builder/.next/
+cv-builder/out/
 
-# Ruby & Bundler
-vendor/
-.bundle/
-Gemfile.lock
+# Node modules
+node_modules/
 
 # Python Cache
 __pycache__/
@@ -34,16 +30,12 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Node modules
-node_modules/
-
 # Personal/Private Data (do not commit)
 PersonalData/
 ana-cv-github-upload/
 
-# Next.js Build Output
-cv-builder/.next/
-cv-builder/out/
+# Archive folder (legacy Jekyll files)
+archive/
 
 # Environment Files (NEVER COMMIT)
 .env
