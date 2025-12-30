@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: folyo
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXTAUTH_URL
+        value: https://folyo.ai-whisperers.org
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://folyo.ai-whisperers.org
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
