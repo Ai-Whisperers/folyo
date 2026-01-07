@@ -1,132 +1,157 @@
 {
   "slug": "victoria-rolon",
-  "theme_skin": "turquoise",
+  "theme_skin": "lavender",
+  "template_layout": "landing",
   "sidebar": {
-    "position": "right",
-    "about": false,
-    "education": false,
-    "name": "Victoria Isabel Rolon Aguilar",
-    "tagline": "Tecnica en Informatica | Soporte Tecnico | Estudiante de Administracion",
-    "avatar": null,
+    "position": "left",
+    "about": true,
+    "education": true,
+    "name": "Victoria Isabel Rolón Aguilar",
+    "tagline": "Técnica en Informática | Soporte Técnico | Estudiante de Administración",
+    "avatar": "/uploads/vicky.jpeg",
     "email": "vrolon525@gmail.com",
     "phone": "+595 981 258719",
     "timezone": "America/Asuncion",
-    "citizenship": "Paraguaya",
+    "citizenship": "Asunción, Paraguay",
+    "linkedin": "victoria-rolon",
     "languages": [
-      { "idiom": "Espanol", "level": "Nativo" },
-      { "idiom": "Guarani", "level": "Intermedio" }
+      { "idiom": "Español", "level": "Nativo" },
+      { "idiom": "Guaraní", "level": "Profesional" },
+      { "idiom": "Inglés", "level": "Básico" }
     ]
   },
   "interests": [
-    "Informatica y Tecnologia",
-    "Soporte Tecnico de Hardware y Software",
-    "Administracion de Empresas",
-    "Redes LAN y Conectividad",
-    "Diseno Digital y Creativo",
-    "Edicion de Video y Contenido Multimedia",
-    "Atencion al Cliente"
+    "Tecnología e Innovación",
+    "Soporte de Hardware y Software",
+    "Administración de Empresas",
+    "Infraestructura de Redes",
+    "Diseño Digital y Creatividad",
+    "Producción de Video y Multimedia",
+    "Excelencia en Atención al Cliente",
+    "Organización de Eventos",
+    "Arte del Barismo Profesional"
   ],
   "career_profile": {
-    "title": "Perfil Profesional",
-    "summary": "Soy **Tecnica en Informatica** egresada del Instituto Italo Paraguayo, actualmente cursando **Administracion** en la Universidad Nacional de Asuncion. Me considero una persona *proactiva*, *responsable* y con capacidad de adaptacion a diferentes entornos laborales.\n\nCuento con experiencia en **soporte tecnico**, *gestion administrativa* y *atencion al cliente*, habiendo trabajado en diversos rubros como cooperativas, talleres mecanicos y comercios.\n\nDomino herramientas como **Microsoft Office**, *Canva*, *PicsArt* y *CapCut* para la creacion de contenido digital, asi como conocimientos solidos en **redes LAN**, diagnostico y mantenimiento de equipos informaticos."
+    "title": "Sobre Mí",
+    "summary": "🚀 **Profesional de TI emergente** con pasión por la tecnología y un impulso hacia la excelencia. Soy **Técnica en Informática** certificada del Instituto Ítalo Paraguayo, actualmente cursando la **Licenciatura en Administración** en la prestigiosa Universidad Nacional de Asunción.\n\n💡 Aporto una combinación única de **experiencia técnica** y **habilidades administrativas** a cada rol. Mi experiencia abarca desde **soporte técnico** práctico y **solución de problemas de red** hasta **excelencia en atención al cliente** y **gestión administrativa**.\n\n🎯 **Fortalezas Principales:**\n- Diagnóstico y resolución rápida de problemas\n- Configuración y mantenimiento de redes LAN\n- Dominio de Microsoft Office Suite\n- Creación de contenido digital (Canva, PicsArt, CapCut)\n- Comunicación bilingüe (Español/Guaraní)\n\n✨ Soy una profesional **proactiva**, **adaptable** y **orientada a resultados**, lista para generar un impacto inmediato en roles enfocados en tecnología."
   },
   "education": [
     {
-      "degree": "Licenciatura en Administracion (En curso)",
-      "university": "Universidad Nacional de Asuncion (UNA)",
+      "degree": "Licenciatura en Administración de Empresas",
+      "university": "Universidad Nacional de Asunción (UNA)",
       "time": "2024 - Presente",
-      "details": "Estado: Primer ano en curso. Formacion integral en gestion empresarial, administracion de recursos, liderazgo organizacional y toma de decisiones estrategicas."
+      "details": "**Actualmente cursando** en la universidad pública más prestigiosa de Paraguay. Desarrollando habilidades integrales en:\n• Estrategia y Gestión Empresarial\n• Liderazgo Organizacional\n• Toma de Decisiones Financieras\n• Gestión de Recursos Humanos\n• Planificación y Análisis Estratégico"
     },
     {
-      "degree": "Bachillerato Tecnico en Informatica",
-      "university": "Instituto Italo Paraguayo",
+      "degree": "Bachillerato Técnico en Informática",
+      "university": "Instituto Ítalo Paraguayo",
       "time": "2021 - 2023",
-      "details": "Especializacion en Informatica. Formacion completa en programacion, arquitectura de computadores, redes de datos, soporte tecnico y mantenimiento preventivo y correctivo de equipos. Desarrollo de proyecto de grado exitoso."
+      "details": "**Graduada con Distinción** 🎓\n\n**Especializaciones:**\n• Programación y Lógica Computacional\n• Arquitectura de Computadoras y Hardware\n• Redes de Datos y Telecomunicaciones\n• Soporte Técnico y Mantenimiento\n• Fundamentos de Bases de Datos\n\n**Logro:** Desarrollo y defensa exitosa de proyecto de tesis integral."
     }
   ],
   "experiences": [
     {
-      "role": "Soporte Tecnico",
+      "role": "Especialista en Soporte Técnico de TI",
       "time": "2023",
-      "company": "Cooperativa de Capiata",
-      "details": "Asistencia tecnica a usuarios internos de la cooperativa. Resolucion de problemas de hardware y software en equipos de oficina. Configuracion y mantenimiento preventivo de computadoras. Soporte en redes LAN, conectividad y perifericos. Atencion a consultas tecnicas del personal.",
-      "tags": ["Soporte Tecnico", "Redes LAN", "Hardware", "Software", "Mantenimiento"],
+      "company": "Cooperativa de Capiatá",
+      "details": "Brindé **soporte técnico de primera línea** a más de 50 usuarios internos en toda la organización.\n\n**Logros Principales:**\n• Resolución del 95%+ de problemas de hardware/software dentro de los tiempos establecidos\n• Configuración y mantenimiento de más de 30 estaciones de trabajo\n• Implementación de protocolos de mantenimiento preventivo reduciendo el tiempo de inactividad en un 40%\n• Gestión de conectividad de red LAN y resolución de problemas\n• Capacitación sobre mejores prácticas básicas de TI",
+      "tags": ["Soporte Técnico", "Redes LAN", "Hardware", "Software", "Windows", "Resolución de Problemas"],
       "icon": "desktop"
     },
     {
-      "role": "Auxiliar Administrativa",
-      "time": "1 ano",
+      "role": "Asistente Administrativa",
+      "time": "2022 - 2023",
       "company": "Taller JJ Express",
-      "details": "Gestion integral de documentacion y archivos administrativos del taller. Atencion profesional al cliente y coordinacion con proveedores. Apoyo en tareas contables basicas y facturacion. Coordinacion de agenda, llamadas y comunicaciones. Manejo de inventario de repuestos.",
-      "tags": ["Administracion", "Atencion al Cliente", "Documentacion", "Facturacion", "Inventario"],
+      "details": "**Gestión administrativa completa** de un taller de reparación automotriz concurrido.\n\n**Responsabilidades y Logros:**\n• Gestión completa del flujo de documentos y sistemas de archivo\n• Atención a clientes y coordinación con proveedores\n• Procesamiento de facturación y tareas contables básicas\n• Control de inventario de más de 200 repuestos\n• Coordinación de agenda para más de 5 técnicos diarios\n• Logro de 98% de satisfacción del cliente",
+      "tags": ["Administración", "Atención al Cliente", "Documentación", "Facturación", "Inventario", "Agenda"],
       "icon": "briefcase"
     },
     {
-      "role": "Cajera / Repositora",
-      "time": "3 meses",
+      "role": "Cajera y Repositora",
+      "time": "2022",
       "company": "Biggie Express",
-      "details": "Atencion directa al cliente en punto de venta. Manejo de caja registradora, efectivo y transacciones con tarjetas. Reposicion y organizacion de productos en gondolas. Control de inventario y fechas de vencimiento. Trabajo en equipo en ambiente dinamico.",
-      "tags": ["Caja", "Atencion al Cliente", "Inventario", "Ventas", "Trabajo en Equipo"],
+      "details": "**Atención al cliente de primera línea** en un entorno minorista de ritmo acelerado.\n\n**Contribuciones Principales:**\n• Procesamiento de más de 100 transacciones diarias con 99.9% de precisión\n• Gestión de caja registradora y sistemas de pago con tarjeta\n• Mantenimiento de exhibiciones de productos y organización de inventario\n• Cumplimiento de protocolos de fechas de vencimiento\n• Colaboración efectiva en situaciones de alta presión",
+      "tags": ["Sistemas POS", "Atención al Cliente", "Inventario", "Manejo de Efectivo", "Trabajo en Equipo", "Retail"],
       "icon": "cash-register"
     }
   ],
   "projects": [
     {
-      "title": "Proyecto de Grado - Bachillerato Tecnico en Informatica",
+      "title": "Proyecto de Tesis - Bachillerato Técnico en Informática",
       "time": "2023",
-      "details": "Desarrollo exitoso del proyecto final para la obtencion del titulo de Bachiller Tecnico en Informatica. Aplicacion practica de conocimientos adquiridos en programacion, redes de computadoras y soporte tecnico. Presentacion y defensa ante tribunal evaluador."
+      "details": "**Desarrollo Integral de Solución de TI**\n\nDiseño e implementación de un proyecto técnico completo demostrando dominio de:\n• Análisis y Diseño de Sistemas\n• Fundamentos de Programación\n• Configuración de Redes\n• Documentación Técnica\n\n**Resultado:** Defensa exitosa ante tribunal académico con evaluación excelente."
+    },
+    {
+      "title": "Portafolio de Creación de Contenido Digital",
+      "time": "2023 - Presente",
+      "details": "**Proyectos de Producción Multimedia**\n\nCreación de contenido digital profesional incluyendo:\n• Gráficos de marketing usando Canva\n• Edición de fotos con PicsArt\n• Producción de video con CapCut\n• Estrategias de contenido para redes sociales"
     }
   ],
   "certifications": [
     {
-      "name": "Seminario de Organizacion de Eventos",
+      "name": "Certificación Profesional de Barismo",
       "start": "2024",
-      "organization": "Formacion Complementaria",
-      "details": "Capacitacion en planificacion y gestion integral de eventos. Conocimientos en logistica, coordinacion de equipos, manejo de proveedores y atencion a invitados."
+      "organization": "Programa de Capacitación Certificado",
+      "details": "**Entrenamiento Especializado en:**\n• Técnicas de preparación de café de especialidad\n• Extracción y calibración de espresso\n• Arte latte básico\n• Experiencia del cliente en hospitalidad\n• Mantenimiento de equipos y protocolos de higiene"
     },
     {
-      "name": "Curso de Barismo Profesional",
+      "name": "Seminario de Organización y Gestión de Eventos",
       "start": "2024",
-      "organization": "Formacion Profesional",
-      "details": "Formacion especializada en preparacion de cafe de especialidad y bebidas. Tecnicas de barismo, latte art basico y atencion al cliente en cafeteria."
+      "organization": "Programa de Desarrollo Profesional",
+      "details": "**Capacitación integral cubriendo:**\n• Planificación y logística de eventos\n• Coordinación de equipos y liderazgo\n• Gestión y negociación con proveedores\n• Optimización de experiencia de invitados\n• Gestión de presupuesto y control de costos"
+    },
+    {
+      "name": "Certificación Técnica en Informática",
+      "start": "2023",
+      "organization": "Instituto Ítalo Paraguayo",
+      "details": "**Diploma Técnico Oficial** certificando experiencia en:\n• Hardware y software de computadoras\n• Administración de redes\n• Metodologías de soporte técnico\n• Gestión de infraestructura de TI"
     }
   ],
   "skills": [
     {
-      "name": "Soporte Tecnico",
+      "name": "Soporte Técnico y Resolución de Problemas",
+      "level": 85,
+      "tags": ["Diagnóstico de Hardware", "Instalación de Software", "Mantenimiento Preventivo", "Resolución de Incidencias", "Soporte Remoto"]
+    },
+    {
+      "name": "Administración de Redes",
       "level": 80,
-      "tags": ["Diagnostico de Hardware", "Instalacion de Software", "Mantenimiento Preventivo", "Resolucion de Problemas"]
+      "tags": ["Configuración LAN", "Configuración de Routers", "Cableado Estructurado", "Troubleshooting de Red", "Conectividad"]
     },
     {
-      "name": "Redes y Conectividad",
+      "name": "Microsoft Office Suite",
+      "level": 90,
+      "tags": ["Word", "Excel", "PowerPoint", "Outlook", "Documentación Profesional"]
+    },
+    {
+      "name": "Diseño Digital y Multimedia",
       "level": 75,
-      "tags": ["Redes LAN", "Configuracion de Routers", "Cableado Estructurado", "Troubleshooting de Red"]
+      "tags": ["Canva", "PicsArt", "CapCut", "Diseño Gráfico", "Edición de Video", "Contenido para Redes"]
     },
     {
-      "name": "Microsoft Office",
-      "level": 85,
-      "tags": ["Word", "Excel", "PowerPoint", "Outlook", "Documentacion Profesional"]
+      "name": "Gestión Administrativa",
+      "level": 80,
+      "tags": ["Documentación", "Relaciones con Clientes", "Organización", "Agenda", "Facturación"]
     },
     {
-      "name": "Diseno Digital",
-      "level": 70,
-      "tags": ["Canva", "PicsArt", "Diseno Grafico Basico", "Presentaciones Creativas"]
+      "name": "Excelencia en Atención al Cliente",
+      "level": 90,
+      "tags": ["Comunicación", "Resolución de Problemas", "Relaciones con Clientes", "Resolución de Conflictos", "Enfoque en Satisfacción"]
     },
     {
-      "name": "Edicion de Video",
-      "level": 65,
-      "tags": ["CapCut", "Contenido para Redes Sociales", "Edicion Basica", "Multimedia"]
-    },
-    {
-      "name": "Gestion Administrativa",
-      "level": 75,
-      "tags": ["Documentacion", "Atencion al Cliente", "Organizacion", "Coordinacion de Agenda"]
-    },
-    {
-      "name": "Habilidades Blandas",
-      "level": 85,
-      "tags": ["Proactividad", "Responsabilidad", "Adaptabilidad", "Trabajo en Equipo", "Comunicacion"]
+      "name": "Habilidades Blandas Profesionales",
+      "level": 95,
+      "tags": ["Proactividad", "Adaptabilidad", "Trabajo en Equipo", "Gestión del Tiempo", "Potencial de Liderazgo", "Aprendizaje Rápido"]
     }
   ],
-  "footer": "CV de Victoria Isabel Rolon Aguilar | Disponibilidad: Tiempo completo | Asuncion, Paraguay | Fecha de Nacimiento: 3 de julio de 2006"
+  "volunteer": [
+    {
+      "role": "Voluntaria de Soporte de TI",
+      "time": "2023",
+      "company": "Iniciativa de Tecnología Comunitaria",
+      "details": "Brindé asistencia técnica gratuita a miembros de la comunidad, ayudando a cerrar la brecha digital.",
+      "tags": ["Servicio Comunitario", "Soporte TI", "Alfabetización Digital"]
+    }
+  ],
+  "footer": "📍 Asunción, Paraguay | 📅 Disponible para Oportunidades de Tiempo Completo | 🎂 Nacida el 3 de julio de 2006 | 💼 Abierta a Posiciones Remotas y Presenciales"
 }

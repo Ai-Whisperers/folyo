@@ -34,6 +34,7 @@ interface PublicPortfolio {
 }
 
 // Demo portfolios for display when database is unavailable
+// Only includes portfolios that actually have data files
 const DEMO_PORTFOLIOS: PublicPortfolio[] = [
   {
     id: 'demo-1',
@@ -64,56 +65,6 @@ const DEMO_PORTFOLIOS: PublicPortfolio[] = [
     views: 645,
     category: 'tech',
     createdAt: '2024-08-10'
-  },
-  {
-    id: 'demo-4',
-    slug: 'alex-johnson',
-    name: 'Alex Johnson',
-    tagline: 'Full-Stack Developer | React & Node.js Specialist | Open Source Contributor',
-    theme: 'blue',
-    views: 21000,
-    category: 'tech',
-    createdAt: '2024-02-01'
-  },
-  {
-    id: 'demo-5',
-    slug: 'sarah-chen',
-    name: 'Dr. Sarah Chen',
-    tagline: 'Senior Data Scientist | Machine Learning Expert | PhD in Statistics',
-    theme: 'teal',
-    views: 15600,
-    category: 'tech',
-    createdAt: '2024-03-15'
-  },
-  {
-    id: 'demo-6',
-    slug: 'michael-rodriguez',
-    name: 'Michael Rodriguez',
-    tagline: 'Senior QA Engineer | Test Automation Specialist | Agile Expert',
-    theme: 'green',
-    views: 9800,
-    category: 'tech',
-    createdAt: '2024-04-20'
-  },
-  {
-    id: 'demo-7',
-    slug: 'emma-creative',
-    name: 'Emma Wilson',
-    tagline: 'Creative Director | Brand Strategist | Visual Storyteller',
-    theme: 'coral',
-    views: 8400,
-    category: 'creative',
-    createdAt: '2024-05-10'
-  },
-  {
-    id: 'demo-8',
-    slug: 'james-exec',
-    name: 'James Mitchell',
-    tagline: 'VP of Engineering | Technical Leadership | Scale-Up Expert',
-    theme: 'executive-gold',
-    views: 7200,
-    category: 'professional',
-    createdAt: '2024-07-01'
   }
 ]
 
@@ -150,7 +101,7 @@ function PortfolioCard({ portfolio, viewMode }: { portfolio: PublicPortfolio; vi
   if (viewMode === 'list') {
     return (
       <Link
-        href={`/cv/${portfolio.slug}`}
+        href={`/portfolio/${portfolio.slug}`}
         className="group flex items-center gap-6 bg-white rounded-xl p-4 border border-gray-200 hover:border-teal-300 hover:shadow-lg transition-all duration-300"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

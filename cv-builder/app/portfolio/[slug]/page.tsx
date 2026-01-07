@@ -40,7 +40,128 @@ import { CheckIcon } from '@heroicons/react/24/solid'
 import milagrosData from '@/data/portfolios/milagros-aguilera.json'
 import victoriaData from '@/data/portfolios/victoria-rolon.json'
 
+// Demo CV data for showcase
+const demoData = {
+  theme_skin: 'teal',
+  sidebar: {
+    name: 'Maria Lopez',
+    tagline: 'Senior Product Designer | UX Expert | Design Systems',
+    email: 'maria@example.com',
+    phone: '+1 (555) 123-4567',
+    citizenship: 'San Francisco, CA',
+    website: 'marialopez.design',
+    linkedin: 'marialopez',
+    github: 'marialopez',
+    languages: {
+      title: 'Languages',
+      info: [
+        { idiom: 'English', level: 'Native' },
+        { idiom: 'Spanish', level: 'Professional' }
+      ]
+    }
+  },
+  interests: {
+    title: 'Interests',
+    info: [
+      { item: 'UI/UX Design' },
+      { item: 'Design Systems' },
+      { item: 'User Research' },
+      { item: 'Typography' }
+    ]
+  },
+  'career-profile': {
+    title: 'Career Profile',
+    summary: 'Creative product designer with 8+ years of experience crafting intuitive digital experiences for Fortune 500 companies. Passionate about user-centered design and building products that make a difference. Led design teams at TechCorp and StartupXYZ, consistently delivering solutions that increased user engagement and business metrics.'
+  },
+  experiences: {
+    title: 'Experience',
+    info: [
+      {
+        role: 'Senior Product Designer',
+        time: '2021 - Present',
+        company: 'TechCorp Inc.',
+        details: 'Lead design for flagship products serving 2M+ users. Increased conversion by 34% through data-driven design iterations. Established design system adopted across 5 product teams.',
+        tags: ['Figma', 'User Research', 'Design Systems', 'A/B Testing']
+      },
+      {
+        role: 'Product Designer',
+        time: '2018 - 2021',
+        company: 'StartupXYZ',
+        details: 'Designed mobile app from 0 to 500K downloads. Collaborated with engineering to build component library. Conducted 50+ user interviews to inform product decisions.',
+        tags: ['Mobile Design', 'Prototyping', 'Usability Testing']
+      },
+      {
+        role: 'UI Designer',
+        time: '2016 - 2018',
+        company: 'DesignStudio',
+        details: 'Created visual designs for web and mobile applications. Worked with clients across fintech, healthcare, and e-commerce sectors.',
+        tags: ['Visual Design', 'Branding', 'Illustration']
+      }
+    ]
+  },
+  education: {
+    title: 'Education',
+    info: [
+      {
+        degree: 'M.S. Human-Computer Interaction',
+        university: 'Stanford University',
+        time: '2014 - 2016',
+        details: 'Focus on user research methods and interaction design.'
+      },
+      {
+        degree: 'B.A. Graphic Design',
+        university: 'Rhode Island School of Design',
+        time: '2010 - 2014',
+        details: "Dean's List. Minor in Computer Science."
+      }
+    ]
+  },
+  skills: {
+    title: 'Skills',
+    toolset: [
+      { name: 'Figma', level: 95 },
+      { name: 'Sketch', level: 90 },
+      { name: 'Adobe XD', level: 85 },
+      { name: 'Prototyping', level: 90 },
+      { name: 'User Research', level: 88 },
+      { name: 'Design Systems', level: 92 }
+    ]
+  },
+  projects: {
+    title: 'Featured Projects',
+    assignments: [
+      {
+        title: 'Enterprise Dashboard Redesign',
+        tagline: 'Reduced task completion time by 40%',
+        link: '#'
+      },
+      {
+        title: 'Mobile Banking App',
+        tagline: 'Featured in App Store Best of 2022',
+        link: '#'
+      }
+    ]
+  },
+  certifications: {
+    title: 'Certifications',
+    list: [
+      {
+        name: 'Google UX Design Professional Certificate',
+        start: '2023',
+        organization: 'Google'
+      },
+      {
+        name: 'Certified Usability Analyst',
+        start: '2022',
+        organization: 'Human Factors International'
+      }
+    ]
+  }
+}
+
 const portfolioRegistry: Record<string, any> = {
+  'demo': demoData,
+  'maria-lopez': demoData,
   'milagros-aguilera': milagrosData,
   'milagros-mabel-aguilera-baez': milagrosData,
   'victoria-rolon': victoriaData,
@@ -289,45 +410,104 @@ export default function PortfolioPage() {
       return;
     }
 
-    // First check static registry
-    const staticData = portfolioRegistry[slug.toLowerCase()];
-    if (staticData) {
-      setPortfolioData(staticData);
-      setLoading(false);
-      return;
-    }
-
-    // Then check localStorage for user-created portfolios
-    try {
-      const savedData = localStorage.getItem('cv-data');
-      if (savedData) {
-        const parsed = JSON.parse(savedData);
-        const savedSlug = generateSlug(parsed.sidebar?.name || '');
-
-        if (savedSlug === slug.toLowerCase()) {
-          setPortfolioData({
-            theme_skin: parsed.theme_skin || 'teal',
-            sidebar: parsed.sidebar,
-            'career-profile': parsed['career-profile'],
-            education: parsed.education,
-            experiences: parsed.experiences,
-            skills: parsed.skills,
-            projects: parsed.projects,
-            certifications: parsed.certifications,
-            interests: parsed.interests,
-            volunteer: parsed.volunteer,
-            videoPortfolio: parsed.videoPortfolio,
-          });
-          setLoading(false);
-          return;
-        }
+    const loadPortfolio = async () => {
+      // First check static registry
+      const staticData = portfolioRegistry[slug.toLowerCase()];
+      if (staticData) {
+        setPortfolioData(staticData);
+        setLoading(false);
+        return;
       }
-    } catch (e) {
-      console.error('Error loading from localStorage:', e);
-    }
 
-    setError('Portfolio not found');
-    setLoading(false);
+      // Try to fetch from API (database)
+      try {
+        const response = await fetch(`/api/cv/${slug}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.cv) {
+            // API returns cv data in data.cv
+            const cvData = data.cv;
+            setPortfolioData({
+              theme_skin: cvData.theme_skin || cvData.themeSkin || 'teal',
+              template_layout: cvData.template_layout || cvData.templateLayout || 'classic',
+              sidebar: cvData.sidebar || {
+                name: cvData.name,
+                tagline: cvData.tagline,
+                email: cvData.email,
+                phone: cvData.phone,
+                avatar: cvData.avatar,
+                website: cvData.website,
+                linkedin: cvData.linkedin,
+                github: cvData.github,
+                citizenship: cvData.location,
+                languages: cvData.languages,
+              },
+              'career-profile': cvData['career-profile'] || cvData.careerProfile || { summary: cvData.summary },
+              education: cvData.education,
+              experiences: cvData.experiences,
+              skills: cvData.skills,
+              projects: cvData.projects,
+              certifications: cvData.certifications,
+              interests: cvData.interests,
+              volunteer: cvData.volunteer,
+              videoPortfolio: cvData.videoPortfolio,
+            });
+            setLoading(false);
+            return;
+          }
+        }
+      } catch (e) {
+        console.error('Error fetching from API:', e);
+      }
+
+      // Then check localStorage for user-created portfolios
+      try {
+        // Check both legacy key and potential user-specific keys
+        const keysToCheck = ['cv-data'];
+
+        // Also check all localStorage keys that match cv-data-* pattern
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith('cv-data-')) {
+            keysToCheck.push(key);
+          }
+        }
+
+        for (const key of keysToCheck) {
+          const savedData = localStorage.getItem(key);
+          if (savedData) {
+            const parsed = JSON.parse(savedData);
+            const savedSlug = generateSlug(parsed.sidebar?.name || '');
+
+            if (savedSlug === slug.toLowerCase()) {
+              setPortfolioData({
+                theme_skin: parsed.theme_skin || 'teal',
+                template_layout: parsed.template_layout || 'classic',
+                sidebar: parsed.sidebar,
+                'career-profile': parsed['career-profile'],
+                education: parsed.education,
+                experiences: parsed.experiences,
+                skills: parsed.skills,
+                projects: parsed.projects,
+                certifications: parsed.certifications,
+                interests: parsed.interests,
+                volunteer: parsed.volunteer,
+                videoPortfolio: parsed.videoPortfolio,
+              });
+              setLoading(false);
+              return;
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Error loading from localStorage:', e);
+      }
+
+      setError('Portfolio not found');
+      setLoading(false);
+    };
+
+    loadPortfolio();
   }, [slug]);
 
   // Memoized theme and stats
@@ -423,6 +603,7 @@ export default function PortfolioPage() {
     theme_skin: portfolioData.theme_skin,
     sidebar: portfolioData.sidebar,
     'career-profile': portfolioData['career-profile'] || portfolioData.career_profile,
+    career_profile: portfolioData.career_profile || portfolioData['career-profile'],
     education: portfolioData.education,
     experiences: portfolioData.experiences,
     skills: portfolioData.skills,
@@ -431,6 +612,24 @@ export default function PortfolioPage() {
     interests: portfolioData.interests,
     volunteer: portfolioData.volunteer,
     videoPortfolio: portfolioData.videoPortfolio,
+    footer: portfolioData.footer,
+  }
+
+  // Check if using landing page layout - render full-width without wrapper
+  const isLandingLayout = portfolioData.template_layout === 'landing'
+
+  if (isLandingLayout) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: theme.bgColor }}>
+        <CVPreview
+          data={cvData}
+          theme={portfolioData.theme_skin || 'teal'}
+          templateLayout="landing"
+          className=""
+        />
+        <style jsx global>{SHARED_ANIMATIONS}</style>
+      </div>
+    )
   }
 
   return (
@@ -719,6 +918,7 @@ export default function PortfolioPage() {
                 <CVPreview
                   data={cvData}
                   theme={portfolioData.theme_skin || 'teal'}
+                  templateLayout={portfolioData.template_layout}
                   className=""
                 />
               </div>

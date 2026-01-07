@@ -2,11 +2,11 @@
 
 import React, { useState, useRef } from 'react'
 import {
-  ArrowUpTrayIcon,
   XMarkIcon,
   CameraIcon,
   PhotoIcon
 } from '@heroicons/react/24/outline'
+import { useAuth } from '@/lib/contexts/AuthContext'
 
 interface ImageUploadProps {
   currentImage?: string
@@ -16,13 +16,14 @@ interface ImageUploadProps {
   placeholder?: string
 }
 
-export function ImageUpload({ 
-  currentImage, 
-  onImageChange, 
+export function ImageUpload({
+  currentImage,
+  onImageChange,
   type = 'profile',
   className = '',
-  placeholder 
+  placeholder
 }: ImageUploadProps) {
+  const { user } = useAuth()
   const [isUploading, setIsUploading] = useState(false)
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -31,9 +32,9 @@ export function ImageUpload({
     if (!file) return
 
     // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
     if (!allowedTypes.includes(file.type)) {
-      alert('Please select a valid image file (JPEG, PNG, or WebP)')
+      alert('Please select a valid image file (JPEG, PNG, WebP, or GIF)')
       return
     }
 
@@ -52,6 +53,9 @@ export function ImageUpload({
 
       const response = await fetch('/api/upload/image', {
         method: 'POST',
+        headers: {
+          'x-user-id': user?.id || 'anonymous'
+        },
         body: formData
       })
 
@@ -96,17 +100,8 @@ export function ImageUpload({
     }
   }
 
-  const handleRemoveImage = async () => {
-    if (currentImage && currentImage.startsWith('/uploads/')) {
-      try {
-        const filename = currentImage.split('/').pop()
-        await fetch(`/api/upload/image?filename=${filename}`, {
-          method: 'DELETE'
-        })
-      } catch (error) {
-        console.error('Failed to delete image:', error)
-      }
-    }
+  const handleRemoveImage = () => {
+    // With base64 data URLs, deletion is handled client-side
     onImageChange('')
   }
 
@@ -119,7 +114,7 @@ export function ImageUpload({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/jpeg,image/jpg,image/png,image/webp"
+        accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
         onChange={handleFileInput}
         className="hidden"
       />
@@ -135,7 +130,7 @@ export function ImageUpload({
               alt="Uploaded image"
               className="w-full h-full object-cover"
             />
-            
+
             {/* Overlay with actions */}
             <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-2">
               <button
@@ -166,8 +161,8 @@ export function ImageUpload({
           onClick={openFileDialog}
           className={`
             relative border-2 border-dashed rounded-lg cursor-pointer transition-colors
-            ${dragActive 
-              ? 'border-teal-500 bg-teal-50' 
+            ${dragActive
+              ? 'border-teal-500 bg-teal-50'
               : 'border-gray-300 hover:border-gray-400'
             }
             ${type === 'profile' ? 'w-32 h-32' : 'w-full h-48'}
@@ -191,7 +186,7 @@ export function ImageUpload({
                   {type !== 'profile' && <span> or drag and drop</span>}
                 </div>
                 <div className="text-xs text-gray-500 mt-1">
-                  {placeholder || 'PNG, JPG, WebP up to 5MB'}
+                  {placeholder || 'PNG, JPG, WebP, GIF up to 5MB'}
                 </div>
               </>
             )}

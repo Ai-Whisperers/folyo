@@ -1,7 +1,8 @@
 'use client'
 
+
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
+import { useAuth } from '@/lib/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { AIConversationFlow } from '../../components/ai/AIConversationFlow'
@@ -23,7 +24,7 @@ interface JobDescriptionInput {
 }
 
 export default function AIBuilderPage() {
-  const { data: session, status } = useSession()
+  const { user, isLoading } = useAuth()
   const router = useRouter()
   const [step, setStep] = useState<'setup' | 'conversation' | 'preview'>('setup')
   const [jobInfo, setJobInfo] = useState<JobDescriptionInput>({
@@ -37,12 +38,12 @@ export default function AIBuilderPage() {
   const [analysisResult, setAnalysisResult] = useState(null)
 
   useEffect(() => {
-    if (status === 'loading') return
+    if (isLoading) return
 
-    if (!session) {
+    if (!user) {
       router.push('/auth/signin')
     }
-  }, [session, status])
+  }, [user, isLoading, router])
 
   const analyzeJobDescription = async () => {
     if (!jobInfo.jobDescription.trim()) {
@@ -57,7 +58,7 @@ export default function AIBuilderPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-user-id': (session?.user as any)?.id || ''
+          'x-user-id': user?.id || ''
         },
         body: JSON.stringify({
           jobDescription: jobInfo.jobDescription
@@ -95,7 +96,7 @@ export default function AIBuilderPage() {
     setAnalysisResult(null)
   }
 
-  if (status === 'loading') {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>

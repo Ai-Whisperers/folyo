@@ -1,7 +1,8 @@
 'use client'
 
+
 import { useState, useEffect } from 'react'
-import { useSession, signOut } from 'next-auth/react'
+import { useAuth } from '@/lib/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -53,7 +54,7 @@ interface UserAnalytics {
 }
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession()
+  const { user, isLoading, signOut } = useAuth()
   const router = useRouter()
   const [cvs, setCvs] = useState<CV[]>([])
   const [analytics, setAnalytics] = useState<UserAnalytics | null>(null)
@@ -63,15 +64,15 @@ export default function DashboardPage() {
   const [expandedCV, setExpandedCV] = useState<string | null>(null)
 
   useEffect(() => {
-    if (status === 'loading') return
+    if (isLoading) return
 
-    if (!session) {
+    if (!user) {
       router.push('/auth/signin')
       return
     }
 
     fetchUserData()
-  }, [session, status])
+  }, [user, isLoading, router])
 
   const fetchUserData = async () => {
     try {
@@ -80,12 +81,12 @@ export default function DashboardPage() {
       const [cvsResponse, analyticsResponse] = await Promise.all([
         fetch('/api/user/cvs', {
           headers: {
-            'x-user-id': (session?.user as any)?.id || ''
+            'x-user-id': user?.id || ''
           }
         }),
         fetch('/api/user/analytics', {
           headers: {
-            'x-user-id': (session?.user as any)?.id || ''
+            'x-user-id': user?.id || ''
           }
         })
       ])
@@ -116,7 +117,7 @@ export default function DashboardPage() {
       const response = await fetch(`/api/cv/${cvId}`, {
         method: 'DELETE',
         headers: {
-          'x-user-id': (session?.user as any)?.id || ''
+          'x-user-id': user?.id || ''
         }
       })
 
@@ -137,7 +138,7 @@ export default function DashboardPage() {
       const response = await fetch(`/api/cv/${cvId}/${endpoint}`, {
         method: 'POST',
         headers: {
-          'x-user-id': (session?.user as any)?.id || ''
+          'x-user-id': user?.id || ''
         }
       })
 
@@ -178,7 +179,7 @@ export default function DashboardPage() {
     return colors[skin] || 'bg-gray-500'
   }
 
-  if (status === 'loading' || loading) {
+  if (isLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
@@ -208,8 +209,8 @@ export default function DashboardPage() {
               <div className="flex items-center space-x-2">
                 <UserCircleIcon className="h-8 w-8 text-gray-400" />
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{session?.user?.name}</p>
-                  <p className="text-xs text-gray-500">{(session?.user as any)?.subscription?.plan || 'Free'}</p>
+                  <p className="text-sm font-medium text-gray-900">{user?.name}</p>
+                  <p className="text-xs text-gray-500">{'Free' || 'Free'}</p>
                 </div>
               </div>
               <button

@@ -26,6 +26,8 @@ import {
   LinkIcon,
   ArrowTopRightOnSquareIcon,
   UserCircleIcon,
+  ArrowsPointingOutIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { QRCodeModal } from '../../components/ui/QRCodeDisplay'
 
@@ -115,6 +117,7 @@ export default function CVBuilderPage() {
   const [isClient, setIsClient] = useState(false)
   const [showQRModal, setShowQRModal] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [fullscreenPreview, setFullscreenPreview] = useState(false)
 
   // Storage key changes based on user
   const storageKey = useMemo(() => getStorageKey(user?.id), [user?.id])
@@ -185,10 +188,12 @@ export default function CVBuilderPage() {
   useEffect(() => {
     if (!isClient || authLoading) return
 
-    // Check URL params for document type and theme
+    // Check URL params for document type, theme, template layout, and color
     const searchParams = new URLSearchParams(window.location.search)
     const docType = searchParams.get('type')
     const themeParam = searchParams.get('theme')
+    const templateParam = searchParams.get('template') // New: template layout ID
+    const colorParam = searchParams.get('color') // New: color palette ID
 
     // Load saved data from localStorage (user-specific if logged in)
     const savedData = localStorage.getItem(storageKey)
@@ -202,11 +207,19 @@ export default function CVBuilderPage() {
       try {
         const parsed = JSON.parse(dataToLoad)
 
-        // If a specific theme is requested via URL, use it
-        if (themeParam) {
+        // Priority: color param > theme param > saved theme
+        // Color param is from new template system
+        if (colorParam) {
+          parsed.theme_skin = colorParam
+        } else if (themeParam) {
           parsed.theme_skin = themeParam
         } else if (docType === 'portfolio') {
           parsed.theme_skin = 'video-portfolio'
+        }
+
+        // Store template layout if provided (for future use)
+        if (templateParam) {
+          parsed.template_layout = templateParam
         }
 
         setCvData(parsed)
@@ -215,9 +228,11 @@ export default function CVBuilderPage() {
         console.error('Error loading saved CV data:', error)
       }
     } else {
-      // No saved data - create new with requested theme
+      // No saved data - create new with requested theme/color
       let initialTheme = 'teal'
-      if (themeParam) {
+      if (colorParam) {
+        initialTheme = colorParam
+      } else if (themeParam) {
         initialTheme = themeParam
       } else if (docType === 'portfolio') {
         initialTheme = 'video-portfolio'
@@ -227,6 +242,7 @@ export default function CVBuilderPage() {
       const newData = {
         ...defaultCVData,
         theme_skin: initialTheme,
+        template_layout: templateParam || 'classic', // Default to classic layout
         sidebar: {
           ...defaultCVData.sidebar,
           name: user?.name || '',
@@ -569,30 +585,42 @@ export default function CVBuilderPage() {
                   </p>
                 </div>
 
-                {/* Mobile device toggle (on preview panel header) */}
-                <div className="lg:hidden bg-gray-100 rounded-lg p-1 flex items-center">
+                <div className="flex items-center gap-2">
+                  {/* Fullscreen Preview Button */}
                   <button
-                    onClick={() => setPreviewDevice('desktop')}
-                    className={`p-2 rounded-md transition-all ${
-                      previewDevice === 'desktop'
-                        ? 'bg-white text-teal-600 shadow-sm'
-                        : 'text-gray-500'
-                    }`}
-                    aria-label="Desktop view"
+                    onClick={() => setFullscreenPreview(true)}
+                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-teal-600 transition-all"
+                    aria-label="Fullscreen preview"
+                    title="View full size preview"
                   >
-                    <ComputerDesktopIcon className="h-4 w-4" />
+                    <ArrowsPointingOutIcon className="h-5 w-5" />
                   </button>
-                  <button
-                    onClick={() => setPreviewDevice('mobile')}
-                    className={`p-2 rounded-md transition-all ${
-                      previewDevice === 'mobile'
-                        ? 'bg-white text-teal-600 shadow-sm'
-                        : 'text-gray-500'
-                    }`}
-                    aria-label="Mobile view"
-                  >
-                    <DevicePhoneMobileIcon className="h-4 w-4" />
-                  </button>
+
+                  {/* Mobile device toggle (on preview panel header) */}
+                  <div className="lg:hidden bg-gray-100 rounded-lg p-1 flex items-center">
+                    <button
+                      onClick={() => setPreviewDevice('desktop')}
+                      className={`p-2 rounded-md transition-all ${
+                        previewDevice === 'desktop'
+                          ? 'bg-white text-teal-600 shadow-sm'
+                          : 'text-gray-500'
+                      }`}
+                      aria-label="Desktop view"
+                    >
+                      <ComputerDesktopIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => setPreviewDevice('mobile')}
+                      className={`p-2 rounded-md transition-all ${
+                        previewDevice === 'mobile'
+                          ? 'bg-white text-teal-600 shadow-sm'
+                          : 'text-gray-500'
+                      }`}
+                      aria-label="Mobile view"
+                    >
+                      <DevicePhoneMobileIcon className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className={`flex-1 p-4 sm:p-6 overflow-y-auto flex justify-center ${
@@ -608,6 +636,7 @@ export default function CVBuilderPage() {
                   <CVPreview
                     data={cvData}
                     theme={cvData.theme_skin}
+                    templateLayout={cvData.template_layout}
                   />
                 </div>
               </div>
@@ -644,6 +673,69 @@ export default function CVBuilderPage() {
         theme={cvData.theme_skin}
         title={`${cvData.sidebar?.name || 'Portfolio'} QR Code`}
       />
+
+      {/* Fullscreen Preview Modal */}
+      {fullscreenPreview && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          {/* Close button */}
+          <button
+            onClick={() => setFullscreenPreview(false)}
+            className="absolute top-4 right-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
+            aria-label="Close fullscreen preview"
+          >
+            <XMarkIcon className="h-6 w-6" />
+          </button>
+
+          {/* Preview container with device toggle */}
+          <div className="w-full h-full flex flex-col">
+            {/* Header with device toggle */}
+            <div className="flex items-center justify-center gap-4 py-4">
+              <span className="text-white/70 text-sm font-medium">Preview Mode:</span>
+              <div className="bg-white/10 rounded-lg p-1 flex items-center">
+                <button
+                  onClick={() => setPreviewDevice('desktop')}
+                  className={`px-4 py-2 rounded-md transition-all flex items-center gap-2 ${
+                    previewDevice === 'desktop'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  <ComputerDesktopIcon className="h-4 w-4" />
+                  Desktop
+                </button>
+                <button
+                  onClick={() => setPreviewDevice('mobile')}
+                  className={`px-4 py-2 rounded-md transition-all flex items-center gap-2 ${
+                    previewDevice === 'mobile'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  <DevicePhoneMobileIcon className="h-4 w-4" />
+                  Mobile
+                </button>
+              </div>
+            </div>
+
+            {/* Preview content */}
+            <div className="flex-1 overflow-auto flex justify-center items-start pb-8">
+              <div className={`
+                bg-white shadow-2xl transition-all duration-300
+                ${previewDevice === 'mobile'
+                  ? 'max-w-[375px] w-full rounded-[2.5rem] border-[14px] border-gray-800 overflow-hidden'
+                  : 'w-full max-w-5xl rounded-lg overflow-hidden'
+                }
+              `}>
+                <CVPreview
+                  data={cvData}
+                  theme={cvData.theme_skin}
+                  templateLayout={cvData.template_layout}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

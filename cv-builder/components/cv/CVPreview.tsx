@@ -7,12 +7,13 @@ import { getThemeColors, isDarkTheme as isDarkThemeUtil, type ThemeColors } from
 interface CVPreviewProps {
   data: any
   theme: string
+  templateLayout?: string
   scale?: number
   className?: string
 }
 
 // Type alias for backward compatibility
-type ThemeData = ThemeColors & { gradient?: string }
+type ThemeData = ThemeColors & { gradient?: string; label?: string }
 
 // Get theme data using shared utility
 const getThemeData = (theme: string): ThemeData => {
@@ -876,13 +877,1043 @@ const renderClassicTheme = (data: any, theme: ThemeData) => {
 }
 
 // =============================================================================
+// TEMPLATE LAYOUT RENDERERS (8 distinct layouts)
+// =============================================================================
+
+// Layout: Classic - Left sidebar layout (traditional CV)
+const renderLayoutClassic = (data: any, theme: ThemeData) => {
+  return `
+    <div class="cv-container layout-classic" style="font-family: Inter, system-ui, sans-serif; max-width: 900px; margin: 0 auto; display: flex; gap: 0; min-height: 100%;">
+      <!-- Left Sidebar -->
+      <div style="width: 280px; background-color: ${theme.primary}; color: white; padding: 2rem; flex-shrink: 0;">
+        <div class="text-center mb-8">
+          ${data.sidebar?.avatar
+            ? `<img class="w-28 h-28 rounded-full mx-auto mb-4 bg-white p-1" src="${data.sidebar.avatar}" alt="Profile" />`
+            : `<div class="w-28 h-28 rounded-full mx-auto mb-4 bg-white bg-opacity-20 flex items-center justify-center">
+                <svg class="w-14 h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>`
+          }
+          <h1 class="text-xl font-bold mb-2">${data.sidebar?.name || 'Your Name'}</h1>
+          <div class="text-sm opacity-90">${data.sidebar?.tagline || 'Professional Title'}</div>
+        </div>
+
+        <div class="space-y-2 text-sm mb-8">
+          ${data.sidebar?.email ? `<div class="flex items-center gap-2"><span>📧</span><span>${data.sidebar.email}</span></div>` : ''}
+          ${data.sidebar?.phone ? `<div class="flex items-center gap-2"><span>📱</span><span>${data.sidebar.phone}</span></div>` : ''}
+          ${data.sidebar?.website ? `<div class="flex items-center gap-2"><span>🌐</span><span>${data.sidebar.website}</span></div>` : ''}
+          ${data.sidebar?.linkedin ? `<div class="flex items-center gap-2"><span>💼</span><span>linkedin.com/in/${data.sidebar.linkedin}</span></div>` : ''}
+        </div>
+
+        ${data.skills?.toolset?.length > 0 ? `
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3 pb-2" style="border-bottom: 1px solid rgba(255,255,255,0.3);">Skills</h3>
+            <div class="space-y-3">
+              ${data.skills.toolset.map((skill: any) => `
+                <div>
+                  <div class="flex justify-between text-sm mb-1">
+                    <span>${skill.name}</span>
+                    <span class="opacity-70">${skill.level}</span>
+                  </div>
+                  <div class="w-full bg-white bg-opacity-20 rounded-full h-1.5">
+                    <div class="h-1.5 rounded-full bg-white" style="width: ${skill.level};"></div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        ${data.sidebar?.languages?.info?.length > 0 ? `
+          <div>
+            <h3 class="text-lg font-semibold mb-3 pb-2" style="border-bottom: 1px solid rgba(255,255,255,0.3);">Languages</h3>
+            <div class="space-y-2 text-sm">
+              ${data.sidebar.languages.info.map((lang: any) => `
+                <div class="flex justify-between">
+                  <span>${lang.idiom}</span>
+                  <span class="opacity-75">${lang.level}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+
+      <!-- Main Content -->
+      <div style="flex: 1; padding: 2rem; background-color: ${theme.bg}; color: ${theme.text};">
+        ${data['career-profile']?.summary ? `
+          <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4" style="color: ${theme.primary};">About</h2>
+            <div class="leading-relaxed">${data['career-profile'].summary.replace(/\n/g, '<br>')}</div>
+          </section>
+        ` : ''}
+
+        ${data.experiences?.info?.length > 0 ? `
+          <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4" style="color: ${theme.primary};">Experience</h2>
+            <div class="space-y-6">
+              ${data.experiences.info.map((exp: any) => `
+                <div>
+                  <div class="flex justify-between items-start mb-1">
+                    <h3 class="text-lg font-semibold">${exp.role}</h3>
+                    <span class="text-sm px-2 py-1 rounded" style="background-color: ${theme.accent};">${exp.time}</span>
+                  </div>
+                  <div class="font-medium mb-2" style="color: ${theme.primary};">${exp.company}</div>
+                  ${exp.details ? `<div class="text-sm opacity-80">${exp.details.replace(/\n/g, '<br>')}</div>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        ${data.education?.info?.length > 0 ? `
+          <section>
+            <h2 class="text-2xl font-bold mb-4" style="color: ${theme.primary};">Education</h2>
+            <div class="space-y-4">
+              ${data.education.info.map((edu: any) => `
+                <div>
+                  <h3 class="font-semibold">${edu.degree}</h3>
+                  <div class="text-sm">${edu.university}</div>
+                  <div class="text-sm opacity-60">${edu.time}</div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+      </div>
+    </div>
+  `
+}
+
+// Layout: Modern - Card-based with bold header
+const renderLayoutModern = (data: any, theme: ThemeData) => {
+  return `
+    <div class="cv-container layout-modern" style="font-family: Inter, system-ui, sans-serif; max-width: 900px; margin: 0 auto; background-color: ${theme.bg}; color: ${theme.text};">
+      <!-- Bold Header -->
+      <header style="background-color: ${theme.primary}; color: white; padding: 2.5rem 2rem; margin-bottom: 2rem;">
+        <div class="flex items-center gap-6">
+          ${data.sidebar?.avatar
+            ? `<img class="w-24 h-24 rounded-xl shadow-lg" src="${data.sidebar.avatar}" alt="Profile" />`
+            : `<div class="w-24 h-24 rounded-xl bg-white bg-opacity-20 flex items-center justify-center">
+                <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>`
+          }
+          <div>
+            <h1 class="text-3xl font-bold mb-1">${data.sidebar?.name || 'Your Name'}</h1>
+            <p class="text-lg opacity-90">${data.sidebar?.tagline || 'Professional Title'}</p>
+            <div class="flex flex-wrap gap-4 mt-3 text-sm opacity-80">
+              ${data.sidebar?.email ? `<span>📧 ${data.sidebar.email}</span>` : ''}
+              ${data.sidebar?.phone ? `<span>📱 ${data.sidebar.phone}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div style="padding: 0 2rem 2rem;">
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          ${data['career-profile']?.summary ? `
+            <div class="md:col-span-2 p-6 rounded-xl" style="background-color: ${theme.accent}; border: 1px solid ${theme.primary}20;">
+              <h2 class="text-lg font-bold mb-3" style="color: ${theme.primary};">About Me</h2>
+              <p class="leading-relaxed">${data['career-profile'].summary.replace(/\n/g, '<br>')}</p>
+            </div>
+          ` : ''}
+
+          ${data.experiences?.info?.length > 0 ? `
+            <div class="p-6 rounded-xl" style="background-color: ${theme.accent}; border: 1px solid ${theme.primary}20;">
+              <h2 class="text-lg font-bold mb-4" style="color: ${theme.primary};">Experience</h2>
+              <div class="space-y-4">
+                ${data.experiences.info.slice(0, 3).map((exp: any) => `
+                  <div class="pb-4" style="border-bottom: 1px solid ${theme.primary}10;">
+                    <h3 class="font-semibold">${exp.role}</h3>
+                    <div class="text-sm font-medium" style="color: ${theme.primary};">${exp.company}</div>
+                    <div class="text-xs opacity-60 mt-1">${exp.time}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          ${data.skills?.toolset?.length > 0 ? `
+            <div class="p-6 rounded-xl" style="background-color: ${theme.accent}; border: 1px solid ${theme.primary}20;">
+              <h2 class="text-lg font-bold mb-4" style="color: ${theme.primary};">Skills</h2>
+              <div class="flex flex-wrap gap-2">
+                ${data.skills.toolset.map((skill: any) => `
+                  <span class="px-3 py-1.5 rounded-lg text-sm font-medium" style="background-color: ${theme.primary}; color: white;">
+                    ${skill.name}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          ${data.education?.info?.length > 0 ? `
+            <div class="md:col-span-2 p-6 rounded-xl" style="background-color: ${theme.accent}; border: 1px solid ${theme.primary}20;">
+              <h2 class="text-lg font-bold mb-4" style="color: ${theme.primary};">Education</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${data.education.info.map((edu: any) => `
+                  <div>
+                    <h3 class="font-semibold">${edu.degree}</h3>
+                    <div class="text-sm">${edu.university}</div>
+                    <div class="text-xs opacity-60">${edu.time}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `
+}
+
+// Layout: Minimal - Single column, clean typography
+const renderLayoutMinimal = (data: any, theme: ThemeData) => {
+  return `
+    <div class="cv-container layout-minimal" style="font-family: 'Georgia', serif; max-width: 700px; margin: 0 auto; padding: 3rem 2rem; background-color: ${theme.bg}; color: ${theme.text};">
+      <!-- Clean Header -->
+      <header class="text-center mb-12 pb-8" style="border-bottom: 1px solid ${theme.accent};">
+        <h1 class="text-4xl font-light mb-2" style="color: ${theme.primary};">${data.sidebar?.name || 'Your Name'}</h1>
+        <p class="text-lg opacity-70 mb-4">${data.sidebar?.tagline || 'Professional Title'}</p>
+        <div class="flex justify-center flex-wrap gap-6 text-sm opacity-60">
+          ${data.sidebar?.email ? `<span>${data.sidebar.email}</span>` : ''}
+          ${data.sidebar?.phone ? `<span>${data.sidebar.phone}</span>` : ''}
+          ${data.sidebar?.linkedin ? `<span>LinkedIn</span>` : ''}
+        </div>
+      </header>
+
+      ${data['career-profile']?.summary ? `
+        <section class="mb-10">
+          <div class="leading-relaxed text-lg">${data['career-profile'].summary.replace(/\n/g, '<br>')}</div>
+        </section>
+      ` : ''}
+
+      ${data.experiences?.info?.length > 0 ? `
+        <section class="mb-10">
+          <h2 class="text-sm font-bold uppercase tracking-widest mb-6" style="color: ${theme.primary};">Experience</h2>
+          <div class="space-y-8">
+            ${data.experiences.info.map((exp: any) => `
+              <div>
+                <div class="flex justify-between items-baseline mb-2">
+                  <h3 class="text-lg font-semibold">${exp.role}</h3>
+                  <span class="text-sm opacity-50">${exp.time}</span>
+                </div>
+                <div class="font-medium mb-2" style="color: ${theme.primary};">${exp.company}</div>
+                ${exp.details ? `<div class="text-sm leading-relaxed opacity-80">${exp.details.replace(/\n/g, '<br>')}</div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </section>
+      ` : ''}
+
+      <div style="border-top: 1px solid ${theme.accent}; padding-top: 2rem;" class="grid grid-cols-2 gap-8">
+        ${data.education?.info?.length > 0 ? `
+          <section>
+            <h2 class="text-sm font-bold uppercase tracking-widest mb-4" style="color: ${theme.primary};">Education</h2>
+            <div class="space-y-4">
+              ${data.education.info.map((edu: any) => `
+                <div>
+                  <h3 class="font-medium">${edu.degree}</h3>
+                  <div class="text-sm opacity-70">${edu.university}</div>
+                  <div class="text-xs opacity-50">${edu.time}</div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        ${data.skills?.toolset?.length > 0 ? `
+          <section>
+            <h2 class="text-sm font-bold uppercase tracking-widest mb-4" style="color: ${theme.primary};">Skills</h2>
+            <div class="space-y-1 text-sm">
+              ${data.skills.toolset.map((skill: any) => `
+                <div>${skill.name}</div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+      </div>
+    </div>
+  `
+}
+
+// Layout: Creative - Hero header with project grid
+const renderLayoutCreative = (data: any, theme: ThemeData) => {
+  const isDark = theme.category === 'dark' || theme.category === 'bold'
+  return `
+    <div class="cv-container layout-creative" style="font-family: Inter, system-ui, sans-serif; background-color: ${theme.bg}; color: ${theme.text}; min-height: 100%;">
+      <!-- Hero Header -->
+      <header style="background-color: ${theme.primary}; padding: 4rem 2rem; text-align: center; color: white;">
+        ${data.sidebar?.avatar
+          ? `<img class="w-32 h-32 rounded-full mx-auto mb-6 shadow-2xl border-4 border-white/30" src="${data.sidebar.avatar}" alt="Profile" />`
+          : `<div class="w-32 h-32 rounded-full mx-auto mb-6 bg-white/20 flex items-center justify-center">
+              <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>`
+        }
+        <h1 class="text-4xl font-black mb-2">${data.sidebar?.name || 'Your Name'}</h1>
+        <p class="text-xl opacity-90 mb-6">${data.sidebar?.tagline || 'Creative Professional'}</p>
+        <div class="flex justify-center gap-4 flex-wrap">
+          ${data.sidebar?.website ? `<a href="${data.sidebar.website}" class="px-4 py-2 bg-white/20 rounded-full text-sm hover:bg-white/30 transition">Portfolio</a>` : ''}
+          ${data.sidebar?.linkedin ? `<a href="https://linkedin.com/in/${data.sidebar.linkedin}" class="px-4 py-2 bg-white/20 rounded-full text-sm hover:bg-white/30 transition">LinkedIn</a>` : ''}
+          ${data.sidebar?.github ? `<a href="https://github.com/${data.sidebar.github}" class="px-4 py-2 bg-white/20 rounded-full text-sm hover:bg-white/30 transition">GitHub</a>` : ''}
+        </div>
+      </header>
+
+      <div style="max-width: 1000px; margin: 0 auto; padding: 3rem 2rem;">
+        ${data['career-profile']?.summary ? `
+          <section class="text-center max-w-2xl mx-auto mb-12">
+            <p class="text-lg leading-relaxed opacity-90">${data['career-profile'].summary.replace(/\n/g, '<br>')}</p>
+          </section>
+        ` : ''}
+
+        ${data.skills?.toolset?.length > 0 ? `
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-center" style="color: ${theme.primary};">Skills</h2>
+            <div class="flex flex-wrap justify-center gap-3">
+              ${data.skills.toolset.map((skill: any) => `
+                <span class="px-4 py-2 rounded-full font-medium" style="background-color: ${theme.accent}; color: ${theme.primary};">
+                  ${skill.name}
+                </span>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        <!-- Projects Grid -->
+        ${data.experiences?.info?.length > 0 ? `
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-center" style="color: ${theme.primary};">Experience</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              ${data.experiences.info.map((exp: any) => `
+                <div class="p-6 rounded-2xl" style="background-color: ${theme.accent};">
+                  <h3 class="text-xl font-bold mb-1">${exp.role}</h3>
+                  <div class="font-medium mb-2" style="color: ${theme.primary};">${exp.company}</div>
+                  <div class="text-sm opacity-60 mb-3">${exp.time}</div>
+                  ${exp.details ? `<div class="text-sm opacity-80 line-clamp-3">${exp.details}</div>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        ${data.education?.info?.length > 0 ? `
+          <section>
+            <h2 class="text-2xl font-bold mb-6 text-center" style="color: ${theme.primary};">Education</h2>
+            <div class="flex flex-wrap justify-center gap-6">
+              ${data.education.info.map((edu: any) => `
+                <div class="text-center">
+                  <h3 class="font-bold">${edu.degree}</h3>
+                  <div class="text-sm opacity-70">${edu.university}</div>
+                  <div class="text-xs opacity-50">${edu.time}</div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+      </div>
+    </div>
+  `
+}
+
+// Layout: Executive - Sophisticated design
+const renderLayoutExecutive = (data: any, theme: ThemeData) => {
+  return `
+    <div class="cv-container layout-executive" style="font-family: 'Georgia', serif; max-width: 900px; margin: 0 auto; background-color: ${theme.bg}; color: ${theme.text};">
+      <!-- Elegant Header -->
+      <header style="padding: 3rem 2rem; border-top: 4px solid ${theme.primary};">
+        <div class="flex items-center gap-8">
+          ${data.sidebar?.avatar
+            ? `<img class="w-28 h-28 rounded-full" style="border: 3px solid ${theme.primary};" src="${data.sidebar.avatar}" alt="Profile" />`
+            : ''
+          }
+          <div>
+            <h1 class="text-4xl font-bold tracking-wide mb-2" style="color: ${theme.primary};">${data.sidebar?.name || 'Your Name'}</h1>
+            <p class="text-xl italic opacity-80">${data.sidebar?.tagline || 'Executive Title'}</p>
+            <div class="flex gap-6 mt-4 text-sm opacity-70">
+              ${data.sidebar?.email ? `<span>✉️ ${data.sidebar.email}</span>` : ''}
+              ${data.sidebar?.phone ? `<span>☎️ ${data.sidebar.phone}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div style="padding: 0 2rem 3rem;">
+        ${data['career-profile']?.summary ? `
+          <section class="mb-10 pb-8" style="border-bottom: 1px solid ${theme.accent};">
+            <h2 class="text-xl font-bold mb-4" style="color: ${theme.primary};">Executive Summary</h2>
+            <p class="text-lg leading-relaxed italic">${data['career-profile'].summary.replace(/\n/g, '<br>')}</p>
+          </section>
+        ` : ''}
+
+        ${data.experiences?.info?.length > 0 ? `
+          <section class="mb-10">
+            <h2 class="text-xl font-bold mb-6" style="color: ${theme.primary};">Professional Experience</h2>
+            <div class="space-y-8">
+              ${data.experiences.info.map((exp: any) => `
+                <div class="pl-6" style="border-left: 2px solid ${theme.primary};">
+                  <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-semibold">${exp.role}</h3>
+                    <span class="text-sm italic opacity-60">${exp.time}</span>
+                  </div>
+                  <div class="font-medium mb-3" style="color: ${theme.primary};">${exp.company}</div>
+                  ${exp.details ? `<div class="leading-relaxed opacity-80">${exp.details.replace(/\n/g, '<br>')}</div>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        <div class="grid grid-cols-2 gap-12">
+          ${data.education?.info?.length > 0 ? `
+            <section>
+              <h2 class="text-xl font-bold mb-4" style="color: ${theme.primary};">Education</h2>
+              <div class="space-y-4">
+                ${data.education.info.map((edu: any) => `
+                  <div>
+                    <h3 class="font-semibold">${edu.degree}</h3>
+                    <div class="italic opacity-70">${edu.university}</div>
+                    <div class="text-sm opacity-50">${edu.time}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+          ` : ''}
+
+          ${data.skills?.toolset?.length > 0 ? `
+            <section>
+              <h2 class="text-xl font-bold mb-4" style="color: ${theme.primary};">Core Competencies</h2>
+              <div class="grid grid-cols-2 gap-2">
+                ${data.skills.toolset.map((skill: any) => `
+                  <div class="flex items-center gap-2">
+                    <span style="color: ${theme.primary};">◆</span>
+                    <span>${skill.name}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `
+}
+
+// Layout: Compact - Dense, multi-column
+const renderLayoutCompact = (data: any, theme: ThemeData) => {
+  return `
+    <div class="cv-container layout-compact" style="font-family: Inter, system-ui, sans-serif; max-width: 900px; margin: 0 auto; background-color: ${theme.bg}; color: ${theme.text}; padding: 1.5rem; font-size: 13px;">
+      <!-- Compact Header -->
+      <header style="background-color: ${theme.primary}; color: white; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border-radius: 8px;">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            ${data.sidebar?.avatar
+              ? `<img class="w-16 h-16 rounded-full" src="${data.sidebar.avatar}" alt="Profile" />`
+              : ''
+            }
+            <div>
+              <h1 class="text-2xl font-bold">${data.sidebar?.name || 'Your Name'}</h1>
+              <p class="opacity-90">${data.sidebar?.tagline || 'Title'}</p>
+            </div>
+          </div>
+          <div class="text-right text-sm opacity-80">
+            ${data.sidebar?.email ? `<div>${data.sidebar.email}</div>` : ''}
+            ${data.sidebar?.phone ? `<div>${data.sidebar.phone}</div>` : ''}
+            ${data.sidebar?.linkedin ? `<div>linkedin.com/in/${data.sidebar.linkedin}</div>` : ''}
+          </div>
+        </div>
+      </header>
+
+      <!-- Dense Grid Layout -->
+      <div class="grid grid-cols-3 gap-4">
+        <!-- Column 1: Summary + Skills -->
+        <div class="space-y-4">
+          ${data['career-profile']?.summary ? `
+            <section class="p-3 rounded" style="background-color: ${theme.accent};">
+              <h2 class="text-sm font-bold mb-2" style="color: ${theme.primary};">Profile</h2>
+              <p class="text-xs leading-relaxed">${data['career-profile'].summary.substring(0, 200)}${data['career-profile'].summary.length > 200 ? '...' : ''}</p>
+            </section>
+          ` : ''}
+
+          ${data.skills?.toolset?.length > 0 ? `
+            <section class="p-3 rounded" style="background-color: ${theme.accent};">
+              <h2 class="text-sm font-bold mb-2" style="color: ${theme.primary};">Skills</h2>
+              <div class="space-y-1.5">
+                ${data.skills.toolset.map((skill: any) => `
+                  <div class="flex justify-between items-center">
+                    <span class="text-xs">${skill.name}</span>
+                    <div class="w-16 h-1 rounded-full" style="background-color: ${theme.primary}20;">
+                      <div class="h-1 rounded-full" style="background-color: ${theme.primary}; width: ${skill.level};"></div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+          ` : ''}
+        </div>
+
+        <!-- Column 2: Experience -->
+        <div class="col-span-2">
+          ${data.experiences?.info?.length > 0 ? `
+            <section class="mb-4">
+              <h2 class="text-sm font-bold mb-3 pb-1" style="color: ${theme.primary}; border-bottom: 1px solid ${theme.accent};">Experience</h2>
+              <div class="space-y-3">
+                ${data.experiences.info.map((exp: any) => `
+                  <div class="pb-3" style="border-bottom: 1px dashed ${theme.accent};">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h3 class="font-semibold">${exp.role}</h3>
+                        <div class="text-xs" style="color: ${theme.primary};">${exp.company}</div>
+                      </div>
+                      <span class="text-xs opacity-60">${exp.time}</span>
+                    </div>
+                    ${exp.details ? `<p class="text-xs mt-1 opacity-80 line-clamp-2">${exp.details}</p>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+          ` : ''}
+
+          ${data.education?.info?.length > 0 ? `
+            <section>
+              <h2 class="text-sm font-bold mb-3 pb-1" style="color: ${theme.primary}; border-bottom: 1px solid ${theme.accent};">Education</h2>
+              <div class="grid grid-cols-2 gap-3">
+                ${data.education.info.map((edu: any) => `
+                  <div>
+                    <h3 class="font-semibold text-sm">${edu.degree}</h3>
+                    <div class="text-xs opacity-70">${edu.university}</div>
+                    <div class="text-xs opacity-50">${edu.time}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `
+}
+
+// Layout: Timeline - Visual timeline for experience
+const renderLayoutTimeline = (data: any, theme: ThemeData) => {
+  return `
+    <div class="cv-container layout-timeline" style="font-family: Inter, system-ui, sans-serif; max-width: 900px; margin: 0 auto; background-color: ${theme.bg}; color: ${theme.text}; padding: 2rem;">
+      <!-- Header -->
+      <header class="text-center mb-12">
+        ${data.sidebar?.avatar
+          ? `<img class="w-28 h-28 rounded-full mx-auto mb-4 shadow-lg" style="border: 4px solid ${theme.primary};" src="${data.sidebar.avatar}" alt="Profile" />`
+          : ''
+        }
+        <h1 class="text-3xl font-bold mb-2">${data.sidebar?.name || 'Your Name'}</h1>
+        <p class="text-lg opacity-80 mb-4">${data.sidebar?.tagline || 'Professional Title'}</p>
+        <div class="flex justify-center gap-4 text-sm opacity-60">
+          ${data.sidebar?.email ? `<span>${data.sidebar.email}</span>` : ''}
+          ${data.sidebar?.phone ? `<span>${data.sidebar.phone}</span>` : ''}
+        </div>
+      </header>
+
+      ${data['career-profile']?.summary ? `
+        <section class="max-w-2xl mx-auto text-center mb-12 p-6 rounded-xl" style="background-color: ${theme.accent};">
+          <p class="leading-relaxed">${data['career-profile'].summary.replace(/\n/g, '<br>')}</p>
+        </section>
+      ` : ''}
+
+      <!-- Timeline -->
+      <div class="flex">
+        <!-- Timeline Line -->
+        <div class="flex flex-col items-center mr-6">
+          <div class="w-1 h-full rounded-full" style="background-color: ${theme.primary};"></div>
+        </div>
+
+        <div class="flex-1 space-y-8">
+          ${data.experiences?.info?.length > 0 ? `
+            <section>
+              <h2 class="text-xl font-bold mb-6" style="color: ${theme.primary};">Experience</h2>
+              <div class="space-y-6 relative">
+                ${data.experiences.info.map((exp: any, i: number) => `
+                  <div class="relative pl-8">
+                    <!-- Timeline Dot -->
+                    <div class="absolute -left-9 top-1 w-5 h-5 rounded-full border-4" style="background-color: ${theme.bg}; border-color: ${theme.primary};"></div>
+                    <div class="p-4 rounded-lg" style="background-color: ${theme.accent};">
+                      <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-lg">${exp.role}</h3>
+                        <span class="text-sm px-2 py-0.5 rounded" style="background-color: ${theme.primary}; color: white;">${exp.time}</span>
+                      </div>
+                      <div class="font-medium mb-2" style="color: ${theme.primary};">${exp.company}</div>
+                      ${exp.details ? `<p class="text-sm opacity-80">${exp.details.replace(/\n/g, '<br>')}</p>` : ''}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+          ` : ''}
+
+          ${data.education?.info?.length > 0 ? `
+            <section>
+              <h2 class="text-xl font-bold mb-6" style="color: ${theme.primary};">Education</h2>
+              <div class="space-y-4">
+                ${data.education.info.map((edu: any) => `
+                  <div class="relative pl-8">
+                    <div class="absolute -left-9 top-1 w-5 h-5 rounded-full border-4" style="background-color: ${theme.bg}; border-color: ${theme.primary};"></div>
+                    <div class="p-4 rounded-lg" style="background-color: ${theme.accent};">
+                      <h3 class="font-bold">${edu.degree}</h3>
+                      <div class="text-sm" style="color: ${theme.primary};">${edu.university}</div>
+                      <div class="text-xs opacity-60">${edu.time}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+          ` : ''}
+        </div>
+      </div>
+
+      ${data.skills?.toolset?.length > 0 ? `
+        <section class="mt-12">
+          <h2 class="text-xl font-bold mb-4 text-center" style="color: ${theme.primary};">Skills</h2>
+          <div class="flex flex-wrap justify-center gap-3">
+            ${data.skills.toolset.map((skill: any) => `
+              <span class="px-4 py-2 rounded-full text-sm" style="background-color: ${theme.accent}; border: 1px solid ${theme.primary};">${skill.name}</span>
+            `).join('')}
+          </div>
+        </section>
+      ` : ''}
+    </div>
+  `
+}
+
+// Layout: Cards - Floating card sections
+const renderLayoutCards = (data: any, theme: ThemeData) => {
+  return `
+    <div class="cv-container layout-cards" style="font-family: Inter, system-ui, sans-serif; max-width: 1000px; margin: 0 auto; background-color: ${theme.accent}; padding: 2rem; min-height: 100%;">
+      <!-- Profile Card -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-6" style="border-left: 4px solid ${theme.primary};">
+        <div class="flex items-center gap-6">
+          ${data.sidebar?.avatar
+            ? `<img class="w-24 h-24 rounded-xl shadow-md" src="${data.sidebar.avatar}" alt="Profile" />`
+            : `<div class="w-24 h-24 rounded-xl flex items-center justify-center" style="background-color: ${theme.accent};">
+                <svg class="w-12 h-12" style="color: ${theme.primary};" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>`
+          }
+          <div class="flex-1">
+            <h1 class="text-3xl font-bold mb-1" style="color: ${theme.text};">${data.sidebar?.name || 'Your Name'}</h1>
+            <p class="text-lg mb-3" style="color: ${theme.primary};">${data.sidebar?.tagline || 'Professional Title'}</p>
+            <div class="flex flex-wrap gap-4 text-sm" style="color: ${theme.text}; opacity: 0.7;">
+              ${data.sidebar?.email ? `<span>📧 ${data.sidebar.email}</span>` : ''}
+              ${data.sidebar?.phone ? `<span>📱 ${data.sidebar.phone}</span>` : ''}
+              ${data.sidebar?.linkedin ? `<span>💼 LinkedIn</span>` : ''}
+            </div>
+          </div>
+        </div>
+        ${data['career-profile']?.summary ? `
+          <div class="mt-4 pt-4" style="border-top: 1px solid ${theme.accent};">
+            <p class="leading-relaxed" style="color: ${theme.text};">${data['career-profile'].summary.replace(/\n/g, '<br>')}</p>
+          </div>
+        ` : ''}
+      </div>
+
+      <!-- Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        ${data.experiences?.info?.length > 0 ? `
+          <div class="bg-white rounded-2xl shadow-lg p-6" style="border-left: 4px solid ${theme.primary};">
+            <h2 class="text-xl font-bold mb-4" style="color: ${theme.primary};">Experience</h2>
+            <div class="space-y-4">
+              ${data.experiences.info.map((exp: any) => `
+                <div class="pb-4" style="border-bottom: 1px solid ${theme.accent};">
+                  <h3 class="font-bold" style="color: ${theme.text};">${exp.role}</h3>
+                  <div class="text-sm font-medium" style="color: ${theme.primary};">${exp.company}</div>
+                  <div class="text-xs opacity-60 mt-1">${exp.time}</div>
+                  ${exp.details ? `<p class="text-sm mt-2 opacity-80">${exp.details.substring(0, 100)}${exp.details.length > 100 ? '...' : ''}</p>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        ${data.skills?.toolset?.length > 0 ? `
+          <div class="bg-white rounded-2xl shadow-lg p-6" style="border-left: 4px solid ${theme.primary};">
+            <h2 class="text-xl font-bold mb-4" style="color: ${theme.primary};">Skills</h2>
+            <div class="space-y-3">
+              ${data.skills.toolset.map((skill: any) => `
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="font-medium" style="color: ${theme.text};">${skill.name}</span>
+                    <span class="text-sm opacity-60">${skill.level}</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full" style="background-color: ${theme.accent};">
+                    <div class="h-2 rounded-full" style="background-color: ${theme.primary}; width: ${skill.level};"></div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        ${data.education?.info?.length > 0 ? `
+          <div class="bg-white rounded-2xl shadow-lg p-6" style="border-left: 4px solid ${theme.primary};">
+            <h2 class="text-xl font-bold mb-4" style="color: ${theme.primary};">Education</h2>
+            <div class="space-y-4">
+              ${data.education.info.map((edu: any) => `
+                <div>
+                  <h3 class="font-bold" style="color: ${theme.text};">${edu.degree}</h3>
+                  <div class="text-sm" style="color: ${theme.primary};">${edu.university}</div>
+                  <div class="text-xs opacity-60">${edu.time}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        ${data.sidebar?.languages?.info?.length > 0 ? `
+          <div class="bg-white rounded-2xl shadow-lg p-6" style="border-left: 4px solid ${theme.primary};">
+            <h2 class="text-xl font-bold mb-4" style="color: ${theme.primary};">Languages</h2>
+            <div class="space-y-2">
+              ${data.sidebar.languages.info.map((lang: any) => `
+                <div class="flex justify-between">
+                  <span class="font-medium" style="color: ${theme.text};">${lang.idiom}</span>
+                  <span class="text-sm opacity-60">${lang.level}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `
+}
+
+// Layout: Landing - Premium landing page style with spacious sections
+const renderLayoutLanding = (data: any, theme: ThemeData) => {
+  const gradient = `linear-gradient(135deg, ${theme.primary} 0%, ${theme.secondary} 100%)`
+  
+  return `
+    <div class="cv-container layout-landing" style="font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(180deg, ${theme.bg} 0%, ${theme.accent} 100%); min-height: 100vh; color: ${theme.text};">
+      
+      <!-- Hero Section - Clean Professional Design -->
+      <section style="min-height: 100vh; display: flex; flex-direction: column; position: relative; overflow: hidden; background: ${theme.bg};">
+        
+        <!-- Main Hero Content -->
+        <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; max-width: 1400px; margin: 0 auto; width: 100%; padding: 4rem 3rem;">
+          
+          <!-- Left Side - Photo -->
+          <div style="display: flex; align-items: center; justify-content: center; padding-right: 3rem;">
+            <div style="position: relative; width: 100%; max-width: 450px;">
+              <div style="aspect-ratio: 3/4; border-radius: 2rem; overflow: hidden; box-shadow: 0 30px 60px -15px ${theme.primary}50;">
+                <img src="/uploads/vicky.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+              </div>
+              <!-- Decorative accent -->
+              <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: ${gradient}; border-radius: 50%; opacity: 0.3; z-index: -1;"></div>
+              <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: ${theme.secondary}; border-radius: 50%; opacity: 0.2; z-index: -1;"></div>
+            </div>
+          </div>
+          
+          <!-- Right Side - Content -->
+          <div style="display: flex; flex-direction: column; justify-content: center; padding-left: 2rem;">
+            <p style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.15em; color: ${theme.primary}; margin-bottom: 1.5rem; font-weight: 600;">Portfolio Profesional</p>
+            
+            <h1 style="font-size: 3.5rem; font-weight: 700; margin-bottom: 1.5rem; color: ${theme.text}; line-height: 1.15; letter-spacing: -0.02em;">
+              ${data.sidebar?.name || 'Your Name'}
+            </h1>
+            
+            <p style="font-size: 1.25rem; color: ${theme.primary}; margin-bottom: 1.5rem; font-weight: 500; line-height: 1.5;">
+              ${data.sidebar?.tagline || 'Professional Title'}
+            </p>
+            
+            ${data.sidebar?.citizenship ? `
+              <p style="color: ${theme.text}; opacity: 0.6; font-size: 1rem; margin-bottom: 2.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                ${data.sidebar.citizenship}
+              </p>
+            ` : ''}
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+              ${data.sidebar?.phone ? `
+                <a href="https://wa.me/595981258719?text=Hola%20Victoria%2C%20vi%20tu%20portfolio%20y%20me%20gustar%C3%ADa%20contactarte" target="_blank" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; background: ${theme.primary}; color: white; border-radius: 0.75rem; text-decoration: none; font-weight: 600; font-size: 1rem; box-shadow: 0 4px 15px ${theme.primary}40; transition: all 0.3s;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  Contáctame
+                </a>
+              ` : ''}
+              ${data.sidebar?.linkedin ? `
+                <a href="https://linkedin.com/in/${data.sidebar.linkedin}" target="_blank" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; background: transparent; color: ${theme.text}; border: 2px solid ${theme.accent}; border-radius: 0.75rem; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.3s;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  LinkedIn
+                </a>
+              ` : ''}
+            </div>
+            
+            ${data.sidebar?.email ? `
+              <p style="color: ${theme.text}; opacity: 0.6; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                ${data.sidebar.email}
+              </p>
+            ` : ''}
+          </div>
+        </div>
+        
+        <!-- Bottom Photo Gallery Strip -->
+        <div style="padding: 0 3rem 3rem; max-width: 1400px; margin: 0 auto; width: 100%;">
+          <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;">
+            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
+              <img src="/uploads/vicky2.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
+              <img src="/uploads/vicky3.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
+              <img src="/uploads/vicky4.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
+              <img src="/uploads/vicky5.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
+              <img src="/uploads/vicky6.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      ${data['career-profile']?.summary || data.career_profile?.summary ? `
+        <section style="padding: 6rem 2rem; background: ${theme.bg};">
+          <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+            <h2 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.2em; color: ${theme.primary}; margin-bottom: 1.5rem; font-weight: 600;">Sobre Mí</h2>
+            <div style="font-size: 1.125rem; line-height: 1.9; color: ${theme.text}; opacity: 0.9;">
+              ${(data['career-profile']?.summary || data.career_profile?.summary || '').replace(/\*\*(.*?)\*\*/g, '<strong style="color: ' + theme.primary + ';">$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/\n\n/g, '</p><p style="margin-top: 1.5rem;">').replace(/\n/g, '<br>')}
+            </div>
+          </div>
+        </section>
+      ` : ''}
+
+      <!-- Skills Section -->
+      ${data.skills?.length > 0 || data.skills?.toolset?.length > 0 ? `
+        <section style="padding: 6rem 2rem; background: linear-gradient(180deg, ${theme.accent} 0%, ${theme.bg} 100%);">
+          <div style="max-width: 1000px; margin: 0 auto;">
+            <h2 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.2em; color: ${theme.primary}; margin-bottom: 3rem; text-align: center; font-weight: 600;">Habilidades y Experiencia</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+              ${(data.skills?.toolset || data.skills || []).map((skill: any) => `
+                <div style="background: ${theme.bg}; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid ${theme.accent};">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 700; color: ${theme.text};">${skill.name}</h3>
+                    <span style="font-size: 0.875rem; color: ${theme.primary}; font-weight: 600;">${skill.level}%</span>
+                  </div>
+                  <div style="width: 100%; height: 8px; background: ${theme.accent}; border-radius: 100px; overflow: hidden;">
+                    <div style="width: ${skill.level}%; height: 100%; background: ${gradient}; border-radius: 100px;"></div>
+                  </div>
+                  ${skill.tags?.length > 0 ? `
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                      ${skill.tags.map((tag: string) => `
+                        <span style="font-size: 0.75rem; padding: 0.25rem 0.75rem; background: ${theme.primary}10; color: ${theme.primary}; border-radius: 100px;">${tag}</span>
+                      `).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+      ` : ''}
+
+      <!-- Experience Section -->
+      ${data.experiences?.length > 0 || data.experiences?.info?.length > 0 ? `
+        <section style="padding: 6rem 2rem; background: ${theme.bg};">
+          <div style="max-width: 900px; margin: 0 auto;">
+            <h2 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.2em; color: ${theme.primary}; margin-bottom: 3rem; text-align: center; font-weight: 600;">Experiencia Profesional</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 3rem;">
+              ${(data.experiences?.info || data.experiences || []).map((exp: any, index: number) => `
+                <div style="position: relative; padding-left: 3rem;">
+                  <!-- Timeline Line -->
+                  <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, ${theme.primary} 0%, ${theme.accent} 100%);"></div>
+                  <!-- Timeline Dot -->
+                  <div style="position: absolute; left: -6px; top: 0; width: 14px; height: 14px; border-radius: 50%; background: ${theme.primary}; border: 3px solid ${theme.bg};"></div>
+                  
+                  <div style="background: ${theme.accent}; padding: 2rem; border-radius: 1rem; border-left: 4px solid ${theme.primary};">
+                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
+                      <div>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: ${theme.text}; margin-bottom: 0.5rem;">${exp.role}</h3>
+                        <p style="font-size: 1.125rem; color: ${theme.primary}; font-weight: 600;">${exp.company}</p>
+                      </div>
+                      <span style="font-size: 0.875rem; padding: 0.5rem 1rem; background: ${theme.primary}; color: white; border-radius: 100px; font-weight: 600;">${exp.time}</span>
+                    </div>
+                    ${exp.details ? `
+                      <div style="color: ${theme.text}; opacity: 0.85; line-height: 1.8; font-size: 1rem;">
+                        ${exp.details.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p style="margin-top: 1rem;">').replace(/\n/g, '<br>')}
+                      </div>
+                    ` : ''}
+                    ${exp.tags?.length > 0 ? `
+                      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;">
+                        ${exp.tags.map((tag: string) => `
+                          <span style="font-size: 0.75rem; padding: 0.375rem 0.875rem; background: ${theme.bg}; color: ${theme.primary}; border-radius: 100px; border: 1px solid ${theme.primary}30;">${tag}</span>
+                        `).join('')}
+                      </div>
+                    ` : ''}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+      ` : ''}
+
+      <!-- Education Section -->
+      ${data.education?.length > 0 || data.education?.info?.length > 0 ? `
+        <section style="padding: 6rem 2rem; background: linear-gradient(180deg, ${theme.accent} 0%, ${theme.bg} 100%);">
+          <div style="max-width: 900px; margin: 0 auto;">
+            <h2 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.2em; color: ${theme.primary}; margin-bottom: 3rem; text-align: center; font-weight: 600;">Formación Académica</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+              ${(data.education?.info || data.education || []).map((edu: any) => `
+                <div style="background: ${theme.bg}; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center;">
+                  <div style="width: 60px; height: 60px; margin: 0 auto 1.5rem; background: ${gradient}; border-radius: 1rem; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 1.5rem;">🎓</span>
+                  </div>
+                  <h3 style="font-size: 1.25rem; font-weight: 700; color: ${theme.text}; margin-bottom: 0.5rem;">${edu.degree}</h3>
+                  <p style="font-size: 1rem; color: ${theme.primary}; font-weight: 600; margin-bottom: 0.5rem;">${edu.university}</p>
+                  <p style="font-size: 0.875rem; color: ${theme.text}; opacity: 0.6; margin-bottom: 1rem;">${edu.time}</p>
+                  ${edu.details ? `
+                    <p style="font-size: 0.875rem; color: ${theme.text}; opacity: 0.8; line-height: 1.6;">
+                      ${edu.details.replace(/\*\*(.*?)\*\*/g, '<strong style="color: ' + theme.primary + ';">$1</strong>').replace(/\n/g, '<br>')}
+                    </p>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+      ` : ''}
+
+      <!-- Certifications Section -->
+      ${data.certifications?.length > 0 || data.certifications?.list?.length > 0 ? `
+        <section style="padding: 6rem 2rem; background: ${theme.bg};">
+          <div style="max-width: 900px; margin: 0 auto;">
+            <h2 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.2em; color: ${theme.primary}; margin-bottom: 3rem; text-align: center; font-weight: 600;">Certificaciones y Capacitaciones</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+              ${(data.certifications?.list || data.certifications || []).map((cert: any) => `
+                <div style="display: flex; align-items: flex-start; gap: 1.5rem; padding: 1.5rem; background: ${theme.accent}; border-radius: 1rem;">
+                  <div style="width: 50px; height: 50px; background: ${gradient}; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="font-size: 1.25rem;">🏆</span>
+                  </div>
+                  <div style="flex: 1;">
+                    <h3 style="font-size: 1.125rem; font-weight: 700; color: ${theme.text}; margin-bottom: 0.25rem;">${cert.name}</h3>
+                    <p style="font-size: 0.875rem; color: ${theme.primary}; font-weight: 600;">${cert.organization}</p>
+                    ${cert.start ? `<p style="font-size: 0.75rem; color: ${theme.text}; opacity: 0.6; margin-top: 0.5rem;">${cert.start}</p>` : ''}
+                    ${cert.details ? `<p style="font-size: 0.875rem; color: ${theme.text}; opacity: 0.8; margin-top: 0.75rem; line-height: 1.6;">${cert.details.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>')}</p>` : ''}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+      ` : ''}
+
+      <!-- Languages & Interests -->
+      <section style="padding: 6rem 2rem; background: linear-gradient(180deg, ${theme.accent} 0%, ${theme.bg} 100%);">
+        <div style="max-width: 900px; margin: 0 auto;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;">
+            
+            ${data.sidebar?.languages?.length > 0 ? `
+              <div>
+                <h2 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.2em; color: ${theme.primary}; margin-bottom: 2rem; font-weight: 600;">Idiomas</h2>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                  ${data.sidebar.languages.map((lang: any) => `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background: ${theme.bg}; border-radius: 1rem;">
+                      <span style="font-weight: 600; color: ${theme.text};">🌍 ${lang.idiom}</span>
+                      <span style="font-size: 0.875rem; padding: 0.375rem 1rem; background: ${theme.primary}15; color: ${theme.primary}; border-radius: 100px; font-weight: 600;">${lang.level}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+            
+            ${data.interests?.length > 0 ? `
+              <div>
+                <h2 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.2em; color: ${theme.primary}; margin-bottom: 2rem; font-weight: 600;">Intereses</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                  ${data.interests.map((interest: string) => `
+                    <span style="padding: 0.75rem 1.25rem; background: ${theme.bg}; color: ${theme.text}; border-radius: 100px; font-size: 0.875rem; border: 1px solid ${theme.primary}30;">
+                      ${interest}
+                    </span>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer CTA -->
+      <section style="padding: 6rem 2rem; background: ${gradient}; text-align: center;">
+        <div style="max-width: 600px; margin: 0 auto;">
+          <h2 style="font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">¡Conectemos!</h2>
+          <p style="font-size: 1.125rem; color: white; opacity: 0.9; margin-bottom: 2rem;">
+            Siempre estoy abierta a discutir nuevas oportunidades y proyectos interesantes.
+          </p>
+          ${data.sidebar?.phone ? `
+            <a href="https://wa.me/595981258719?text=Hola%20Victoria%2C%20vi%20tu%20portfolio%20y%20me%20gustar%C3%ADa%20contactarte" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2.5rem; background: white; color: ${theme.primary}; border-radius: 100px; text-decoration: none; font-weight: 700; font-size: 1.125rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+              💬 Escríbeme por WhatsApp
+            </a>
+          ` : ''}
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer style="padding: 2rem; background: ${theme.bg}; text-align: center; border-top: 1px solid ${theme.accent};">
+        <p style="font-size: 0.875rem; color: ${theme.text}; opacity: 0.6;">
+          ${data.footer || `© ${new Date().getFullYear()} ${data.sidebar?.name || 'Portfolio'}. All rights reserved.`}
+        </p>
+      </footer>
+    </div>
+  `
+}
+
+// Router function to select layout renderer
+const renderByLayout = (data: any, theme: ThemeData, layoutId: string): string => {
+  switch (layoutId) {
+    case 'classic':
+      return renderLayoutClassic(data, theme)
+    case 'modern':
+      return renderLayoutModern(data, theme)
+    case 'minimal':
+      return renderLayoutMinimal(data, theme)
+    case 'creative':
+      return renderLayoutCreative(data, theme)
+    case 'executive':
+      return renderLayoutExecutive(data, theme)
+    case 'compact':
+      return renderLayoutCompact(data, theme)
+    case 'timeline':
+      return renderLayoutTimeline(data, theme)
+    case 'cards':
+      return renderLayoutCards(data, theme)
+    case 'landing':
+      return renderLayoutLanding(data, theme)
+    default:
+      return renderLayoutClassic(data, theme)
+  }
+}
+
+// =============================================================================
 // MAIN PREVIEW COMPONENT
 // =============================================================================
-function CVPreviewComponent({ data, theme, scale = 1, className = '' }: CVPreviewProps) {
+function CVPreviewComponent({ data, theme, templateLayout, scale = 1, className = '' }: CVPreviewProps) {
   const themeData = useMemo(() => getThemeData(theme), [theme])
 
-  // Memoize preview HTML generation based on theme category
+  // Memoize preview HTML generation - prioritize templateLayout over theme category
   const previewHtml = useMemo(() => {
+    // If templateLayout is explicitly provided, use the layout-specific renderer
+    if (templateLayout) {
+      return renderByLayout(data, themeData, templateLayout)
+    }
+
+    // Legacy fallback: use theme category-based rendering
     const category = themeData.category
 
     // Dark themes (including tech themes)
@@ -902,7 +1933,7 @@ function CVPreviewComponent({ data, theme, scale = 1, className = '' }: CVPrevie
 
     // Default: Classic light themes (professional, creative, minimal)
     return renderClassicTheme(data, themeData)
-  }, [data, theme, themeData])
+  }, [data, theme, themeData, templateLayout])
 
   // Memoize empty state check
   const isEmpty = useMemo(() => {

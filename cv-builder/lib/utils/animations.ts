@@ -65,7 +65,7 @@ export const scaleUp: Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.5, type: 'spring', stiffness: 200, damping: 20 }
+    transition: { duration: 0.5, type: 'spring' as const, stiffness: 200, damping: 20 }
   }
 }
 
@@ -135,7 +135,7 @@ export const buttonPop = {
   rest: { scale: 1 },
   hover: {
     scale: 1.05,
-    transition: { type: 'spring', stiffness: 400, damping: 10 }
+    transition: { type: 'spring' as const, stiffness: 400, damping: 10 }
   },
   tap: { scale: 0.95 }
 }
@@ -359,7 +359,7 @@ export const badgePop: Variants = {
   visible: {
     scale: 1,
     opacity: 1,
-    transition: { type: 'spring', stiffness: 500, damping: 25 }
+    transition: { type: 'spring' as const, stiffness: 500, damping: 25 }
   }
 }
 

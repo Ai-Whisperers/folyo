@@ -4,6 +4,30 @@
  */
 
 import { THEME_CONFIGS, ThemeConfig, ThemeSkin } from '@/lib/types/cv'
+import {
+  COLOR_PALETTES,
+  TEMPLATE_LAYOUTS,
+  getColorPalette,
+  getTemplateLayout,
+  colorPaletteToThemeConfig,
+  isColorDark,
+  type ColorPalette,
+  type TemplateLayout,
+  type TemplateLayoutId,
+  LEGACY_THEME_CONFIGS
+} from '@/lib/templates'
+
+// Re-export new template system for easier access
+export {
+  COLOR_PALETTES,
+  TEMPLATE_LAYOUTS,
+  getColorPalette,
+  getTemplateLayout,
+  colorPaletteToThemeConfig,
+  isColorDark,
+  LEGACY_THEME_CONFIGS
+}
+export type { ColorPalette, TemplateLayout, TemplateLayoutId }
 
 // ============================================================================
 // Theme Data Types
@@ -26,12 +50,35 @@ export interface ThemeColors {
 
 /**
  * Get theme configuration by ID
+ * First checks new color palettes, then falls back to legacy themes
  * Returns default (teal) theme if not found
  */
 export const getThemeConfig = (themeId: string | undefined): ThemeConfig => {
   if (!themeId) return THEME_CONFIGS[0]
+
+  // First check if it's a new color palette ID
+  const colorPalette = getColorPalette(themeId)
+  if (colorPalette) {
+    return colorPaletteToThemeConfig(colorPalette) as ThemeConfig
+  }
+
+  // Fall back to legacy THEME_CONFIGS
   const theme = THEME_CONFIGS.find(t => t.id === themeId)
   return theme || THEME_CONFIGS[0]
+}
+
+/**
+ * Get all available themes (combines new palettes with legacy themes)
+ */
+export const getAllThemes = (): ThemeConfig[] => {
+  // Start with legacy themes converted from new color palettes
+  const newThemes = LEGACY_THEME_CONFIGS as ThemeConfig[]
+
+  // Add any legacy themes that don't have an equivalent in new system
+  const newThemeIds = new Set(newThemes.map(t => t.id))
+  const uniqueLegacyThemes = THEME_CONFIGS.filter(t => !newThemeIds.has(t.id))
+
+  return [...newThemes, ...uniqueLegacyThemes]
 }
 
 /**
@@ -56,15 +103,23 @@ export const getThemeColors = (themeId: string): ThemeColors => {
  * Check if a theme is dark based on background color
  * Used for determining text colors and UI variants
  */
-export const isDarkTheme = (theme: ThemeConfig | ThemeColors): boolean => {
+export const isDarkTheme = (theme: ThemeConfig | ThemeColors | string): boolean => {
+  // If it's a string (theme ID), check color palette first
+  if (typeof theme === 'string') {
+    const palette = getColorPalette(theme)
+    if (palette) {
+      return isColorDark(palette.background)
+    }
+    const config = getThemeConfig(theme)
+    return isDarkTheme(config)
+  }
+
   const bgColor = ('bgColor' in theme ? theme.bgColor : theme.bg)?.toLowerCase() || ''
 
-  // Check if background is dark (starts with dark hex values)
-  const isDarkBg = bgColor.startsWith('#0') ||
-                   bgColor.startsWith('#1') ||
-                   bgColor.startsWith('#2') ||
-                   bgColor.startsWith('#3') ||
-                   bgColor.startsWith('#4')
+  // Use the isColorDark function for consistent dark detection
+  if (bgColor) {
+    return isColorDark(bgColor)
+  }
 
   // Check category for known dark themes
   const isDarkCategory = theme.category === 'bold'
@@ -87,7 +142,7 @@ export const isDarkTheme = (theme: ThemeConfig | ThemeColors): boolean => {
   const themeId = 'id' in theme ? (theme as ThemeConfig).id : null
   const isKnownDark = themeId ? darkThemeIds.includes(themeId) : false
 
-  return isDarkBg || isDarkCategory || isKnownDark
+  return isDarkCategory || isKnownDark
 }
 
 /**
@@ -122,16 +177,18 @@ export const getThemeCSSVars = (theme: ThemeConfig): Record<string, string> => {
  * Get themes by category
  */
 export const getThemesByCategory = (category: string): ThemeConfig[] => {
-  if (category === 'all') return THEME_CONFIGS
-  return THEME_CONFIGS.filter(t => t.category === category)
+  const allThemes = getAllThemes()
+  if (category === 'all') return allThemes
+  return allThemes.filter(t => t.category === category)
 }
 
 /**
  * Get category counts for filter badges
  */
 export const getThemeCategoryCounts = (): Record<string, number> => {
-  const counts: Record<string, number> = { all: THEME_CONFIGS.length }
-  THEME_CONFIGS.forEach(theme => {
+  const allThemes = getAllThemes()
+  const counts: Record<string, number> = { all: allThemes.length }
+  allThemes.forEach(theme => {
     counts[theme.category] = (counts[theme.category] || 0) + 1
   })
   return counts
@@ -141,13 +198,22 @@ export const getThemeCategoryCounts = (): Record<string, number> => {
  * Search themes by name, category, or description
  */
 export const searchThemes = (query: string): ThemeConfig[] => {
-  if (!query.trim()) return THEME_CONFIGS
+  const allThemes = getAllThemes()
+  if (!query.trim()) return allThemes
   const lowerQuery = query.toLowerCase()
-  return THEME_CONFIGS.filter(t =>
+  return allThemes.filter(t =>
     t.name.toLowerCase().includes(lowerQuery) ||
     t.category.toLowerCase().includes(lowerQuery) ||
     t.description?.toLowerCase().includes(lowerQuery)
   )
+}
+
+/**
+ * Get color palettes by category
+ */
+export const getColorPalettesByCategory = (category: ColorPalette['category'] | 'all'): ColorPalette[] => {
+  if (category === 'all') return COLOR_PALETTES
+  return COLOR_PALETTES.filter(p => p.category === category)
 }
 
 // ============================================================================

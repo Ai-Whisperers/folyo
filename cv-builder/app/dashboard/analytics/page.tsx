@@ -1,7 +1,8 @@
 'use client'
 
+
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
+import { useAuth } from '@/lib/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -33,7 +34,7 @@ interface OverallStats {
 }
 
 export default function AnalyticsDashboardPage() {
-  const { data: session, status } = useSession()
+  const { user, isLoading } = useAuth()
   const router = useRouter()
   const [cvAnalytics, setCvAnalytics] = useState<CVAnalytics[]>([])
   const [overallStats, setOverallStats] = useState<OverallStats | null>(null)
@@ -41,15 +42,15 @@ export default function AnalyticsDashboardPage() {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d')
 
   useEffect(() => {
-    if (status === 'loading') return
+    if (isLoading) return
 
-    if (!session) {
+    if (!user) {
       router.push('/auth/signin')
       return
     }
 
     fetchAnalytics()
-  }, [session, status, timeRange])
+  }, [user, isLoading, router, timeRange])
 
   const fetchAnalytics = async () => {
     try {
@@ -58,7 +59,7 @@ export default function AnalyticsDashboardPage() {
       // Fetch user's CVs with analytics
       const response = await fetch('/api/user/cvs', {
         headers: {
-          'x-user-id': (session?.user as { id?: string })?.id || ''
+          'x-user-id': user?.id || ''
         }
       })
 
@@ -130,7 +131,7 @@ export default function AnalyticsDashboardPage() {
     return colors[theme] || 'bg-gray-500'
   }
 
-  if (status === 'loading' || loading) {
+  if (isLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
