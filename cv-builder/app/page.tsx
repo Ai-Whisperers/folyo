@@ -16,9 +16,9 @@ import {
   LinkIcon,
 } from '@heroicons/react/24/outline'
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid'
-import { THEME_CONFIGS } from '../lib/types/cv'
-import { Navbar } from '../components/common/Navbar'
-import { Footer } from '../components/common/Footer'
+import { THEME_CONFIGS } from '@/lib/types/cv'
+import { Navbar } from '@/components/common/Navbar'
+import { Footer } from '@/components/common/Footer'
 import {
   fadeInUp,
   staggerContainer,
@@ -29,7 +29,7 @@ import {
   heroStagger,
   scaleIn,
   viewportOptions
-} from '../lib/utils/animations'
+} from '@/lib/utils/animations'
 
 const features = [
   {

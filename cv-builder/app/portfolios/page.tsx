@@ -18,8 +18,8 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from '@heroicons/react/24/outline'
-import { Navbar } from '../../components/common/Navbar'
-import { THEME_CONFIGS, type ThemeConfig } from '../../lib/types/cv'
+import { Navbar } from '@/components/common/Navbar'
+import { THEME_CONFIGS, type ThemeConfig } from '@/lib/types/cv'
 
 interface PublicPortfolio {
   id: string

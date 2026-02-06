@@ -2,19 +2,19 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import Link from 'next/link'
-import { CVBuilderForm } from '../../components/cv/CVBuilderForm'
-import { CVPreview } from '../../components/cv/CVPreview'
-import { ThemeSwitcher } from '../../components/common/ThemeSwitcher'
-import { ExportButton } from '../../components/common/ExportButton'
-import { SaveButton } from '../../components/common/SaveButton'
+import { CVBuilderForm } from '@/components/cv/CVBuilderForm'
+import { CVPreview } from '@/components/cv/CVPreview'
+import { ThemeSwitcher } from '@/components/common/ThemeSwitcher'
+import { ExportButton } from '@/components/common/ExportButton'
+import { SaveButton } from '@/components/common/SaveButton'
 import {
   SaveStatus,
   UnsavedChangesModal,
   ProgressIndicator,
   OnboardingTooltip,
   BUILDER_ONBOARDING_STEPS,
-} from '../../components/ui'
-import { useUnsavedChanges } from '../../lib/hooks'
+} from '@/components/ui'
+import { useUnsavedChanges } from '@/lib/hooks'
 import { useAuth } from '@/lib/contexts/AuthContext'
 import { CVFormData } from '@/lib/types/cv'
 import {
@@ -30,7 +30,7 @@ import {
   ArrowsPointingOutIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { QRCodeModal } from '../../components/ui/QRCodeDisplay'
+import { QRCodeModal } from '@/components/ui/QRCodeDisplay'
 
 // Helper to get user-specific storage key
 const getStorageKey = (userId?: string) => {
