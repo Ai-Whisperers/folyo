@@ -1,12 +1,12 @@
-# Kyrian Weiss van der Pol - Professional CV
+# Folyo - CV as a Webpage
 # Update content by editing the data.yml file inside _data folder.
 
 # Site Settings
-title: Kyrian Weiss - QA Engineer & Developer
-url: 'https://ivanweissvanderpol.github.io'
-baseurl: '/kiki'
+title: Folyo - Professional CV Template
+url: 'https://ai-whisperers.github.io'
+baseurl: '/folyo'
 
-description: Professional CV - Kyrian Weiss van der Pol | QA Engineer | Data Analyst | Python Developer
+description: Folyo - Transform your CV into a beautiful webpage | AI Whisperers
 # Style options: blue turquoise green berry orange ceramic teal
 theme_skin: berry
 chrome_mobile_color: '#6d1b4d'
