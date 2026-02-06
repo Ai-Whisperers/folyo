@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo, memo } from 'react'
+import { setNestedValue, updateArrayItem, removeArrayItem, addArrayItem } from '@/lib/utils/dataHelpers'
 import {
   PlusIcon,
   MinusIcon,
@@ -23,9 +24,11 @@ import { DeveloperProfileSection } from './DeveloperProfileSection'
 import { AIAssistant } from '../ai/AIAssistant'
 import { ImageUpload } from '../common/ImageUpload'
 
+import { CVFormData } from '@/lib/types/cv'
+
 interface CVBuilderFormProps {
-  data: any
-  onChange: (data: any) => void
+  data: CVFormData
+  onChange: (data: CVFormData) => void
   onSectionChange?: (section: string) => void
 }
 
@@ -90,30 +93,8 @@ const getSectionsForType = (portfolioType: 'video' | 'design' | 'developer' | 'g
   }
 }
 
-// Deep clone utility for immutable updates
-const deepClone = <T,>(obj: T): T => JSON.parse(JSON.stringify(obj))
-
-// Path-based update utility
-const setNestedValue = (obj: any, path: string, value: any): any => {
-  const result = deepClone(obj)
-  const keys = path.split('.')
-  let current = result
-
-  for (let i = 0; i < keys.length - 1; i++) {
-    const key = keys[i]
-    // Handle array indices
-    const nextKey = keys[i + 1]
-    const isNextArray = !isNaN(Number(nextKey))
-
-    if (!current[key]) {
-      current[key] = isNextArray ? [] : {}
-    }
-    current = current[key]
-  }
-
-  current[keys[keys.length - 1]] = value
-  return result
-}
+// Path-based update utility (imported from dataHelpers)
+// Using efficient implementation from @/lib/utils/dataHelpers
 
 function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFormProps) {
   const [activeSection, setActiveSection] = useState('personal')
@@ -128,16 +109,16 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
     return getSectionsForType(portfolioType)
   }, [portfolioType])
 
-  // Memoized update field handler
+  // Memoized update field handler using efficient utility
   const updateField = useCallback((path: string, value: any) => {
     onChange(setNestedValue(data, path, value))
   }, [data, onChange])
 
-  // Memoized add array item handler
+  // Memoized add array item handler using efficient utility
   const addArrayItem = useCallback((path: string, template: any) => {
     const keys = path.split('.')
-    const newData = deepClone(data)
-    let current = newData
+    const newData = { ...data }
+    let current: any = newData
 
     for (const key of keys) {
       if (!current[key]) current[key] = []
@@ -148,11 +129,11 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
     onChange(newData)
   }, [data, onChange])
 
-  // Memoized remove array item handler
+  // Memoized remove array item handler using efficient utility
   const removeArrayItem = useCallback((path: string, index: number) => {
     const keys = path.split('.')
-    const newData = deepClone(data)
-    let current = newData
+    const newData = { ...data }
+    let current: any = newData
 
     for (const key of keys) {
       current = current[key]

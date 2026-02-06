@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { hashPassword, verifyPassword, checkPasswordStrength } from '@/lib/utils/auth'
 
 export interface User {
   id: string
@@ -26,7 +27,7 @@ const USERS_KEY = 'folyo-users'
 const CURRENT_USER_KEY = 'folyo-current-user'
 
 // Get stored users
-const getStoredUsers = (): Record<string, { user: User; password: string }> => {
+const getStoredUsers = (): Record<string, { user: User; passwordHash: string }> => {
   if (typeof window === 'undefined') return {}
   try {
     const stored = localStorage.getItem(USERS_KEY)
@@ -37,7 +38,7 @@ const getStoredUsers = (): Record<string, { user: User; password: string }> => {
 }
 
 // Save users to storage
-const saveUsers = (users: Record<string, { user: User; password: string }>) => {
+const saveUsers = (users: Record<string, { user: User; passwordHash: string }>) => {
   if (typeof window === 'undefined') return
   localStorage.setItem(USERS_KEY, JSON.stringify(users))
 }
@@ -72,15 +73,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const users = getStoredUsers()
       const userRecord = users[email.toLowerCase()]
-
+      
       if (!userRecord) {
         return { success: false, error: 'No account found with this email' }
       }
-
-      if (userRecord.password !== password) {
+      
+      const isValidPassword = await verifyPassword(password, userRecord.passwordHash)
+      
+      if (!isValidPassword) {
         return { success: false, error: 'Incorrect password' }
       }
-
+      
       setUser(userRecord.user)
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userRecord.user))
       return { success: true }
@@ -91,22 +94,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (email: string, password: string, name: string): Promise<{ success: boolean; error?: string }> => {
     try {
+      // First check password strength
+      const passwordCheck = checkPasswordStrength(password)
+      if (!passwordCheck.isStrong) {
+        return { 
+          success: false, 
+          error: 'Password is too weak. ' + passwordCheck.feedback.join('. ') 
+        }
+      }
+      
       const users = getStoredUsers()
-
+      
       if (users[email.toLowerCase()]) {
         return { success: false, error: 'An account with this email already exists' }
       }
-
+      
+      const passwordHash = await hashPassword(password)
+      
       const newUser: User = {
         id: generateId(),
         email: email.toLowerCase(),
         name,
         createdAt: new Date().toISOString()
       }
-
-      users[email.toLowerCase()] = { user: newUser, password }
+      
+      users[email.toLowerCase()] = { user: newUser, passwordHash }
       saveUsers(users)
-
+      
       setUser(newUser)
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(newUser))
       return { success: true }

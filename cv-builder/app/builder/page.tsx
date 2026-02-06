@@ -17,6 +17,7 @@ import {
 import { useUnsavedChanges } from '@/lib/hooks'
 import { useAuth } from '@/lib/contexts/AuthContext'
 import { CVFormData } from '@/lib/types/cv'
+import { createCV, updateCV } from '@/lib/api/cv'
 import {
   EyeIcon,
   PencilIcon,
@@ -367,9 +368,21 @@ export default function CVBuilderPage() {
     setIsSaving(true)
     setSaveStatus('saving')
     try {
-      // TODO: Implement API call to save CV data
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
-      // Save to user-specific storage key
+      // Use the existing API to save CV data
+      if (cv.cv) {
+        // Update existing CV
+        await updateCV(cv.cv.id, cvData)
+      } else {
+        // Create new CV
+        const newCV = await createCV({
+          title: cvData.sidebar.name || 'Untitled CV',
+          ...cvData
+        })
+        // Update local state with the new CV ID
+        setCv(prev => ({ ...prev, cv: newCV }))
+      }
+      
+      // Save to user-specific storage key as backup
       localStorage.setItem(storageKey, JSON.stringify(cvData))
       // Also save to legacy key for portfolio page compatibility
       localStorage.setItem('cv-data', JSON.stringify(cvData))
@@ -377,6 +390,7 @@ export default function CVBuilderPage() {
       setSaveStatus('saved')
       setLastSaved(new Date())
     } catch (error) {
+      console.error('Failed to save CV:', error)
       setSaveStatus('error')
     } finally {
       setIsSaving(false)
