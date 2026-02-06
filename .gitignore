@@ -1,70 +1,38 @@
-# Next.js Build Output
-cv-builder/.next/
-cv-builder/out/
+# Next.js build artifacts
+.next/
+out/
+build/
 
-# Node modules
+# Dependencies
 node_modules/
+/.pnp
+.pnp.js
 
-# Python Cache
-__pycache__/
-*.pyc
-*.pyo
-.pytest_cache/
-venv/
-.venv/
+# Production
+/build
 
-# Temporary files
-*.tmp
-*.bak
-*~
-*.swp
-
-# IDE & Editor
-.specstory/
-.vscode/
-.idea/
-*.code-workspace
-.cursorindexingignore
-
-# OS Files
-.DS_Store
-Thumbs.db
-
-# Personal/Private Data (do not commit)
-PersonalData/
-ana-cv-github-upload/
-
-# Archive folder (legacy Jekyll files)
-archive/
-
-# Environment Files (NEVER COMMIT)
+# Environment variables
 .env
-.env.*
-!.env.example
-cv-builder/.env*
-!cv-builder/.env.example
+.env*.local
 
-# Build Logs
-*.log
-build_log*.txt
+# Testing
+/coverage
 
-# Claude Code Configuration (personal settings - not shared)
-.claude/CLAUDE.local.md
-.claude/settings.local.json
-
-# Credentials & Secrets (NEVER COMMIT)
-**/credentials.json
-**/credentials.yml
-**/kaggle.json
-**/.aws/
-**/.ssh/
+# Misc
+.DS_Store
 *.pem
-*.key
-*.p12
-*.pfx
 
-# Large files (use download scripts instead)
-*.csv
-*.xlsx
-*.zip
-datasets/
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel
+
+# Archive (old project files)
+_archive/
