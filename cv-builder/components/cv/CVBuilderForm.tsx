@@ -42,10 +42,11 @@ const getPortfolioType = (theme: string): 'video' | 'design' | 'developer' | 'ge
   return 'general'
 }
 
-// Base sections for all portfolio types
+// Base sections for all portfolio types - Victoria Rolon Standard
 const BASE_SECTIONS = [
   { id: 'personal', name: 'Personal Info', icon: UserIcon },
   { id: 'profile', name: 'About / Bio', icon: SparklesIcon },
+  { id: 'interests', name: 'Interests', icon: HeartIcon },
 ]
 
 // Sections configuration by portfolio type
@@ -83,7 +84,8 @@ const getSectionsForType = (portfolioType: 'video' | 'design' | 'developer' | 'g
         { id: 'experience', name: 'Experience', icon: BriefcaseIcon },
         { id: 'education', name: 'Education', icon: AcademicCapIcon },
         { id: 'skills', name: 'Skills', icon: TrophyIcon },
-        { id: 'portfolio', name: 'Portfolio', icon: PresentationChartBarIcon },
+        { id: 'certifications', name: 'Certifications', icon: TrophyIcon },
+        { id: 'projects', name: 'Projects', icon: PresentationChartBarIcon },
       ]
   }
 }
@@ -272,6 +274,66 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
           />
         </div>
       </div>
+
+      {/* Languages Section - Victoria Rolon Standard */}
+      <div className="border-t border-gray-200 pt-6 mt-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-medium text-gray-900">Languages</h3>
+          <button
+            onClick={() => {
+              const currentLangs = Array.isArray(data.sidebar?.languages)
+                ? data.sidebar.languages
+                : []
+              updateField('sidebar.languages', [...currentLangs, { idiom: '', level: 'Intermediate' }])
+            }}
+            className="btn-secondary text-sm"
+          >
+            <PlusIcon className="h-4 w-4 mr-2" />
+            Add Language
+          </button>
+        </div>
+
+        {(Array.isArray(data.sidebar?.languages) ? data.sidebar.languages : []).map((lang: any, index: number) => (
+          <div key={index} className="flex items-center gap-4 mb-3">
+            <input
+              type="text"
+              className="form-input flex-1"
+              value={lang.idiom || ''}
+              onChange={(e) => {
+                const langs = [...(data.sidebar?.languages || [])]
+                langs[index] = { ...langs[index], idiom: e.target.value }
+                updateField('sidebar.languages', langs)
+              }}
+              placeholder="e.g., English, Spanish"
+            />
+            <select
+              className="form-input w-40"
+              value={lang.level || 'Intermediate'}
+              onChange={(e) => {
+                const langs = [...(data.sidebar?.languages || [])]
+                langs[index] = { ...langs[index], level: e.target.value }
+                updateField('sidebar.languages', langs)
+              }}
+            >
+              <option value="Native">Native</option>
+              <option value="Professional">Professional</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Basic">Basic</option>
+            </select>
+            <button
+              onClick={() => {
+                const langs = [...(data.sidebar?.languages || [])]
+                langs.splice(index, 1)
+                updateField('sidebar.languages', langs)
+              }}
+              className="text-red-600 hover:text-red-800"
+            >
+              <MinusIcon className="h-4 w-4" />
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   )
 
@@ -295,39 +357,62 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
     </button>
   )
 
+  // Get career profile summary from either key
+  const getCareerSummary = () => data.career_profile?.summary || data['career-profile']?.summary || ''
+
   const renderCareerProfileSection = () => (
     <div className="space-y-6">
       <div>
         <label className="form-label">Professional Summary</label>
         <div className="relative">
           <textarea
-            className="form-input h-32 pr-10"
-            value={data['career-profile']?.summary || ''}
-            onChange={(e) => updateField('career-profile.summary', e.target.value)}
-            placeholder="Write a compelling summary of your professional experience, key skills, and career objectives. Use keywords relevant to your target role."
+            className="form-input h-48 pr-10"
+            value={getCareerSummary()}
+            onChange={(e) => {
+              // Update both keys for compatibility
+              updateField('career_profile.summary', e.target.value)
+              updateField('career-profile.summary', e.target.value)
+            }}
+            placeholder="Write a compelling summary of your professional experience...
+
+Example (Victoria Rolon Standard):
+**Emerging professional** with passion for technology and drive toward excellence.
+
+I bring a unique combination of **technical expertise** and **business acumen** to every role.
+
+**Key Strengths:**
+- Rapid problem diagnosis and resolution
+- Cross-functional team collaboration
+- Process optimization and automation"
           />
-          {renderAIButton('career-profile.summary', data['career-profile']?.summary || '', 'summary')}
+          {renderAIButton('career_profile.summary', getCareerSummary(), 'summary')}
         </div>
-        <p className="text-xs text-gray-500 mt-1">
-          Tip: Include 3-4 sentences highlighting your experience, key achievements, and career goals.
+        <p className="text-xs text-gray-500 mt-2">
+          <strong>Tip:</strong> Use **bold** for emphasis on key terms. Include a Key Strengths section with bullet points.
         </p>
       </div>
     </div>
   )
+
+  // Helper to get experiences array (supports both new standard and legacy format)
+  const getExperiences = () => Array.isArray(data.experiences) ? data.experiences : (data.experiences?.info || [])
 
   const renderExperienceSection = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-medium text-gray-900">Work Experience</h3>
         <button
-          onClick={() => addArrayItem('experiences.info', {
-            role: '',
-            company: '',
-            time: '',
-            details: '',
-            tags: [],
-            icon: 'briefcase'
-          })}
+          onClick={() => {
+            const current = getExperiences()
+            updateField('experiences', [...current, {
+              role: '',
+              company: '',
+              time: '',
+              details: '',
+              tags: [],
+              icon: 'briefcase'
+            }])
+          }}
           className="btn-secondary text-sm"
         >
           <PlusIcon className="h-4 w-4 mr-2" />
@@ -335,12 +420,15 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
         </button>
       </div>
 
-      {data.experiences?.info?.map((exp: any, index: number) => (
+      {getExperiences().map((exp: any, index: number) => (
         <div key={index} className="p-4 border border-gray-200 rounded-lg">
           <div className="flex justify-between items-start mb-4">
             <h4 className="font-medium text-gray-900">Experience #{index + 1}</h4>
             <button
-              onClick={() => removeArrayItem('experiences.info', index)}
+              onClick={() => {
+                const current = getExperiences()
+                updateField('experiences', current.filter((_: any, i: number) => i !== index))
+              }}
               className="text-red-600 hover:text-red-800"
             >
               <MinusIcon className="h-4 w-4" />
@@ -354,8 +442,12 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
                 type="text"
                 className="form-input"
                 value={exp.role || ''}
-                onChange={(e) => updateField(`experiences.info.${index}.role`, e.target.value)}
-                placeholder="e.g., Senior Software Engineer"
+                onChange={(e) => {
+                  const current = getExperiences()
+                  current[index] = { ...current[index], role: e.target.value }
+                  updateField('experiences', [...current])
+                }}
+                placeholder="e.g., IT Support Specialist"
               />
             </div>
 
@@ -366,7 +458,11 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
                   type="text"
                   className="form-input"
                   value={exp.company || ''}
-                  onChange={(e) => updateField(`experiences.info.${index}.company`, e.target.value)}
+                  onChange={(e) => {
+                    const current = getExperiences()
+                    current[index] = { ...current[index], company: e.target.value }
+                    updateField('experiences', [...current])
+                  }}
                   placeholder="e.g., Tech Corp Inc."
                 />
               </div>
@@ -376,8 +472,12 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
                   type="text"
                   className="form-input"
                   value={exp.time || ''}
-                  onChange={(e) => updateField(`experiences.info.${index}.time`, e.target.value)}
-                  placeholder="e.g., Jan 2020 - Present"
+                  onChange={(e) => {
+                    const current = getExperiences()
+                    current[index] = { ...current[index], time: e.target.value }
+                    updateField('experiences', [...current])
+                  }}
+                  placeholder="e.g., 2023 - Present"
                 />
               </div>
             </div>
@@ -386,19 +486,48 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
               <label className="form-label">Description & Achievements</label>
               <div className="relative">
                 <textarea
-                  className="form-input h-24 pr-10"
+                  className="form-input h-32 pr-10"
                   value={exp.details || ''}
-                  onChange={(e) => updateField(`experiences.info.${index}.details`, e.target.value)}
-                  placeholder="• Describe your key responsibilities and achievements using bullet points&#10;• Use action verbs and quantify results where possible&#10;• Focus on impact and outcomes rather than just tasks"
+                  onChange={(e) => {
+                    const current = getExperiences()
+                    current[index] = { ...current[index], details: e.target.value }
+                    updateField('experiences', [...current])
+                  }}
+                  placeholder="**Key Achievements:**
+- Resolved 95%+ of issues within SLA timeframes
+- Configured and maintained 30+ workstations
+- Implemented preventive protocols reducing downtime by 40%
+
+Use **bold** for metrics and achievements."
                 />
-                {renderAIButton(`experiences.info.${index}.details`, exp.details || '', 'experience')}
+                {renderAIButton(`experiences.${index}.details`, exp.details || '', 'experience')}
               </div>
+            </div>
+
+            {/* Tags - Victoria Rolon Standard */}
+            <div>
+              <label className="form-label">Skills & Technologies (Tags)</label>
+              <input
+                type="text"
+                className="form-input"
+                value={(exp.tags || []).join(', ')}
+                onChange={(e) => {
+                  const current = getExperiences()
+                  current[index] = {
+                    ...current[index],
+                    tags: e.target.value.split(',').map((t: string) => t.trim()).filter(Boolean)
+                  }
+                  updateField('experiences', [...current])
+                }}
+                placeholder="e.g., Technical Support, Networking, Hardware, Windows"
+              />
+              <p className="text-xs text-gray-500 mt-1">Separate tags with commas</p>
             </div>
           </div>
         </div>
       ))}
 
-      {(!data.experiences?.info || data.experiences.info.length === 0) && (
+      {getExperiences().length === 0 && (
         <div className="text-center py-8 text-gray-500">
           <BriefcaseIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
           <p>No work experience added yet.</p>
@@ -408,17 +537,23 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
     </div>
   )
 
+  // Helper to get education array (supports both new standard and legacy format)
+  const getEducation = () => Array.isArray(data.education) ? data.education : (data.education?.info || [])
+
   const renderEducationSection = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-medium text-gray-900">Education</h3>
         <button
-          onClick={() => addArrayItem('education.info', {
-            degree: '',
-            university: '',
-            time: '',
-            details: ''
-          })}
+          onClick={() => {
+            const current = getEducation()
+            updateField('education', [...current, {
+              degree: '',
+              university: '',
+              time: '',
+              details: ''
+            }])
+          }}
           className="btn-secondary text-sm"
         >
           <PlusIcon className="h-4 w-4 mr-2" />
@@ -426,12 +561,15 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
         </button>
       </div>
 
-      {data.education?.info?.map((edu: any, index: number) => (
+      {getEducation().map((edu: any, index: number) => (
         <div key={index} className="p-4 border border-gray-200 rounded-lg">
           <div className="flex justify-between items-start mb-4">
             <h4 className="font-medium text-gray-900">Education #{index + 1}</h4>
             <button
-              onClick={() => removeArrayItem('education.info', index)}
+              onClick={() => {
+                const current = getEducation()
+                updateField('education', current.filter((_: any, i: number) => i !== index))
+              }}
               className="text-red-600 hover:text-red-800"
             >
               <MinusIcon className="h-4 w-4" />
@@ -445,8 +583,12 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
                 type="text"
                 className="form-input"
                 value={edu.degree || ''}
-                onChange={(e) => updateField(`education.info.${index}.degree`, e.target.value)}
-                placeholder="e.g., Bachelor of Computer Science"
+                onChange={(e) => {
+                  const current = getEducation()
+                  current[index] = { ...current[index], degree: e.target.value }
+                  updateField('education', [...current])
+                }}
+                placeholder="e.g., Bachelor's in Business Administration"
               />
             </div>
 
@@ -457,8 +599,12 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
                   type="text"
                   className="form-input"
                   value={edu.university || ''}
-                  onChange={(e) => updateField(`education.info.${index}.university`, e.target.value)}
-                  placeholder="e.g., University of Technology"
+                  onChange={(e) => {
+                    const current = getEducation()
+                    current[index] = { ...current[index], university: e.target.value }
+                    updateField('education', [...current])
+                  }}
+                  placeholder="e.g., National University"
                 />
               </div>
               <div>
@@ -467,40 +613,89 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
                   type="text"
                   className="form-input"
                   value={edu.time || ''}
-                  onChange={(e) => updateField(`education.info.${index}.time`, e.target.value)}
-                  placeholder="e.g., 2018 - 2022"
+                  onChange={(e) => {
+                    const current = getEducation()
+                    current[index] = { ...current[index], time: e.target.value }
+                    updateField('education', [...current])
+                  }}
+                  placeholder="e.g., 2024 - Present"
                 />
               </div>
             </div>
 
             <div>
-              <label className="form-label">Additional Details</label>
+              <label className="form-label">Details & Achievements</label>
               <div className="relative">
                 <textarea
-                  className="form-input h-20 pr-10"
+                  className="form-input h-28 pr-10"
                   value={edu.details || ''}
-                  onChange={(e) => updateField(`education.info.${index}.details`, e.target.value)}
-                  placeholder="• GPA, honors, relevant coursework&#10;• Thesis topic, awards, extracurricular activities"
+                  onChange={(e) => {
+                    const current = getEducation()
+                    current[index] = { ...current[index], details: e.target.value }
+                    updateField('education', [...current])
+                  }}
+                  placeholder="**Currently pursuing** at prestigious institution.
+
+**Specializations:**
+- Core competency 1
+- Core competency 2
+- Strategic planning and analysis"
                 />
-                {renderAIButton(`education.info.${index}.details`, edu.details || '', 'education')}
+                {renderAIButton(`education.${index}.details`, edu.details || '', 'education')}
               </div>
             </div>
           </div>
         </div>
       ))}
+
+      {getEducation().length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          <AcademicCapIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+          <p>No education added yet.</p>
+          <p className="text-sm">Click "Add Education" to get started.</p>
+        </div>
+      )}
     </div>
   )
+
+  // Helper to get skills array (supports both new standard and legacy format)
+  const getSkills = () => Array.isArray(data.skills) ? data.skills : (data.skills?.toolset || [])
+
+  // Proficiency levels with descriptions
+  const PROFICIENCY_LEVELS = [
+    { value: 'expert', label: 'Expert', description: 'Can teach others, deep expertise' },
+    { value: 'advanced', label: 'Advanced', description: 'Highly proficient, minimal guidance needed' },
+    { value: 'proficient', label: 'Proficient', description: 'Solid working knowledge' },
+    { value: 'familiar', label: 'Familiar', description: 'Basic understanding, some experience' },
+  ]
+
+  // Convert legacy numeric levels to proficiency labels
+  const normalizeProficiency = (level: any): string => {
+    if (typeof level === 'string' && ['expert', 'advanced', 'proficient', 'familiar'].includes(level)) {
+      return level
+    }
+    // Convert numeric to label
+    const num = typeof level === 'number' ? level : parseInt(String(level).replace('%', ''), 10)
+    if (isNaN(num)) return 'proficient'
+    if (num >= 90) return 'expert'
+    if (num >= 75) return 'advanced'
+    if (num >= 50) return 'proficient'
+    return 'familiar'
+  }
 
   const renderSkillsSection = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium text-gray-900">Skills & Proficiency</h3>
+        <h3 className="text-lg font-medium text-gray-900">Skills & Expertise</h3>
         <button
-          onClick={() => addArrayItem('skills.toolset', {
-            name: '',
-            level: '80%',
-            tags: []
-          })}
+          onClick={() => {
+            const current = getSkills()
+            updateField('skills', [...current, {
+              name: '',
+              level: 'proficient',
+              tags: []
+            }])
+          }}
           className="btn-secondary text-sm"
         >
           <PlusIcon className="h-4 w-4 mr-2" />
@@ -508,12 +703,19 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
         </button>
       </div>
 
-      {data.skills?.toolset?.map((skill: any, index: number) => (
+      <p className="text-sm text-gray-600">
+        Group your skills by category and add specific competencies as tags. The tags are what recruiters will see.
+      </p>
+
+      {getSkills().map((skill: any, index: number) => (
         <div key={index} className="p-4 border border-gray-200 rounded-lg">
           <div className="flex justify-between items-start mb-4">
             <h4 className="font-medium text-gray-900">Skill #{index + 1}</h4>
             <button
-              onClick={() => removeArrayItem('skills.toolset', index)}
+              onClick={() => {
+                const current = getSkills()
+                updateField('skills', current.filter((_: any, i: number) => i !== index))
+              }}
               className="text-red-600 hover:text-red-800"
             >
               <MinusIcon className="h-4 w-4" />
@@ -523,33 +725,373 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="form-label">Skill Name *</label>
+                <label className="form-label">Skill Category *</label>
                 <input
                   type="text"
                   className="form-input"
                   value={skill.name || ''}
-                  onChange={(e) => updateField(`skills.toolset.${index}.name`, e.target.value)}
-                  placeholder="e.g., JavaScript, Project Management"
+                  onChange={(e) => {
+                    const current = getSkills()
+                    current[index] = { ...current[index], name: e.target.value }
+                    updateField('skills', [...current])
+                  }}
+                  placeholder="e.g., Technical Support, Microsoft Office Suite"
                 />
               </div>
               <div>
                 <label className="form-label">Proficiency Level</label>
                 <select
                   className="form-input"
-                  value={skill.level || '80%'}
-                  onChange={(e) => updateField(`skills.toolset.${index}.level`, e.target.value)}
+                  value={normalizeProficiency(skill.level)}
+                  onChange={(e) => {
+                    const current = getSkills()
+                    current[index] = { ...current[index], level: e.target.value }
+                    updateField('skills', [...current])
+                  }}
                 >
-                  <option value="100%">Expert (100%)</option>
-                  <option value="90%">Advanced (90%)</option>
-                  <option value="80%">Proficient (80%)</option>
-                  <option value="70%">Intermediate (70%)</option>
-                  <option value="60%">Beginner (60%)</option>
+                  {PROFICIENCY_LEVELS.map((level) => (
+                    <option key={level.value} value={level.value}>
+                      {level.label} - {level.description}
+                    </option>
+                  ))}
                 </select>
               </div>
+            </div>
+
+            {/* Tags - The main focus */}
+            <div>
+              <label className="form-label">Specific Competencies (Tags) *</label>
+              <input
+                type="text"
+                className="form-input"
+                value={(skill.tags || []).join(', ')}
+                onChange={(e) => {
+                  const current = getSkills()
+                  current[index] = {
+                    ...current[index],
+                    tags: e.target.value.split(',').map((t: string) => t.trim()).filter(Boolean)
+                  }
+                  updateField('skills', [...current])
+                }}
+                placeholder="e.g., Hardware Diagnostics, Software Installation, Troubleshooting, Windows"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                These appear as visual tags. Be specific - recruiters search for these keywords.
+              </p>
+            </div>
+
+            {/* Preview of tags */}
+            {skill.tags?.length > 0 && (
+              <div className="pt-2">
+                <label className="form-label text-xs">Preview:</label>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {skill.tags.map((tag: string, tagIndex: number) => (
+                    <span
+                      key={tagIndex}
+                      className="px-2 py-1 bg-primary-50 text-primary-700 text-xs rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+
+      {getSkills().length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          <TrophyIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+          <p>No skills added yet.</p>
+          <p className="text-sm">Click "Add Skill" to get started.</p>
+        </div>
+      )}
+    </div>
+  )
+
+  // Interests Section - Victoria Rolon Standard (simple string array)
+  const getInterests = () => {
+    if (Array.isArray(data.interests)) return data.interests
+    if (data.interests?.info) return data.interests.info.map((i: any) => i.item || i)
+    return []
+  }
+
+  const renderInterestsSection = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-medium text-gray-900">Professional Interests</h3>
+        <button
+          onClick={() => {
+            const current = getInterests()
+            updateField('interests', [...current, ''])
+          }}
+          className="btn-secondary text-sm"
+        >
+          <PlusIcon className="h-4 w-4 mr-2" />
+          Add Interest
+        </button>
+      </div>
+
+      <p className="text-sm text-gray-600">
+        Add your professional interests. These appear as tags in your portfolio.
+      </p>
+
+      <div className="space-y-3">
+        {getInterests().map((interest: string, index: number) => (
+          <div key={index} className="flex items-center gap-3">
+            <input
+              type="text"
+              className="form-input flex-1"
+              value={interest}
+              onChange={(e) => {
+                const current = getInterests()
+                current[index] = e.target.value
+                updateField('interests', [...current])
+              }}
+              placeholder="e.g., Technology & Innovation, Customer Service Excellence"
+            />
+            <button
+              onClick={() => {
+                const current = getInterests()
+                updateField('interests', current.filter((_: any, i: number) => i !== index))
+              }}
+              className="text-red-600 hover:text-red-800"
+            >
+              <MinusIcon className="h-4 w-4" />
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {getInterests().length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          <HeartIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+          <p>No interests added yet.</p>
+          <p className="text-sm">Click "Add Interest" to get started.</p>
+        </div>
+      )}
+    </div>
+  )
+
+  // Certifications Section - Victoria Rolon Standard
+  const getCertifications = () => Array.isArray(data.certifications) ? data.certifications : (data.certifications?.list || [])
+
+  const renderCertificationsSection = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-medium text-gray-900">Certifications & Training</h3>
+        <button
+          onClick={() => {
+            const current = getCertifications()
+            updateField('certifications', [...current, {
+              name: '',
+              organization: '',
+              start: '',
+              details: ''
+            }])
+          }}
+          className="btn-secondary text-sm"
+        >
+          <PlusIcon className="h-4 w-4 mr-2" />
+          Add Certification
+        </button>
+      </div>
+
+      {getCertifications().map((cert: any, index: number) => (
+        <div key={index} className="p-4 border border-gray-200 rounded-lg">
+          <div className="flex justify-between items-start mb-4">
+            <h4 className="font-medium text-gray-900">Certification #{index + 1}</h4>
+            <button
+              onClick={() => {
+                const current = getCertifications()
+                updateField('certifications', current.filter((_: any, i: number) => i !== index))
+              }}
+              className="text-red-600 hover:text-red-800"
+            >
+              <MinusIcon className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="form-label">Certification Name *</label>
+              <input
+                type="text"
+                className="form-input"
+                value={cert.name || ''}
+                onChange={(e) => {
+                  const current = getCertifications()
+                  current[index] = { ...current[index], name: e.target.value }
+                  updateField('certifications', [...current])
+                }}
+                placeholder="e.g., Professional Barista Certification"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="form-label">Organization *</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={cert.organization || ''}
+                  onChange={(e) => {
+                    const current = getCertifications()
+                    current[index] = { ...current[index], organization: e.target.value }
+                    updateField('certifications', [...current])
+                  }}
+                  placeholder="e.g., Certified Training Program"
+                />
+              </div>
+              <div>
+                <label className="form-label">Year</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={cert.start || ''}
+                  onChange={(e) => {
+                    const current = getCertifications()
+                    current[index] = { ...current[index], start: e.target.value }
+                    updateField('certifications', [...current])
+                  }}
+                  placeholder="e.g., 2024"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="form-label">Details</label>
+              <textarea
+                className="form-input h-24"
+                value={cert.details || ''}
+                onChange={(e) => {
+                  const current = getCertifications()
+                  current[index] = { ...current[index], details: e.target.value }
+                  updateField('certifications', [...current])
+                }}
+                placeholder="**Specialized Training in:**
+- Core skill 1
+- Core skill 2
+- Best practices and standards"
+              />
             </div>
           </div>
         </div>
       ))}
+
+      {getCertifications().length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          <TrophyIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+          <p>No certifications added yet.</p>
+          <p className="text-sm">Click "Add Certification" to get started.</p>
+        </div>
+      )}
+    </div>
+  )
+
+  // Projects Section - Victoria Rolon Standard
+  const getProjects = () => Array.isArray(data.projects) ? data.projects : (data.projects?.assignments || [])
+
+  const renderProjectsSection = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-medium text-gray-900">Projects</h3>
+        <button
+          onClick={() => {
+            const current = getProjects()
+            updateField('projects', [...current, {
+              title: '',
+              time: '',
+              details: '',
+              tags: []
+            }])
+          }}
+          className="btn-secondary text-sm"
+        >
+          <PlusIcon className="h-4 w-4 mr-2" />
+          Add Project
+        </button>
+      </div>
+
+      {getProjects().map((project: any, index: number) => (
+        <div key={index} className="p-4 border border-gray-200 rounded-lg">
+          <div className="flex justify-between items-start mb-4">
+            <h4 className="font-medium text-gray-900">Project #{index + 1}</h4>
+            <button
+              onClick={() => {
+                const current = getProjects()
+                updateField('projects', current.filter((_: any, i: number) => i !== index))
+              }}
+              className="text-red-600 hover:text-red-800"
+            >
+              <MinusIcon className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="form-label">Project Title *</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={project.title || ''}
+                  onChange={(e) => {
+                    const current = getProjects()
+                    current[index] = { ...current[index], title: e.target.value }
+                    updateField('projects', [...current])
+                  }}
+                  placeholder="e.g., Thesis Project - Technical Informatics"
+                />
+              </div>
+              <div>
+                <label className="form-label">Year/Duration</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={project.time || ''}
+                  onChange={(e) => {
+                    const current = getProjects()
+                    current[index] = { ...current[index], time: e.target.value }
+                    updateField('projects', [...current])
+                  }}
+                  placeholder="e.g., 2023"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="form-label">Description</label>
+              <textarea
+                className="form-input h-28"
+                value={project.details || ''}
+                onChange={(e) => {
+                  const current = getProjects()
+                  current[index] = { ...current[index], details: e.target.value }
+                  updateField('projects', [...current])
+                }}
+                placeholder="**Comprehensive IT Solution Development**
+
+Designed and implemented a complete project demonstrating mastery of:
+- Systems Analysis and Design
+- Programming Fundamentals
+- Technical Documentation
+
+**Result:** Successfully defended before academic committee."
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {getProjects().length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          <PresentationChartBarIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+          <p>No projects added yet.</p>
+          <p className="text-sm">Click "Add Project" to get started.</p>
+        </div>
+      )}
     </div>
   )
 
@@ -560,12 +1102,18 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
         return renderPersonalSection()
       case 'profile':
         return renderCareerProfileSection()
+      case 'interests':
+        return renderInterestsSection()
       case 'experience':
         return renderExperienceSection()
       case 'education':
         return renderEducationSection()
       case 'skills':
         return renderSkillsSection()
+      case 'certifications':
+        return renderCertificationsSection()
+      case 'projects':
+        return renderProjectsSection()
       case 'portfolio':
         return (
           <PortfolioSection

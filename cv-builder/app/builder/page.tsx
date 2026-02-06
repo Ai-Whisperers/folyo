@@ -36,16 +36,17 @@ const getStorageKey = (userId?: string) => {
   return userId ? `cv-data-${userId}` : 'cv-data'
 }
 
-// Default CV data structure matching the Jekyll template
+// Default CV data structure - Victoria Rolon Standard v2.0
 const defaultCVData = {
   theme_skin: 'teal',
+  template_layout: 'landing',
   sidebar: {
-    position: 'right',
-    about: false,
-    education: false,
+    position: 'left',
+    about: true,
+    education: true,
     name: '',
     tagline: '',
-    avatar: 'profile-picture-placeholder.jpg',
+    avatar: '',
     email: '',
     phone: '',
     timezone: '',
@@ -53,45 +54,69 @@ const defaultCVData = {
     website: '',
     linkedin: '',
     github: '',
-    pdf: '',
-    languages: {
-      title: 'Languages',
-      info: []
-    }
+    // New standard: languages as simple array
+    languages: [] as Array<{ idiom: string; level: string }>
   },
-  interests: {
-    title: 'Interests',
-    info: []
-  },
-  'career-profile': {
-    title: 'Career Profile',
+  // New standard: interests as simple string array
+  interests: [] as string[],
+  // Career profile with markdown support
+  career_profile: {
+    title: 'About Me',
     summary: ''
   },
-  education: {
-    title: 'Education',
-    info: []
+  // Also support legacy key for compatibility
+  'career-profile': {
+    title: 'About Me',
+    summary: ''
   },
-  experiences: {
-    title: 'Experiences',
-    info: []
-  },
-  skills: {
-    title: 'Skills & Proficiency',
-    toolset: []
-  },
-  projects: {
-    title: 'Projects',
-    intro: '',
-    assignments: []
-  },
-  certifications: {
-    title: 'Certifications',
-    list: []
-  },
-  volunteer: {
-    title: 'Volunteer Work',
-    info: []
-  }
+  // New standard: education as direct array
+  education: [] as Array<{
+    degree: string
+    university: string
+    time: string
+    details?: string
+  }>,
+  // New standard: experiences as direct array with tags
+  experiences: [] as Array<{
+    role: string
+    company: string
+    time: string
+    details: string
+    tags?: string[]
+    icon?: string
+  }>,
+  // New standard: skills with proficiency level and tags (no progress bars)
+  skills: [] as Array<{
+    name: string
+    level: string | number // 'expert' | 'advanced' | 'proficient' | 'familiar' or legacy numeric
+    tags?: string[]
+  }>,
+  // Projects as direct array
+  projects: [] as Array<{
+    title: string
+    time?: string
+    details: string
+    link?: string
+    tags?: string[]
+  }>,
+  // Certifications as direct array
+  certifications: [] as Array<{
+    name: string
+    organization: string
+    start: string
+    end?: string
+    details?: string
+  }>,
+  // Volunteer as direct array
+  volunteer: [] as Array<{
+    role: string
+    company: string
+    time: string
+    details?: string
+    tags?: string[]
+  }>,
+  // Footer with availability info
+  footer: ''
 }
 
 // CV Builder sections for progress tracking
@@ -123,41 +148,48 @@ export default function CVBuilderPage() {
   const storageKey = useMemo(() => getStorageKey(user?.id), [user?.id])
 
   // Calculate completed sections for progress indicator
+  // Supports both new standard (direct arrays) and legacy format (nested .info/.toolset)
   const completedSections = useMemo(() => {
     const completed: string[] = []
 
     // Contact info check
-    if (cvData.sidebar.name && cvData.sidebar.email) {
+    if (cvData.sidebar?.name && cvData.sidebar?.email) {
       completed.push('contact')
     }
 
-    // Career profile/summary check
-    if (cvData['career-profile']?.summary && cvData['career-profile'].summary.length > 20) {
+    // Career profile/summary check (supports both keys)
+    const summary = cvData.career_profile?.summary || cvData['career-profile']?.summary
+    if (summary && summary.length > 20) {
       completed.push('summary')
     }
 
-    // Experience check
-    if (cvData.experiences?.info && cvData.experiences.info.length > 0) {
+    // Experience check (new: direct array, legacy: .info)
+    const experiences = Array.isArray(cvData.experiences) ? cvData.experiences : cvData.experiences?.info
+    if (experiences && experiences.length > 0) {
       completed.push('experience')
     }
 
-    // Education check
-    if (cvData.education?.info && cvData.education.info.length > 0) {
+    // Education check (new: direct array, legacy: .info)
+    const education = Array.isArray(cvData.education) ? cvData.education : cvData.education?.info
+    if (education && education.length > 0) {
       completed.push('education')
     }
 
-    // Skills check
-    if (cvData.skills?.toolset && cvData.skills.toolset.length > 0) {
+    // Skills check (new: direct array, legacy: .toolset)
+    const skills = Array.isArray(cvData.skills) ? cvData.skills : cvData.skills?.toolset
+    if (skills && skills.length > 0) {
       completed.push('skills')
     }
 
-    // Projects check
-    if (cvData.projects?.assignments && cvData.projects.assignments.length > 0) {
+    // Projects check (new: direct array, legacy: .assignments)
+    const projects = Array.isArray(cvData.projects) ? cvData.projects : cvData.projects?.assignments
+    if (projects && projects.length > 0) {
       completed.push('projects')
     }
 
-    // Certifications check
-    if (cvData.certifications?.list && cvData.certifications.list.length > 0) {
+    // Certifications check (new: direct array, legacy: .list)
+    const certifications = Array.isArray(cvData.certifications) ? cvData.certifications : cvData.certifications?.list
+    if (certifications && certifications.length > 0) {
       completed.push('certifications')
     }
 

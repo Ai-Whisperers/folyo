@@ -9,6 +9,7 @@
 // ============================================
 
 export type TemplateLayoutId =
+  | 'landing'
   | 'classic'
   | 'modern'
   | 'minimal'
@@ -31,11 +32,18 @@ export interface TemplateLayout {
 // Distinct template layouts with different structural designs
 export const TEMPLATE_LAYOUTS: TemplateLayout[] = [
   {
+    id: 'landing',
+    name: 'Landing Page',
+    description: 'Premium portfolio-style landing page with hero section',
+    features: ['Full-width hero', 'Photo gallery', 'Modern sections', 'Best for portfolios'],
+    popular: true,
+    new: true
+  },
+  {
     id: 'classic',
     name: 'Classic',
     description: 'Traditional two-column layout with sidebar on left',
     features: ['Left sidebar', 'Clear sections', 'ATS-friendly', 'Print optimized'],
-    popular: true
   },
   {
     id: 'modern',
@@ -54,7 +62,6 @@ export const TEMPLATE_LAYOUTS: TemplateLayout[] = [
     name: 'Creative Portfolio',
     description: 'Bold design perfect for designers and creatives',
     features: ['Hero header', 'Project showcase', 'Visual skills display', 'Portfolio grid'],
-    new: true
   },
   {
     id: 'executive',
@@ -158,6 +165,17 @@ export const COLOR_PALETTES: ColorPalette[] = [
   },
 
   // Vibrant
+  {
+    id: 'lavender',
+    name: 'Lavender',
+    primary: '#8B5CF6',
+    secondary: '#A78BFA',
+    accent: '#F5F3FF',
+    background: '#FAFAF9',
+    text: '#1F2937',
+    isDark: false,
+    category: 'vibrant'
+  },
   {
     id: 'violet',
     name: 'Violet',
@@ -323,8 +341,8 @@ export function getColorCSSVars(palette: ColorPalette): Record<string, string> {
   }
 }
 
-// Default selections
-export const DEFAULT_TEMPLATE: TemplateLayoutId = 'classic'
+// Default selections (Victoria Rolon standard)
+export const DEFAULT_TEMPLATE: TemplateLayoutId = 'landing'
 export const DEFAULT_COLOR: string = 'teal'
 
 // ============================================

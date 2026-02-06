@@ -1,15 +1,16 @@
 {
   "slug": "milagros-aguilera",
-  "theme_skin": "berry",
+  "color_palette": "rose",
+  "layout": "hero-centered",
+
   "sidebar": {
     "position": "right",
-    "about": false,
-    "education": false,
     "name": "Milagros Mabel Aguilera Baez",
     "tagline": "Estudiante de Administracion | Asistente Administrativa | Lider Scout",
     "avatar": null,
     "email": "mabguilera@gmail.com",
     "phone": "+595 985 343990",
+    "location": "Mariano Roque Alonso, Paraguay",
     "timezone": "America/Asuncion",
     "citizenship": "Paraguaya",
     "languages": [
@@ -17,6 +18,7 @@
       { "idiom": "Ingles", "level": "Basico" }
     ]
   },
+
   "interests": [
     "Administracion de Empresas",
     "Gestion Administrativa",
@@ -26,42 +28,45 @@
     "Organizacion de Eventos",
     "Lettering y Diseno Creativo"
   ],
+
   "career_profile": {
     "title": "Perfil Profesional",
-    "summary": "Soy estudiante de **Administracion** en la Universidad Nacional - Sede Central, proxima a iniciar 3er ano. Me considero una persona *organizada*, *comunicativa* y con habilidades de **liderazgo**.\n\nDurante mi trayectoria academica y laboral he desarrollado competencias en **gestion administrativa**, *coordinacion de proyectos* y *manejo de grupos*, tanto en entornos educativos como laborales.\n\nBusco seguir aprendiendo y creciendo profesionalmente y personalmente en el area administrativa, aportando **responsabilidad**, *proactividad* y *compromiso* en cada tarea que realizo."
+    "summary": "Soy estudiante de **Administracion** en la Universidad Nacional - Sede Central, proxima a iniciar 3er ano. Me considero una persona *organizada*, *comunicativa* y con habilidades de **liderazgo**.\n\nDurante mi trayectoria academica y laboral he desarrollado competencias en **gestion administrativa**, *coordinacion de proyectos* y *manejo de grupos*, tanto en entornos educativos como laborales.\n\n**Fortalezas Principales:**\n- Organizacion y planificacion estrategica\n- Comunicacion efectiva y trabajo en equipo\n- Liderazgo y coordinacion de grupos\n- Adaptabilidad y aprendizaje continuo\n\nBusco seguir aprendiendo y creciendo profesionalmente en el area administrativa, aportando **responsabilidad**, *proactividad* y *compromiso* en cada tarea que realizo."
   },
+
   "education": [
     {
       "degree": "Licenciatura en Administracion (En curso)",
       "university": "Universidad Nacional - Sede Central",
       "time": "2023 - Presente",
-      "details": "Estado: Proxima a iniciar 3er ano. Participacion activa en grupo de estudio para reforzar materias y mejorar rendimiento academico."
+      "details": "**Estado:** Proxima a iniciar 3er ano.\n\n**Actividades:**\n- Participacion activa en grupo de estudio\n- Refuerzo de materias para mejorar rendimiento academico\n- Desarrollo de habilidades de trabajo colaborativo"
     },
     {
       "degree": "Bachillerato Tecnico en Administracion de Empresas",
       "university": "Escuela Nacional de Comercio No 2",
       "time": "2021 - 2023",
-      "details": "Especializacion: Administracion de Empresas. Proyecto destacado: \"Impact Printer\" - seleccionado entre los mejores del ano. Logro: Primer puesto en exposicion sobre la civilizacion maya."
+      "details": "**Especializacion:** Administracion de Empresas\n\n**Logros Destacados:**\n- Proyecto \"Impact Printer\" seleccionado entre los mejores del ano\n- Primer puesto en exposicion sobre la civilizacion maya\n- Desarrollo de plan de negocio completo"
     },
     {
       "degree": "Educacion Secundaria",
       "university": "Colegio Nacional Zenon Franco",
       "time": "2020 - 2021",
-      "details": "Continuacion de estudios secundarios"
+      "details": "Continuacion de estudios secundarios con enfoque en ciencias sociales y humanidades."
     },
     {
       "degree": "Educacion Basica",
       "university": "Colegio San Miguel Arcangel",
       "time": "2015 - 2019",
-      "details": "Formacion basica y media"
+      "details": "Formacion basica y media con excelente desempeno academico."
     }
   ],
+
   "experiences": [
     {
       "role": "Asistente de Gerencia",
       "time": "Actual",
       "company": "Restaurante Pizza Loca",
-      "details": "Apoyo a gerencia en tareas administrativas diarias. Control de documentos, facturas y registro de compras. Manejo de stock y seguimiento de proveedores. Coordinacion interna del equipo y atencion a clientes. Elaboracion de informes y reportes administrativos.",
+      "details": "Brindo **apoyo integral a gerencia** en las operaciones diarias del establecimiento.\n\n**Responsabilidades:**\n- Control de documentos, facturas y registro de compras\n- Manejo de stock y seguimiento de proveedores\n- Coordinacion interna del equipo\n- Atencion al cliente de primera linea\n- Elaboracion de informes y reportes administrativos",
       "tags": ["Gestion Administrativa", "Control de Stock", "Atencion al Cliente", "Reportes"],
       "icon": "briefcase"
     },
@@ -69,62 +74,57 @@
       "role": "Secretaria Administrativa",
       "time": "3 anos",
       "company": "Consultora Agropecuaria S.I.D.T.A",
-      "details": "Coordinacion de agenda ejecutiva. Manejo de documentacion y archivos administrativos. Comunicacion con proveedores y clientes. Apoyo general en tareas administrativas.",
+      "details": "**Gestion administrativa completa** en consultora del sector agropecuario.\n\n**Funciones Principales:**\n- Coordinacion de agenda ejecutiva\n- Manejo de documentacion y archivos administrativos\n- Comunicacion con proveedores y clientes\n- Apoyo general en tareas administrativas diarias",
       "tags": ["Secretariado", "Gestion Documental", "Coordinacion de Agenda", "Atencion a Proveedores"],
       "icon": "file-alt"
     }
   ],
-  "volunteer": [
-    {
-      "role": "Subjefa de Unidad",
-      "time": "10 anos de trayectoria",
-      "company": "Movimiento Scout - Grupo No 1 Capitan Figari",
-      "details": "Lidero y coordino personas en actividades y campamentos. Organize un campamento para 40 personas, desde la planeacion hasta la ejecucion de actividades. Participacion en Plantaton Nacional 2022. Coordinacion de cursos, eventos y servicios comunitarios. Reconocimiento: Insignia BSP - Boy Scout de la Patria. Desarrollo de habilidades de comunicacion, liderazgo, planificacion y resolucion de problemas."
-    }
-  ],
+
   "projects": [
     {
       "title": "Proyecto \"Impact Printer\"",
       "time": "2023 (3er ano tecnico)",
-      "details": "Proyecto de Administracion seleccionado entre los mejores del ano. Desarrollo de plan de negocio completo. Presentacion ante jurado academico."
+      "details": "**Proyecto de Administracion** seleccionado entre los mejores del ano.\n\n- Desarrollo de plan de negocio completo\n- Analisis de mercado y viabilidad financiera\n- Presentacion ante jurado academico\n- Reconocimiento por innovacion y calidad"
     },
     {
       "title": "Diagnostico y Evaluacion del Clima Laboral en Organizaciones",
       "time": "Universidad",
-      "details": "Diagnostico y analisis en empresa real. Elaboracion de conclusiones y recomendaciones. Aplicacion de metodologias de investigacion organizacional."
+      "details": "**Proyecto de investigacion universitaria**\n\n- Diagnostico y analisis en empresa real\n- Aplicacion de metodologias de investigacion organizacional\n- Elaboracion de conclusiones y recomendaciones practicas"
     },
     {
       "title": "Proyecto \"Ahorro y Reforestacion\"",
       "time": "Extension Educativa",
-      "details": "Actividades en escuela nacional. Explicacion sobre ahorro y reforestacion. Plantacion de arboles con estudiantes."
+      "details": "**Iniciativa de extension comunitaria**\n\n- Actividades educativas en escuela nacional\n- Charlas sobre importancia del ahorro\n- Jornada de plantacion de arboles con estudiantes"
     }
   ],
+
   "certifications": [
     {
       "name": "Certificado de Ingles Basico",
       "start": "2023",
       "organization": "Instituto de Idiomas",
-      "details": "1 ano de estudio de ingles. Nivel basico de comunicacion."
+      "details": "1 ano de estudio intensivo de ingles. Nivel basico de comunicacion oral y escrita."
     },
     {
       "name": "Certificado de Relaciones con Facultades Extranjeras",
       "start": "2023",
-      "organization": "Universidad",
-      "details": "Participacion en viaje academico a Camboriu, Brasil. Visita a distintas facultades e instituciones de educacion superior. Conocimiento de programas universitarios, procesos de admision y areas de estudio."
+      "organization": "Universidad Nacional",
+      "details": "**Viaje academico internacional a Brasil**\n\n- Visita a facultades en Camboriu\n- Conocimiento de programas universitarios internacionales\n- Intercambio cultural y academico"
     },
     {
       "name": "Curso de Lettering",
       "start": "2022",
       "organization": "Formacion Complementaria",
-      "details": "Escritura y diseno creativo. Tecnicas de caligrafia artistica."
+      "details": "Capacitacion en escritura y diseno creativo, tecnicas de caligrafia artistica."
     },
     {
       "name": "Insignia BSP - Boy Scout de la Patria",
       "start": "2020",
       "organization": "Movimiento Scout",
-      "details": "Reconocimiento por superar pruebas de primeros auxilios. Evaluacion de conocimientos historicos. Demostracion de competencias diversas."
+      "details": "**Reconocimiento de excelencia Scout**\n\n- Superacion de pruebas de primeros auxilios\n- Evaluacion de conocimientos historicos\n- Demostracion de competencias diversas"
     }
   ],
+
   "skills": [
     {
       "name": "Gestion Administrativa",
@@ -134,7 +134,7 @@
     {
       "name": "Herramientas Ofimaticas",
       "level": 75,
-      "tags": ["Word", "Excel (basico)", "PowerPoint", "Google Drive", "Gmail", "Google Calendar"]
+      "tags": ["Word", "Excel", "PowerPoint", "Google Drive", "Gmail", "Google Calendar"]
     },
     {
       "name": "Diseno y Presentaciones",
@@ -152,5 +152,16 @@
       "tags": ["Organizacion", "Responsabilidad", "Proactividad", "Adaptabilidad", "Comunicacion"]
     }
   ],
-  "footer": "CV de Milagros Mabel Aguilera Baez | Disponibilidad: Tiempo completo | Mariano Roque Alonso, Paraguay"
+
+  "volunteer": [
+    {
+      "role": "Subjefa de Unidad",
+      "time": "10 anos de trayectoria",
+      "company": "Movimiento Scout - Grupo No 1 Capitan Figari",
+      "details": "**Liderazgo y coordinacion** de actividades scouts por mas de una decada.\n\n**Logros Destacados:**\n- Organizacion de campamento para 40 personas (planificacion completa)\n- Participacion en Plantaton Nacional 2022\n- Coordinacion de cursos, eventos y servicios comunitarios\n- Desarrollo de habilidades de comunicacion, liderazgo y resolucion de problemas",
+      "tags": ["Liderazgo", "Organizacion de Eventos", "Trabajo Comunitario", "Formacion de Jovenes"]
+    }
+  ],
+
+  "footer": "Mariano Roque Alonso, Paraguay | Disponibilidad: Tiempo completo | Abierta a nuevas oportunidades"
 }

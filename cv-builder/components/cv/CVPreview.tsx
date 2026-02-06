@@ -35,6 +35,82 @@ const isDarkTheme = (theme: ThemeData): boolean => {
 }
 
 // =============================================================================
+// DATA NORMALIZATION HELPERS - Victoria Rolon Standard v2.0
+// Supports both new standard (direct arrays) and legacy format (nested .info/.toolset)
+// =============================================================================
+const normalizeExperiences = (data: any): any[] => {
+  if (Array.isArray(data.experiences)) return data.experiences
+  return data.experiences?.info || []
+}
+
+const normalizeEducation = (data: any): any[] => {
+  if (Array.isArray(data.education)) return data.education
+  return data.education?.info || []
+}
+
+const normalizeSkills = (data: any): any[] => {
+  if (Array.isArray(data.skills)) return data.skills
+  return data.skills?.toolset || []
+}
+
+const normalizeCertifications = (data: any): any[] => {
+  if (Array.isArray(data.certifications)) return data.certifications
+  return data.certifications?.list || []
+}
+
+const normalizeProjects = (data: any): any[] => {
+  if (Array.isArray(data.projects)) return data.projects
+  return data.projects?.assignments || []
+}
+
+const normalizeInterests = (data: any): string[] => {
+  if (Array.isArray(data.interests)) {
+    return data.interests.map((i: any) => typeof i === 'string' ? i : (i.item || ''))
+  }
+  if (data.interests?.info) {
+    return data.interests.info.map((i: any) => i.item || i)
+  }
+  return []
+}
+
+const normalizeLanguages = (data: any): Array<{ idiom: string; level: string }> => {
+  const langs = data.sidebar?.languages
+  if (Array.isArray(langs)) {
+    return langs.map((l: any) => ({
+      idiom: l.idiom || '',
+      level: l.level || 'Intermediate'
+    }))
+  }
+  if (langs?.info) {
+    return langs.info.map((l: any) => ({
+      idiom: l.idiom || '',
+      level: l.level || 'Intermediate'
+    }))
+  }
+  return []
+}
+
+const getCareerSummary = (data: any): string => {
+  return data.career_profile?.summary || data['career-profile']?.summary || ''
+}
+
+// Normalize skill level to percentage number
+const normalizeSkillLevel = (level: any): number => {
+  if (typeof level === 'number') return level
+  if (typeof level === 'string') {
+    const num = parseInt(level.replace('%', ''), 10)
+    return isNaN(num) ? 80 : num
+  }
+  return 80
+}
+
+// Render markdown-style bold (**text**) as HTML
+const renderMarkdownBold = (text: string): string => {
+  if (!text) return ''
+  return text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+}
+
+// =============================================================================
 // HELPER: Render Video Portfolio Section
 // =============================================================================
 const renderVideoPortfolioSection = (data: any, theme: ThemeData, isDark: boolean) => {
@@ -1605,7 +1681,16 @@ const renderLayoutLanding = (data: any, theme: ThemeData) => {
           <div style="display: flex; align-items: center; justify-content: center; padding-right: 3rem;">
             <div style="position: relative; width: 100%; max-width: 450px;">
               <div style="aspect-ratio: 3/4; border-radius: 2rem; overflow: hidden; box-shadow: 0 30px 60px -15px ${theme.primary}50;">
-                <img src="/uploads/vicky.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+                ${data.sidebar?.avatar ? `
+                  <img src="${data.sidebar.avatar}" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+                ` : `
+                  <div style="width: 100%; height: 100%; background: ${theme.accent}; display: flex; align-items: center; justify-content: center;">
+                    <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="${theme.primary}" stroke-width="1" opacity="0.4">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+                `}
               </div>
               <!-- Decorative accent -->
               <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: ${gradient}; border-radius: 50%; opacity: 0.3; z-index: -1;"></div>
@@ -1634,9 +1719,9 @@ const renderLayoutLanding = (data: any, theme: ThemeData) => {
             
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
               ${data.sidebar?.phone ? `
-                <a href="https://wa.me/595981258719?text=Hola%20Victoria%2C%20vi%20tu%20portfolio%20y%20me%20gustar%C3%ADa%20contactarte" target="_blank" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; background: ${theme.primary}; color: white; border-radius: 0.75rem; text-decoration: none; font-weight: 600; font-size: 1rem; box-shadow: 0 4px 15px ${theme.primary}40; transition: all 0.3s;">
+                <a href="https://wa.me/${data.sidebar.phone.replace(/[^0-9]/g, '')}?text=Hello%2C%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect" target="_blank" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; background: ${theme.primary}; color: white; border-radius: 0.75rem; text-decoration: none; font-weight: 600; font-size: 1rem; box-shadow: 0 4px 15px ${theme.primary}40; transition: all 0.3s;">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  Contáctame
+                  Contact Me
                 </a>
               ` : ''}
               ${data.sidebar?.linkedin ? `
@@ -1656,26 +1741,18 @@ const renderLayoutLanding = (data: any, theme: ThemeData) => {
           </div>
         </div>
         
-        <!-- Bottom Photo Gallery Strip -->
-        <div style="padding: 0 3rem 3rem; max-width: 1400px; margin: 0 auto; width: 100%;">
-          <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;">
-            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
-              <img src="/uploads/vicky2.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
-            </div>
-            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
-              <img src="/uploads/vicky3.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
-            </div>
-            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
-              <img src="/uploads/vicky4.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
-            </div>
-            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
-              <img src="/uploads/vicky5.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
-            </div>
-            <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
-              <img src="/uploads/vicky6.jpeg" alt="${data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+        <!-- Bottom Photo Gallery Strip - Only show if gallery images exist -->
+        ${data.imageGallery?.images?.length > 0 ? `
+          <div style="padding: 0 3rem 3rem; max-width: 1400px; margin: 0 auto; width: 100%;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
+              ${data.imageGallery.images.slice(0, 5).map((img: any) => `
+                <div style="aspect-ratio: 1; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px -10px ${theme.primary}30;">
+                  <img src="${img.url || img}" alt="${img.title || data.sidebar?.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+              `).join('')}
             </div>
           </div>
-        </div>
+        ` : ''}
       </section>
 
       <!-- About Section -->
@@ -1690,31 +1767,42 @@ const renderLayoutLanding = (data: any, theme: ThemeData) => {
         </section>
       ` : ''}
 
-      <!-- Skills Section -->
+      <!-- Skills Section - Tags-focused display -->
       ${data.skills?.length > 0 || data.skills?.toolset?.length > 0 ? `
         <section style="padding: 6rem 2rem; background: linear-gradient(180deg, ${theme.accent} 0%, ${theme.bg} 100%);">
           <div style="max-width: 1000px; margin: 0 auto;">
-            <h2 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.2em; color: ${theme.primary}; margin-bottom: 3rem; text-align: center; font-weight: 600;">Habilidades y Experiencia</h2>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-              ${(data.skills?.toolset || data.skills || []).map((skill: any) => `
+            <h2 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.2em; color: ${theme.primary}; margin-bottom: 3rem; text-align: center; font-weight: 600;">Skills & Expertise</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+              ${(data.skills?.toolset || data.skills || []).map((skill: any) => {
+                // Convert level to proficiency label
+                const getProficiencyLabel = (level: any) => {
+                  if (typeof level === 'string' && ['expert', 'advanced', 'proficient', 'familiar'].includes(level)) {
+                    return level.charAt(0).toUpperCase() + level.slice(1)
+                  }
+                  const num = typeof level === 'number' ? level : parseInt(String(level).replace('%', ''), 10)
+                  if (isNaN(num)) return 'Proficient'
+                  if (num >= 90) return 'Expert'
+                  if (num >= 75) return 'Advanced'
+                  if (num >= 50) return 'Proficient'
+                  return 'Familiar'
+                }
+                const proficiency = getProficiencyLabel(skill.level)
+                return `
                 <div style="background: ${theme.bg}; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid ${theme.accent};">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3 style="font-size: 1.125rem; font-weight: 700; color: ${theme.text};">${skill.name}</h3>
-                    <span style="font-size: 0.875rem; color: ${theme.primary}; font-weight: 600;">${skill.level}%</span>
-                  </div>
-                  <div style="width: 100%; height: 8px; background: ${theme.accent}; border-radius: 100px; overflow: hidden;">
-                    <div style="width: ${skill.level}%; height: 100%; background: ${gradient}; border-radius: 100px;"></div>
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 700; color: ${theme.text}; line-height: 1.3;">${skill.name}</h3>
+                    <span style="font-size: 0.7rem; padding: 0.35rem 0.75rem; background: ${gradient}; color: white; border-radius: 100px; font-weight: 600; white-space: nowrap; margin-left: 0.75rem;">${proficiency}</span>
                   </div>
                   ${skill.tags?.length > 0 ? `
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                       ${skill.tags.map((tag: string) => `
-                        <span style="font-size: 0.75rem; padding: 0.25rem 0.75rem; background: ${theme.primary}10; color: ${theme.primary}; border-radius: 100px;">${tag}</span>
+                        <span style="font-size: 0.8rem; padding: 0.4rem 0.9rem; background: ${theme.primary}12; color: ${theme.primary}; border-radius: 100px; font-weight: 500;">${tag}</span>
                       `).join('')}
                     </div>
                   ` : ''}
                 </div>
-              `).join('')}
+              `}).join('')}
             </div>
           </div>
         </section>
@@ -1852,13 +1940,17 @@ const renderLayoutLanding = (data: any, theme: ThemeData) => {
       <!-- Footer CTA -->
       <section style="padding: 6rem 2rem; background: ${gradient}; text-align: center;">
         <div style="max-width: 600px; margin: 0 auto;">
-          <h2 style="font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">¡Conectemos!</h2>
+          <h2 style="font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Let's Connect!</h2>
           <p style="font-size: 1.125rem; color: white; opacity: 0.9; margin-bottom: 2rem;">
-            Siempre estoy abierta a discutir nuevas oportunidades y proyectos interesantes.
+            I'm always open to discussing new opportunities and interesting projects.
           </p>
           ${data.sidebar?.phone ? `
-            <a href="https://wa.me/595981258719?text=Hola%20Victoria%2C%20vi%20tu%20portfolio%20y%20me%20gustar%C3%ADa%20contactarte" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2.5rem; background: white; color: ${theme.primary}; border-radius: 100px; text-decoration: none; font-weight: 700; font-size: 1.125rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-              💬 Escríbeme por WhatsApp
+            <a href="https://wa.me/${data.sidebar.phone.replace(/[^0-9]/g, '')}?text=Hello%2C%20I%20saw%20your%20portfolio" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2.5rem; background: white; color: ${theme.primary}; border-radius: 100px; text-decoration: none; font-weight: 700; font-size: 1.125rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+              Send me a message
+            </a>
+          ` : data.sidebar?.email ? `
+            <a href="mailto:${data.sidebar.email}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2.5rem; background: white; color: ${theme.primary}; border-radius: 100px; text-decoration: none; font-weight: 700; font-size: 1.125rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+              Send me an email
             </a>
           ` : ''}
         </div>
@@ -1867,6 +1959,338 @@ const renderLayoutLanding = (data: any, theme: ThemeData) => {
       <!-- Footer -->
       <footer style="padding: 2rem; background: ${theme.bg}; text-align: center; border-top: 1px solid ${theme.accent};">
         <p style="font-size: 0.875rem; color: ${theme.text}; opacity: 0.6;">
+          ${data.footer || `© ${new Date().getFullYear()} ${data.sidebar?.name || 'Portfolio'}. All rights reserved.`}
+        </p>
+      </footer>
+    </div>
+  `
+}
+
+// =============================================================================
+// Layout: Hero Centered - Victoria Rolon Style (Modern centered hero with full sections)
+// =============================================================================
+const renderLayoutHeroCentered = (data: any, theme: ThemeData) => {
+  // Use normalizer helpers for data consistency
+  const experiences = normalizeExperiences(data)
+  const education = normalizeEducation(data)
+  const skills = normalizeSkills(data)
+  const projects = normalizeProjects(data)
+  const certifications = normalizeCertifications(data)
+  const interests = normalizeInterests(data)
+  const languages = normalizeLanguages(data)
+  const careerSummary = getCareerSummary(data)
+  const volunteer = data.volunteer || []
+  
+  return `
+    <div class="cv-container layout-hero-centered" style="font-family: 'Inter', system-ui, sans-serif; background-color: ${theme.bg}; color: ${theme.text}; min-height: 100%;">
+      
+      <!-- Hero Section - Centered Design -->
+      <header style="text-align: center; padding: 4rem 2rem; background: linear-gradient(180deg, ${theme.accent} 0%, ${theme.bg} 100%); position: relative; overflow: hidden;">
+        <!-- Decorative circles -->
+        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: ${theme.primary}; opacity: 0.08; border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: ${theme.secondary}; opacity: 0.08; border-radius: 50%;"></div>
+        
+        <!-- Avatar -->
+        <div style="position: relative; display: inline-block; margin-bottom: 1.5rem;">
+          ${data.sidebar?.avatar 
+            ? `<img src="${data.sidebar.avatar}" alt="${data.sidebar?.name}" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid ${theme.primary}; box-shadow: 0 10px 40px ${theme.primary}30;" />`
+            : `<div style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, ${theme.primary}, ${theme.secondary}); display: flex; align-items: center; justify-content: center; color: white; font-size: 3.5rem; font-weight: 700; box-shadow: 0 10px 40px ${theme.primary}30;">
+                ${(data.sidebar?.name || 'U').charAt(0).toUpperCase()}
+              </div>`
+          }
+          <!-- Verified badge -->
+          <div style="position: absolute; bottom: 5px; right: 5px; width: 36px; height: 36px; background: ${theme.primary}; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid ${theme.bg};">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          </div>
+        </div>
+        
+        <!-- Name & Tagline -->
+        <h1 style="font-size: 2.75rem; font-weight: 800; color: ${theme.text}; margin-bottom: 0.75rem; letter-spacing: -0.02em;">
+          ${data.sidebar?.name || 'Your Name'}
+        </h1>
+        <p style="font-size: 1.25rem; color: ${theme.primary}; margin-bottom: 2rem; font-weight: 500;">
+          ${data.sidebar?.tagline || 'Professional Title'}
+        </p>
+        
+        <!-- Contact Pills -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-bottom: 2rem;">
+          ${data.sidebar?.email ? `
+            <a href="mailto:${data.sidebar.email}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: ${theme.primary}15; color: ${theme.primary}; border-radius: 100px; text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: all 0.2s;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              Email
+            </a>
+          ` : ''}
+          ${data.sidebar?.phone ? `
+            <a href="tel:${data.sidebar.phone}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: ${theme.primary}15; color: ${theme.primary}; border-radius: 100px; text-decoration: none; font-size: 0.875rem; font-weight: 500;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              Call
+            </a>
+          ` : ''}
+          ${data.sidebar?.citizenship || data.sidebar?.location ? `
+            <span style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: ${theme.accent}; color: ${theme.text}80; border-radius: 100px; font-size: 0.875rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              ${data.sidebar.location || data.sidebar.citizenship}
+            </span>
+          ` : ''}
+          ${data.sidebar?.linkedin ? `
+            <a href="https://linkedin.com/in/${data.sidebar.linkedin}" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: ${theme.primary}15; color: ${theme.primary}; border-radius: 100px; text-decoration: none; font-size: 0.875rem; font-weight: 500;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn
+            </a>
+          ` : ''}
+        </div>
+        
+        <!-- CTA Buttons -->
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+          ${data.sidebar?.email ? `
+            <a href="mailto:${data.sidebar.email}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.75rem; background: ${theme.primary}; color: white; border-radius: 0.75rem; text-decoration: none; font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 15px ${theme.primary}40;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              Contact Me
+            </a>
+          ` : ''}
+        </div>
+      </header>
+      
+      <!-- Main Content -->
+      <main style="max-width: 1000px; margin: 0 auto; padding: 3rem 2rem;">
+        
+        <!-- About Section -->
+        ${careerSummary ? `
+          <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: ${theme.primary}; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              About Me
+            </h2>
+            <div style="line-height: 1.8; color: ${theme.text}; font-size: 1rem;">
+              ${renderMarkdownBold(careerSummary).replace(/\n/g, '<br>')}
+            </div>
+          </section>
+        ` : ''}
+        
+        <!-- Experience Section -->
+        ${experiences.length > 0 ? `
+          <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: ${theme.primary}; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              Experience
+            </h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+              ${experiences.map((exp: any) => `
+                <div style="padding: 1.5rem; background: ${theme.accent}; border-radius: 1rem; border-left: 4px solid ${theme.primary};">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: ${theme.text}; margin: 0;">${exp.role}</h3>
+                    <span style="font-size: 0.8rem; color: ${theme.primary}; background: ${theme.primary}15; padding: 0.25rem 0.75rem; border-radius: 100px; font-weight: 500;">${exp.time}</span>
+                  </div>
+                  <p style="font-size: 0.95rem; color: ${theme.primary}; margin-bottom: 0.75rem; font-weight: 500;">${exp.company}</p>
+                  <div style="font-size: 0.9rem; color: ${theme.text}; opacity: 0.85; line-height: 1.7;">
+                    ${renderMarkdownBold(exp.details || '').replace(/\n/g, '<br>')}
+                  </div>
+                  ${exp.tags && exp.tags.length > 0 ? `
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                      ${exp.tags.map((tag: string) => `
+                        <span style="padding: 0.25rem 0.75rem; background: ${theme.primary}15; color: ${theme.primary}; border-radius: 100px; font-size: 0.75rem; font-weight: 500;">
+                          ${tag}
+                        </span>
+                      `).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+        
+        <!-- Education Section -->
+        ${education.length > 0 ? `
+          <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: ${theme.primary}; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              Education
+            </h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+              ${education.map((edu: any) => `
+                <div style="padding: 1.5rem; background: ${theme.accent}; border-radius: 1rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: ${theme.text}; margin: 0;">${edu.degree}</h3>
+                    <span style="font-size: 0.8rem; color: ${theme.text}; opacity: 0.6;">${edu.time}</span>
+                  </div>
+                  <p style="font-size: 0.95rem; color: ${theme.primary}; margin-bottom: 0.5rem; font-weight: 500;">${edu.university}</p>
+                  ${edu.details ? `
+                    <div style="font-size: 0.9rem; color: ${theme.text}; opacity: 0.85; line-height: 1.7;">
+                      ${renderMarkdownBold(edu.details).replace(/\n/g, '<br>')}
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+        
+        <!-- Skills Section with Progress Bars -->
+        ${skills.length > 0 ? `
+          <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: ${theme.primary}; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+              Skills
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+              ${skills.map((skill: any) => {
+                const level = normalizeSkillLevel(skill.level)
+                return `
+                  <div style="padding: 1.25rem; background: ${theme.accent}; border-radius: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                      <span style="font-weight: 600; color: ${theme.text};">${skill.name}</span>
+                      <span style="font-size: 0.875rem; color: ${theme.primary}; font-weight: 500;">${level}%</span>
+                    </div>
+                    <div style="width: 100%; height: 6px; background: ${theme.primary}20; border-radius: 100px; overflow: hidden;">
+                      <div style="width: ${level}%; height: 100%; background: linear-gradient(90deg, ${theme.primary}, ${theme.secondary}); border-radius: 100px;"></div>
+                    </div>
+                    ${skill.tags && skill.tags.length > 0 ? `
+                      <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 0.75rem;">
+                        ${skill.tags.slice(0, 5).map((tag: string) => `
+                          <span style="padding: 0.125rem 0.5rem; background: ${theme.primary}10; color: ${theme.primary}; border-radius: 4px; font-size: 0.7rem;">
+                            ${tag}
+                          </span>
+                        `).join('')}
+                      </div>
+                    ` : ''}
+                  </div>
+                `
+              }).join('')}
+            </div>
+          </section>
+        ` : ''}
+        
+        <!-- Projects Section -->
+        ${projects.length > 0 ? `
+          <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: ${theme.primary}; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              Projects
+            </h2>
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              ${projects.map((proj: any) => `
+                <div style="padding: 1.5rem; background: ${theme.accent}; border-radius: 1rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: ${theme.text}; margin: 0;">${proj.title}</h3>
+                    ${proj.time ? `<span style="font-size: 0.8rem; color: ${theme.text}; opacity: 0.6;">${proj.time}</span>` : ''}
+                  </div>
+                  <div style="font-size: 0.9rem; color: ${theme.text}; opacity: 0.85; line-height: 1.7;">
+                    ${renderMarkdownBold(proj.details || '').replace(/\n/g, '<br>')}
+                  </div>
+                  ${proj.link ? `
+                    <a href="${proj.link}" target="_blank" style="display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.75rem; color: ${theme.primary}; font-size: 0.875rem; text-decoration: none; font-weight: 500;">
+                      View Project
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    </a>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+        
+        <!-- Certifications Section -->
+        ${certifications.length > 0 ? `
+          <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: ${theme.primary}; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+              Certifications
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+              ${certifications.map((cert: any) => `
+                <div style="padding: 1.25rem; background: ${theme.accent}; border-radius: 1rem;">
+                  <h3 style="font-size: 1rem; font-weight: 600; color: ${theme.text}; margin-bottom: 0.25rem;">${cert.name}</h3>
+                  <p style="font-size: 0.875rem; color: ${theme.primary}; margin-bottom: 0.25rem;">${cert.organization}</p>
+                  <p style="font-size: 0.8rem; color: ${theme.text}; opacity: 0.6;">${cert.start}</p>
+                  ${cert.details ? `
+                    <div style="font-size: 0.85rem; color: ${theme.text}; opacity: 0.8; margin-top: 0.5rem; line-height: 1.6;">
+                      ${renderMarkdownBold(cert.details).replace(/\n/g, '<br>')}
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+        
+        <!-- Volunteer Section -->
+        ${volunteer.length > 0 ? `
+          <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: ${theme.primary}; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              Volunteer Experience
+            </h2>
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              ${volunteer.map((vol: any) => `
+                <div style="padding: 1.5rem; background: ${theme.accent}; border-radius: 1rem; border-left: 4px solid ${theme.secondary};">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: ${theme.text}; margin: 0;">${vol.role}</h3>
+                    <span style="font-size: 0.8rem; color: ${theme.text}; opacity: 0.6;">${vol.time}</span>
+                  </div>
+                  <p style="font-size: 0.95rem; color: ${theme.secondary}; margin-bottom: 0.75rem; font-weight: 500;">${vol.company}</p>
+                  <div style="font-size: 0.9rem; color: ${theme.text}; opacity: 0.85; line-height: 1.7;">
+                    ${renderMarkdownBold(vol.details || '').replace(/\n/g, '<br>')}
+                  </div>
+                  ${vol.tags && vol.tags.length > 0 ? `
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                      ${vol.tags.map((tag: string) => `
+                        <span style="padding: 0.25rem 0.75rem; background: ${theme.secondary}15; color: ${theme.secondary}; border-radius: 100px; font-size: 0.75rem; font-weight: 500;">
+                          ${tag}
+                        </span>
+                      `).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+        
+        <!-- Sidebar Info - Languages & Interests -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+          <!-- Languages -->
+          ${languages.length > 0 ? `
+            <div style="padding: 1.5rem; background: ${theme.accent}; border-radius: 1rem;">
+              <h3 style="font-size: 1.125rem; font-weight: 600; color: ${theme.primary}; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Languages
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                ${languages.map((lang: { idiom: string; level: string }) => `
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: ${theme.text};">${lang.idiom}</span>
+                    <span style="padding: 0.25rem 0.75rem; background: ${theme.primary}15; color: ${theme.primary}; border-radius: 100px; font-size: 0.75rem; font-weight: 500;">
+                      ${lang.level}
+                    </span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+          
+          <!-- Interests -->
+          ${interests.length > 0 ? `
+            <div style="padding: 1.5rem; background: ${theme.accent}; border-radius: 1rem;">
+              <h3 style="font-size: 1.125rem; font-weight: 600; color: ${theme.primary}; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                Interests
+              </h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                ${interests.map((interest: string) => `
+                  <span style="padding: 0.375rem 0.875rem; background: ${theme.primary}15; color: ${theme.primary}; border-radius: 100px; font-size: 0.8rem; font-weight: 500;">
+                    ${interest}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      </main>
+      
+      <!-- Footer -->
+      <footer style="padding: 2rem; background: ${theme.accent}; text-align: center; border-top: 1px solid ${theme.primary}15;">
+        <p style="font-size: 0.875rem; color: ${theme.text}; opacity: 0.7;">
           ${data.footer || `© ${new Date().getFullYear()} ${data.sidebar?.name || 'Portfolio'}. All rights reserved.`}
         </p>
       </footer>
@@ -1895,6 +2319,9 @@ const renderByLayout = (data: any, theme: ThemeData, layoutId: string): string =
       return renderLayoutCards(data, theme)
     case 'landing':
       return renderLayoutLanding(data, theme)
+    // New Victoria Rolon style layouts
+    case 'hero-centered':
+      return renderLayoutHeroCentered(data, theme)
     default:
       return renderLayoutClassic(data, theme)
   }
@@ -1935,10 +2362,12 @@ function CVPreviewComponent({ data, theme, templateLayout, scale = 1, className 
     return renderClassicTheme(data, themeData)
   }, [data, theme, themeData, templateLayout])
 
-  // Memoize empty state check
+  // Memoize empty state check - supports both new and legacy formats
   const isEmpty = useMemo(() => {
-    return !data.sidebar?.name && !data['career-profile']?.summary && !data.experiences?.info?.length
-  }, [data.sidebar?.name, data['career-profile']?.summary, data.experiences?.info?.length])
+    const summary = getCareerSummary(data)
+    const experiences = normalizeExperiences(data)
+    return !data.sidebar?.name && !summary && experiences.length === 0
+  }, [data])
 
   // Memoize container styles
   const containerStyle = useMemo(() => ({

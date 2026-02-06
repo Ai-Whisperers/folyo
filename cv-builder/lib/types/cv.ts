@@ -930,3 +930,297 @@ export const THEME_CONFIGS: ThemeConfig[] = [
 export const getThemeConfig = (skin: ThemeSkin): ThemeConfig => {
   return THEME_CONFIGS.find(t => t.id === skin) || THEME_CONFIGS[0]
 }
+
+// ============================================
+// New Portfolio System (Landing Page Format)
+// ============================================
+
+export type PortfolioLayoutType = 'hero-centered' | 'hero-split' | 'hero-minimal' | 'hero-fullscreen'
+
+export type ColorPaletteId = 'ocean' | 'lavender' | 'forest' | 'sunset' | 'rose' | 'slate' | 'midnight' | 'charcoal'
+
+export interface ColorPalette {
+  id: ColorPaletteId
+  name: string
+  primary: string
+  secondary: string
+  background: string
+  surface: string
+  text: string
+  muted: string
+  isDark: boolean
+}
+
+export const COLOR_PALETTES: ColorPalette[] = [
+  // Light Palettes
+  {
+    id: 'ocean',
+    name: 'Ocean',
+    primary: '#0891B2',
+    secondary: '#06B6D4',
+    background: '#FAFAFA',
+    surface: '#FFFFFF',
+    text: '#1A1A1A',
+    muted: '#666666',
+    isDark: false
+  },
+  {
+    id: 'lavender',
+    name: 'Lavender',
+    primary: '#9333EA',
+    secondary: '#A855F7',
+    background: '#FAFAFA',
+    surface: '#FFFFFF',
+    text: '#1A1A1A',
+    muted: '#666666',
+    isDark: false
+  },
+  {
+    id: 'forest',
+    name: 'Forest',
+    primary: '#059669',
+    secondary: '#10B981',
+    background: '#FAFAFA',
+    surface: '#FFFFFF',
+    text: '#1A1A1A',
+    muted: '#666666',
+    isDark: false
+  },
+  {
+    id: 'sunset',
+    name: 'Sunset',
+    primary: '#F97316',
+    secondary: '#FB923C',
+    background: '#FFFBF5',
+    surface: '#FFFFFF',
+    text: '#1A1A1A',
+    muted: '#666666',
+    isDark: false
+  },
+  {
+    id: 'rose',
+    name: 'Rose',
+    primary: '#E11D48',
+    secondary: '#F43F5E',
+    background: '#FAFAFA',
+    surface: '#FFFFFF',
+    text: '#1A1A1A',
+    muted: '#666666',
+    isDark: false
+  },
+  {
+    id: 'slate',
+    name: 'Slate',
+    primary: '#475569',
+    secondary: '#64748B',
+    background: '#FAFAFA',
+    surface: '#FFFFFF',
+    text: '#1A1A1A',
+    muted: '#666666',
+    isDark: false
+  },
+  // Dark Palettes
+  {
+    id: 'midnight',
+    name: 'Midnight',
+    primary: '#6366F1',
+    secondary: '#818CF8',
+    background: '#0A0A0A',
+    surface: '#141414',
+    text: '#FFFFFF',
+    muted: '#A0A0A0',
+    isDark: true
+  },
+  {
+    id: 'charcoal',
+    name: 'Charcoal',
+    primary: '#14B8A6',
+    secondary: '#2DD4BF',
+    background: '#0A0A0A',
+    surface: '#141414',
+    text: '#FFFFFF',
+    muted: '#A0A0A0',
+    isDark: true
+  }
+]
+
+export const getColorPalette = (id: string): ColorPalette => {
+  return COLOR_PALETTES.find(p => p.id === id) || COLOR_PALETTES[0]
+}
+
+// ============================================
+// Portfolio Data Types (Flat Structure)
+// ============================================
+
+export interface PortfolioSidebar {
+  position: SidebarPosition
+  name: string
+  tagline: string
+  avatar?: string
+  email?: string
+  phone?: string
+  location?: string
+  timezone?: string
+  citizenship?: string
+  linkedin?: string
+  github?: string
+  website?: string
+  languages: Array<{ idiom: string; level: string }>
+}
+
+export interface PortfolioExperience {
+  role: string
+  time: string
+  company: string
+  details?: string
+  tags?: string[]
+  icon?: string
+}
+
+export interface PortfolioEducation {
+  degree: string
+  university: string
+  time: string
+  details?: string
+}
+
+export interface PortfolioProject {
+  title: string
+  time?: string
+  details?: string
+  link?: string
+}
+
+export interface PortfolioCertification {
+  name: string
+  start: string
+  organization: string
+  details?: string
+}
+
+export interface PortfolioSkill {
+  name: string
+  level: number
+  tags?: string[]
+}
+
+export interface PortfolioVolunteer {
+  role: string
+  time: string
+  company: string
+  details?: string
+  tags?: string[]
+}
+
+export interface PortfolioData {
+  slug: string
+  color_palette: ColorPaletteId
+  layout: PortfolioLayoutType
+
+  sidebar: PortfolioSidebar
+  interests: string[]
+
+  career_profile: {
+    title: string
+    summary: string
+  }
+
+  education: PortfolioEducation[]
+  experiences: PortfolioExperience[]
+  projects: PortfolioProject[]
+  certifications: PortfolioCertification[]
+  skills: PortfolioSkill[]
+  volunteer?: PortfolioVolunteer[]
+
+  footer?: string
+}
+
+// ============================================
+// Normalized Data (for component consumption)
+// ============================================
+
+export interface NormalizedPortfolioData {
+  slug: string
+  palette: ColorPalette
+  layout: PortfolioLayoutType
+  sidebar: PortfolioSidebar
+  interests: string[]
+  careerProfile: { title: string; summary: string }
+  education: PortfolioEducation[]
+  experiences: PortfolioExperience[]
+  projects: PortfolioProject[]
+  certifications: PortfolioCertification[]
+  skills: PortfolioSkill[]
+  volunteer: PortfolioVolunteer[]
+  footer?: string
+}
+
+/**
+ * Normalizes portfolio data from various formats (old nested or new flat)
+ * into a consistent structure for component consumption
+ */
+export function normalizePortfolioData(data: any): NormalizedPortfolioData {
+  // Determine palette - support both old theme_skin and new color_palette
+  const paletteId = data.color_palette || data.theme_skin || 'ocean'
+  const palette = getColorPalette(paletteId)
+
+  // Determine layout - support both old template_layout and new layout
+  const layout: PortfolioLayoutType = data.layout || data.template_layout || 'hero-centered'
+
+  // Normalize sidebar with languages
+  const sidebarLanguages = Array.isArray(data.sidebar?.languages)
+    ? data.sidebar.languages
+    : data.sidebar?.languages?.info || []
+
+  const sidebar: PortfolioSidebar = {
+    position: data.sidebar?.position || 'left',
+    name: data.sidebar?.name || '',
+    tagline: data.sidebar?.tagline || '',
+    avatar: data.sidebar?.avatar,
+    email: data.sidebar?.email,
+    phone: data.sidebar?.phone,
+    location: data.sidebar?.location || data.sidebar?.citizenship,
+    timezone: data.sidebar?.timezone,
+    citizenship: data.sidebar?.citizenship,
+    linkedin: data.sidebar?.linkedin,
+    github: data.sidebar?.github,
+    website: data.sidebar?.website,
+    languages: sidebarLanguages
+  }
+
+  // Normalize interests - support both string[] and {info: [{item}]}
+  const interests: string[] = Array.isArray(data.interests)
+    ? data.interests
+    : data.interests?.info?.map((i: any) => i.item || i) || []
+
+  // Normalize career profile - support both career_profile and career-profile
+  const careerProfile = data.career_profile || data['career-profile'] || { title: 'About', summary: '' }
+
+  // Normalize arrays - support both flat and nested formats
+  const education: PortfolioEducation[] = data.education?.info || data.education || []
+  const experiences: PortfolioExperience[] = data.experiences?.info || data.experiences || []
+  const projects: PortfolioProject[] = data.projects?.assignments || data.projects || []
+  const certifications: PortfolioCertification[] = data.certifications?.list || data.certifications || []
+  const skills: PortfolioSkill[] = (data.skills?.toolset || data.skills || []).map((s: any) => ({
+    name: s.name,
+    level: typeof s.level === 'string' ? parseInt(s.level) : s.level,
+    tags: s.tags
+  }))
+  const volunteer: PortfolioVolunteer[] = data.volunteer?.info || data.volunteer || []
+
+  return {
+    slug: data.slug || '',
+    palette,
+    layout,
+    sidebar,
+    interests,
+    careerProfile,
+    education,
+    experiences,
+    projects,
+    certifications,
+    skills,
+    volunteer,
+    footer: data.footer
+  }
+}

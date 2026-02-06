@@ -1,0 +1,116 @@
+{
+  "slug": "software-developer",
+  "color_palette": "blue",
+  "layout": "hero-centered",
+  "sidebar": {
+    "position": "right",
+    "about": false,
+    "education": false,
+    "name": "Alex Johnson",
+    "tagline": "Full-Stack Developer | React & Node.js Specialist | Open Source Contributor",
+    "avatar": null,
+    "email": "alex.johnson@gmail.com",
+    "phone": "+1 (555) 123-4567",
+    "timezone": "America/New_York",
+    "citizenship": "American",
+    "website": "https://alexjohnson.dev",
+    "linkedin": "alexjohnsondev",
+    "github": "alexjohnson-dev",
+    "languages": [
+      { "idiom": "English", "level": "Native" },
+      { "idiom": "Spanish", "level": "Conversational" }
+    ]
+  },
+  "career_profile": {
+    "title": "Career Profile",
+    "summary": "**Passionate Full-Stack Developer** with 5+ years of experience building *scalable web applications* and leading development teams. Expertise in **React**, **Node.js**, and **cloud technologies** with a strong focus on *code quality*, *performance optimization*, and *user experience*.\n\nProven track record of delivering **high-impact projects** from concept to production, including applications serving *100,000+ users*. Strong advocate for **clean code practices**, *test-driven development*, and *continuous integration*. Active open-source contributor with projects garnering **1,000+ GitHub stars**.\n\nSeeking opportunities to leverage technical expertise and leadership skills to drive *innovation* and *technical excellence* in a **collaborative, growth-oriented environment**."
+  },
+  "interests": [
+    "Software Architecture",
+    "Open Source Projects",
+    "DevOps & CI/CD",
+    "Code Mentoring",
+    "Tech Blogging",
+    "Hackathons",
+    "Cloud Computing",
+    "API Design"
+  ],
+  "education": [],
+  "experiences": [
+    {
+      "role": "Senior Full-Stack Developer",
+      "time": "2021 – Present",
+      "company": "TechFlow Solutions",
+      "details": "**Led development** of microservices architecture serving 100,000+ daily active users\n**Implemented** CI/CD pipeline reducing deployment time by 75% and eliminating production bugs\n**Mentored** team of 4 junior developers, conducting code reviews and technical training sessions\n**Built** real-time analytics dashboard using React, Node.js, and WebSocket connections\n**Optimized** database queries and API performance, achieving 40% faster response times\n**Collaborated** closely with Product and Design teams in Agile/Scrum environment",
+      "tags": ["React", "Node.js", "AWS", "Docker", "PostgreSQL", "Team Leadership", "Microservices"],
+      "icon": "code"
+    },
+    {
+      "role": "Software Developer",
+      "time": "2019 – 2021",
+      "company": "Digital Innovations Inc.",
+      "details": "**Developed** responsive e-commerce platform handling $2M+ annual transactions\n**Integrated** payment gateways (Stripe, PayPal) and third-party APIs (shipping, inventory)\n**Implemented** automated testing suite achieving 90%+ code coverage\n**Built** RESTful APIs and GraphQL endpoints for mobile and web applications\n**Participated** in daily standups, sprint planning, and retrospectives",
+      "tags": ["JavaScript", "Python", "Django", "React", "PostgreSQL", "REST APIs"],
+      "icon": "laptop"
+    }
+  ],
+  "projects": [
+    {
+      "title": "TaskFlow - Project Management Platform",
+      "time": "2023",
+      "details": "**Built** comprehensive project management SaaS with real-time collaboration features\n**Technologies**: React, Node.js, Socket.io, PostgreSQL, Redis, AWS\n**Features**: Kanban boards, time tracking, team chat, file sharing, reporting dashboard\n**Impact**: 500+ registered users, featured on Product Hunt with 200+ upvotes",
+      "link": "https://github.com/alexjohnson-dev/taskflow"
+    },
+    {
+      "title": "DevTools Extension - React Performance Monitor",
+      "time": "2022",
+      "details": "**Created** browser extension for monitoring React component performance\n**Technologies**: JavaScript, Chrome Extension API, React DevTools API\n**Features**: Component render analysis, memory usage tracking, performance recommendations\n**Impact**: 2,000+ downloads, 4.8/5 star rating on Chrome Web Store\n**Open Source**: MIT licensed, 15+ community contributors"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "AWS Certified Solutions Architect - Associate",
+      "start": "2023",
+      "organization": "Amazon Web Services",
+      "details": "Demonstrated expertise in designing distributed applications and systems on AWS platform."
+    },
+    {
+      "name": "React Developer Certification",
+      "start": "2022",
+      "organization": "Meta (Facebook)",
+      "details": "Advanced React concepts including hooks, context, performance optimization, and testing strategies."
+    }
+  ],
+  "skills": [
+    {
+      "name": "Frontend Development",
+      "level": 95,
+      "tags": ["React", "Vue.js", "TypeScript", "HTML5", "CSS3", "SASS", "Webpack"]
+    },
+    {
+      "name": "Backend Development",
+      "level": 90,
+      "tags": ["Node.js", "Express", "Python", "Django", "REST APIs", "GraphQL"]
+    },
+    {
+      "name": "Database & Data",
+      "level": 85,
+      "tags": ["PostgreSQL", "MongoDB", "Redis", "SQL", "Database Design"]
+    },
+    {
+      "name": "Cloud & DevOps",
+      "level": 80,
+      "tags": ["AWS", "Docker", "Kubernetes", "CI/CD", "Jenkins", "Git", "Linux"]
+    },
+    {
+      "name": "Testing & Quality",
+      "level": 85,
+      "tags": ["Jest", "Cypress", "Unit Testing", "Integration Testing", "TDD"]
+    }
+  ],
+  "volunteer": [],
+  "footer": "📍 New York, USA | Available for Full-time & Remote Opportunities | Let's build something amazing together"
+}
+
+
+

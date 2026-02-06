@@ -1,0 +1,179 @@
+{
+  "slug": "sarah-executive",
+  "color_palette": "slate",
+  "layout": "hero-fullscreen",
+
+  "sidebar": {
+    "position": "left",
+    "name": "Sarah Mitchell",
+    "tagline": "Chief Operating Officer | Strategic Leader | Business Transformation Expert",
+    "avatar": "/uploads/executive-avatar.jpeg",
+    "email": "sarah.mitchell@example.com",
+    "phone": "+1 555 321 9876",
+    "location": "Chicago, IL",
+    "timezone": "America/Chicago",
+    "linkedin": "sarah-mitchell-coo",
+    "languages": [
+      { "idiom": "English", "level": "Native" },
+      { "idiom": "German", "level": "Professional" },
+      { "idiom": "French", "level": "Conversational" }
+    ]
+  },
+
+  "interests": [
+    "Business Transformation",
+    "Organizational Development",
+    "Executive Coaching",
+    "Corporate Governance",
+    "DEI Initiatives",
+    "Board Advisory",
+    "Philanthropy",
+    "Leadership Development"
+  ],
+
+  "career_profile": {
+    "title": "Executive Profile",
+    "summary": "**Transformational executive leader** with 15+ years of experience driving operational excellence and sustainable growth across global organizations. I specialize in **scaling companies** through strategic planning, organizational design, and cultural transformation.\n\n**Leadership Philosophy:**\nI believe that **great companies are built on great cultures**. My approach combines rigorous operational discipline with deep investment in people development. Every decision I make is guided by long-term value creation for all stakeholders.\n\n**Executive Highlights:**\n- Led organizations through 3 successful acquisitions totaling $500M+\n- Scaled operations from 200 to 2,000+ employees across 12 countries\n- Achieved 40% improvement in operational efficiency through digital transformation\n- Built and developed C-suite and VP-level leadership teams\n\nI serve on **two corporate boards** and am passionate about advancing **women in leadership** through mentoring and advocacy."
+  },
+
+  "education": [
+    {
+      "degree": "MBA",
+      "university": "Harvard Business School",
+      "time": "2006 - 2008",
+      "details": "**Graduated with High Distinction** (Baker Scholar)\n\n**Leadership Roles:**\n- President, Women's Student Association\n- Case Competition Team Captain (National Champions)\n\n**Focus:** Strategy, Operations, and Organizational Behavior"
+    },
+    {
+      "degree": "Bachelor of Science in Industrial Engineering",
+      "university": "Northwestern University",
+      "time": "2002 - 2006",
+      "details": "**Summa Cum Laude**\n\n**Honors:**\n- Valedictorian, Engineering School\n- Tau Beta Pi Engineering Honor Society\n\n**Senior Project:** Supply chain optimization model adopted by Fortune 500 client"
+    }
+  ],
+
+  "experiences": [
+    {
+      "role": "Chief Operating Officer",
+      "time": "2020 - Present",
+      "company": "GlobalTech Solutions (NYSE: GTS)",
+      "details": "**P&L responsibility for $800M business** with 2,500+ employees across 15 countries.\n\n**Transformation Achievements:**\n- Led post-merger integration of $200M acquisition, achieving 115% of synergy targets\n- Implemented digital transformation reducing operational costs by $45M annually\n- Redesigned org structure improving employee engagement scores by 25 points\n- Launched leadership development program with 90% promotion rate for participants\n\n**Board Presentations:** Quarterly operational updates to Board of Directors",
+      "tags": ["P&L Management", "M&A Integration", "Digital Transformation", "Organizational Design", "Board Relations"],
+      "icon": "building"
+    },
+    {
+      "role": "Senior Vice President, Operations",
+      "time": "2015 - 2020",
+      "company": "TechCorp International",
+      "details": "Led **global operations** for a $500M technology services division.\n\n**Key Accomplishments:**\n- Scaled operations from 500 to 1,500 employees\n- Opened 4 international delivery centers\n- Implemented Six Sigma program saving $15M annually\n- Achieved ISO 27001 and SOC 2 certifications\n- Built shared services center serving 3 business units",
+      "tags": ["Global Operations", "Shared Services", "Process Excellence", "Compliance", "Scaling"],
+      "icon": "globe"
+    },
+    {
+      "role": "Vice President, Strategy & Operations",
+      "time": "2012 - 2015",
+      "company": "Consulting Partners LLP",
+      "details": "Led **transformation engagements** for Fortune 500 clients across industries.\n\n**Notable Projects:**\n- Retail: $100M cost reduction through supply chain optimization\n- Healthcare: Merger integration of two hospital systems\n- Manufacturing: Digital transformation roadmap implementation\n\n**Team Leadership:** Managed team of 25 consultants across 8 client engagements",
+      "tags": ["Strategy Consulting", "Transformation", "Client Management", "Team Leadership", "Change Management"],
+      "icon": "briefcase"
+    },
+    {
+      "role": "Director of Operations",
+      "time": "2008 - 2012",
+      "company": "Manufacturing Corp.",
+      "details": "Managed **manufacturing operations** for consumer products division.\n\n**Results:**\n- Reduced production costs by 20% through lean manufacturing\n- Improved on-time delivery from 85% to 98%\n- Led turnaround of underperforming plant\n- Implemented quality management system reducing defects by 50%",
+      "tags": ["Manufacturing", "Lean Operations", "Quality Management", "Turnaround", "Supply Chain"],
+      "icon": "cog"
+    }
+  ],
+
+  "projects": [
+    {
+      "title": "Women in Leadership Initiative",
+      "time": "2021 - Present",
+      "details": "**Founded company-wide program** advancing women into leadership positions.\n\n- 40% increase in women in director+ roles\n- Mentorship program pairing 100+ women with senior leaders\n- Partnership with 5 universities for talent pipeline"
+    },
+    {
+      "title": "Digital Transformation Program",
+      "time": "2020 - 2022",
+      "details": "Led **enterprise-wide digital transformation** initiative.\n\n- $50M investment in technology modernization\n- Automated 60% of manual processes\n- Deployed AI/ML for demand forecasting\n- ROI: 280% over 3 years"
+    },
+    {
+      "title": "Operational Excellence Framework",
+      "time": "2018",
+      "details": "Developed **proprietary operational excellence methodology** now used across the organization.\n\n- Combines Lean, Six Sigma, and Agile principles\n- Trained 500+ employees as practitioners\n- Published in Harvard Business Review"
+    }
+  ],
+
+  "certifications": [
+    {
+      "name": "NACD Directorship Certification",
+      "start": "2022",
+      "organization": "National Association of Corporate Directors",
+      "details": "Certification in corporate governance, board best practices, and fiduciary responsibilities."
+    },
+    {
+      "name": "Lean Six Sigma Master Black Belt",
+      "start": "2015",
+      "organization": "ASQ",
+      "details": "Highest level certification in process improvement and operational excellence methodology."
+    },
+    {
+      "name": "Executive Leadership Program",
+      "start": "2019",
+      "organization": "Stanford Graduate School of Business",
+      "details": "Advanced executive program focusing on leadership, strategy, and organizational transformation."
+    }
+  ],
+
+  "skills": [
+    {
+      "name": "Strategic Leadership",
+      "level": 98,
+      "tags": ["Vision Setting", "Strategic Planning", "Board Relations", "Stakeholder Management", "M&A"]
+    },
+    {
+      "name": "Operational Excellence",
+      "level": 95,
+      "tags": ["Process Optimization", "Six Sigma", "Lean", "Quality Management", "Continuous Improvement"]
+    },
+    {
+      "name": "Organizational Development",
+      "level": 92,
+      "tags": ["Culture Change", "Talent Development", "Succession Planning", "Org Design", "Change Management"]
+    },
+    {
+      "name": "Financial Acumen",
+      "level": 90,
+      "tags": ["P&L Management", "Budgeting", "Financial Analysis", "Cost Optimization", "Investment Planning"]
+    },
+    {
+      "name": "Digital Transformation",
+      "level": 88,
+      "tags": ["Technology Strategy", "Automation", "Data Analytics", "Digital Operations", "Innovation"]
+    },
+    {
+      "name": "Executive Communication",
+      "level": 95,
+      "tags": ["Board Presentations", "Investor Relations", "Executive Presence", "Public Speaking", "Negotiation"]
+    }
+  ],
+
+  "volunteer": [
+    {
+      "role": "Board Member",
+      "time": "2021 - Present",
+      "company": "Chicago Community Foundation",
+      "details": "Serving on the board of directors for a $200M community foundation focused on education and economic opportunity.",
+      "tags": ["Board Service", "Nonprofit", "Community"]
+    },
+    {
+      "role": "Executive Mentor",
+      "time": "2018 - Present",
+      "company": "Chief",
+      "details": "Mentoring women executives through Chief's peer network, focusing on career advancement and leadership development.",
+      "tags": ["Mentoring", "Women in Leadership", "Executive Development"]
+    }
+  ],
+
+  "footer": "Chicago, IL | Board Member | Executive Advisor | Open to COO/CEO Opportunities"
+}

@@ -1,0 +1,173 @@
+{
+  "slug": "maria-designer",
+  "color_palette": "lavender",
+  "layout": "hero-split",
+
+  "sidebar": {
+    "position": "left",
+    "name": "Maria Santos",
+    "tagline": "Senior UX Designer | Design Systems Expert | User Research Advocate",
+    "avatar": "/uploads/designer-avatar.jpeg",
+    "email": "maria.design@example.com",
+    "phone": "+1 555 234 5678",
+    "location": "New York, NY",
+    "timezone": "America/New_York",
+    "linkedin": "maria-santos-ux",
+    "website": "https://mariasantos.design",
+    "languages": [
+      { "idiom": "English", "level": "Native" },
+      { "idiom": "Spanish", "level": "Native" },
+      { "idiom": "French", "level": "Intermediate" }
+    ]
+  },
+
+  "interests": [
+    "User Psychology",
+    "Accessibility Design",
+    "Design Systems",
+    "Motion Design",
+    "Typography",
+    "Design Thinking Workshops",
+    "Emerging Tech UX",
+    "Inclusive Design"
+  ],
+
+  "career_profile": {
+    "title": "About Me",
+    "summary": "**Human-centered designer** with 8+ years of experience creating intuitive digital experiences that delight users and drive business results. I believe that **great design is invisible** - it should feel natural and effortless.\n\nMy approach combines **deep user research** with **systematic design thinking** to solve complex problems. I've led design initiatives for products used by millions, always keeping accessibility and inclusion at the forefront.\n\n**Design Philosophy:**\n- Every pixel should have a purpose\n- Accessibility is not an afterthought, it's the foundation\n- Data informs design, but empathy drives it\n- Design systems scale creativity, they don't limit it\n\nI'm passionate about **mentoring emerging designers** and speaking at industry conferences about the intersection of psychology and design."
+  },
+
+  "education": [
+    {
+      "degree": "Master of Fine Arts in Interaction Design",
+      "university": "Parsons School of Design",
+      "time": "2014 - 2016",
+      "details": "**Thesis:** Designing for Emotional Resonance in Digital Products\n\n**Awards:**\n- Outstanding Thesis Award\n- Adobe Design Achievement Award Finalist\n\n**Focus Areas:** Human-Computer Interaction, Cognitive Psychology, Design Research Methods"
+    },
+    {
+      "degree": "Bachelor of Arts in Graphic Design",
+      "university": "Rhode Island School of Design",
+      "time": "2010 - 2014",
+      "details": "**Graduated Magna Cum Laude**\n\n**Key Projects:**\n- Rebranding project for local nonprofit (implemented)\n- Interactive exhibit design for museum\n- Typography specimen book (featured in school gallery)"
+    }
+  ],
+
+  "experiences": [
+    {
+      "role": "Principal UX Designer",
+      "time": "2022 - Present",
+      "company": "FinanceApp Inc.",
+      "details": "Leading **design strategy** for a fintech platform serving 5M+ users across 15 countries.\n\n**Impact:**\n- Redesigned onboarding flow, increasing completion by 45%\n- Built and maintained design system with 200+ components\n- Reduced support tickets by 30% through UX improvements\n- Led team of 6 designers across 3 product areas\n\n**Key Initiative:** Accessibility overhaul achieving WCAG 2.1 AA compliance",
+      "tags": ["Design Leadership", "Design Systems", "FinTech", "Accessibility", "User Research"],
+      "icon": "palette"
+    },
+    {
+      "role": "Senior Product Designer",
+      "time": "2019 - 2022",
+      "company": "HealthTech Startup",
+      "details": "End-to-end design for a **healthcare platform** used by 500+ medical practices.\n\n**Achievements:**\n- Designed patient portal increasing engagement by 60%\n- Created design system reducing design-to-dev time by 40%\n- Conducted 100+ user interviews shaping product roadmap\n- Won Healthcare UX Award 2021",
+      "tags": ["Healthcare UX", "Product Design", "User Research", "Design Systems", "B2B"],
+      "icon": "heart"
+    },
+    {
+      "role": "UX Designer",
+      "time": "2016 - 2019",
+      "company": "Digital Agency NYC",
+      "details": "Crafted digital experiences for **Fortune 500 clients** and innovative startups.\n\n**Notable Projects:**\n- E-commerce redesign: +25% conversion rate\n- Banking app: 4.8 star App Store rating\n- Travel platform: Featured in Awwwards\n\n**Growth:** Promoted from Junior to Senior within 2 years",
+      "tags": ["Agency", "E-commerce", "Mobile Design", "Web Design", "Client Management"],
+      "icon": "star"
+    }
+  ],
+
+  "projects": [
+    {
+      "title": "Clarity Design System",
+      "time": "2023",
+      "details": "**Open source design system** with 150+ components, comprehensive documentation, and Figma community library.\n\n- 5,000+ Figma community copies\n- Used by 20+ companies\n- Accessibility-first approach with WCAG 2.1 AA compliance",
+      "link": "https://clarity.design"
+    },
+    {
+      "title": "UX Research Toolkit",
+      "time": "2022",
+      "details": "Free **Notion template** for organizing user research, including interview scripts, synthesis frameworks, and insight tracking.\n\n- Downloaded 10,000+ times\n- Featured in NN/g newsletter"
+    },
+    {
+      "title": "Inclusive Design Patterns Library",
+      "time": "2021",
+      "details": "Curated collection of **accessibility-focused design patterns** with implementation guidelines and real-world examples.\n\n- Covers 50+ common UI patterns\n- Code examples in React and Vue"
+    }
+  ],
+
+  "certifications": [
+    {
+      "name": "Google UX Design Professional Certificate",
+      "start": "2023",
+      "organization": "Google",
+      "details": "Advanced certification covering the full UX design process from research to high-fidelity prototyping."
+    },
+    {
+      "name": "IAAP Certified Professional in Accessibility Core Competencies (CPACC)",
+      "start": "2022",
+      "organization": "IAAP",
+      "details": "Professional certification in web accessibility standards, assistive technologies, and inclusive design principles."
+    },
+    {
+      "name": "Nielsen Norman Group UX Certification",
+      "start": "2020",
+      "organization": "Nielsen Norman Group",
+      "details": "Specialization in Interaction Design with focus on usability testing and research methods."
+    }
+  ],
+
+  "skills": [
+    {
+      "name": "UX Research",
+      "level": 95,
+      "tags": ["User Interviews", "Usability Testing", "Surveys", "Analytics", "Journey Mapping"]
+    },
+    {
+      "name": "UI Design",
+      "level": 92,
+      "tags": ["Figma", "Visual Design", "Typography", "Color Theory", "Responsive Design"]
+    },
+    {
+      "name": "Design Systems",
+      "level": 90,
+      "tags": ["Component Libraries", "Design Tokens", "Documentation", "Governance", "Scalability"]
+    },
+    {
+      "name": "Prototyping",
+      "level": 88,
+      "tags": ["Figma Prototypes", "Framer", "Principle", "Micro-interactions", "User Flows"]
+    },
+    {
+      "name": "Accessibility",
+      "level": 90,
+      "tags": ["WCAG 2.1", "Screen Readers", "Inclusive Design", "Color Contrast", "Keyboard Navigation"]
+    },
+    {
+      "name": "Leadership & Communication",
+      "level": 85,
+      "tags": ["Stakeholder Management", "Design Critique", "Mentoring", "Presentations", "Cross-functional Collaboration"]
+    }
+  ],
+
+  "volunteer": [
+    {
+      "role": "Design Mentor",
+      "time": "2021 - Present",
+      "company": "ADPList",
+      "details": "Mentoring 50+ aspiring designers globally through 1:1 sessions focusing on portfolio development, career growth, and skill building.",
+      "tags": ["Mentoring", "Design Community", "Career Development"]
+    },
+    {
+      "role": "Conference Speaker",
+      "time": "2020 - Present",
+      "company": "Various Conferences",
+      "details": "Speaking at design conferences including Config, UX London, and IXDA about accessibility, design systems, and research methods.",
+      "tags": ["Public Speaking", "Knowledge Sharing", "Design Community"]
+    }
+  ],
+
+  "footer": "New York, NY | Available for Full-time & Contract | Let's create something meaningful together"
+}

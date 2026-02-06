@@ -1,7 +1,7 @@
 {
   "slug": "victoria-rolon",
-  "theme_skin": "lavender",
-  "template_layout": "landing",
+  "color_palette": "lavender",
+  "layout": "hero-centered",
   "sidebar": {
     "position": "left",
     "about": true,

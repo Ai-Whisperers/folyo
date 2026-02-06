@@ -39,6 +39,8 @@ import { CheckIcon } from '@heroicons/react/24/solid'
 // Static portfolio data - in production, this would come from an API/database
 import milagrosData from '@/data/portfolios/milagros-aguilera.json'
 import victoriaData from '@/data/portfolios/victoria-rolon.json'
+import softwareDevData from '@/data/portfolios/software-developer.json'
+import dataScientistData from '@/data/portfolios/data-scientist.json'
 
 // Demo CV data for showcase
 const demoData = {
@@ -166,6 +168,11 @@ const portfolioRegistry: Record<string, any> = {
   'milagros-mabel-aguilera-baez': milagrosData,
   'victoria-rolon': victoriaData,
   'victoria-isabel-rolon-aguilar': victoriaData,
+  // New migrated portfolios
+  'software-developer': softwareDevData,
+  'alex-johnson': softwareDevData,
+  'data-scientist': dataScientistData,
+  'sarah-chen': dataScientistData,
 }
 
 // Share Modal Component
