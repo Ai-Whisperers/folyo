@@ -1,12 +1,12 @@
-theme_skin: teal
+theme_skin: berry
 sidebar:
   position: right
-  about: False
-  education: False
+  about: True
+  education: True
 
   # Profile information
   name: Kyrian Weiss van der Pol
-  tagline: Aspiring QA Engineer | Data Analyst | Python Developer
+  tagline: QA Engineer | Data Analyst | Python Developer
   avatar: ProfilePicKyrian.jpg
 
   # Sidebar links
@@ -14,10 +14,10 @@ sidebar:
   phone: '+595 985 724 135'
   timezone: America/Asuncion
   citizenship: Dutch and Paraguayan
-  website: # optional if GitHub Pages available
-  linkedin: # optional if LinkedIn created
-  github: # optional
-  pdf: "https://github.com/IvanWeissVanDerPol/kiki/blob/master/assets/images/kikiresume.pdf"
+  website: https://ivanweissvanderpol.github.io/kiki/
+  linkedin: kyrian-weiss
+  github: IvanWeissVanDerPol
+  pdf: "https://github.com/IvanWeissVanDerPol/kiki/raw/main/assets/images/kikiresume.pdf"
 
   languages:
     title: Languages
