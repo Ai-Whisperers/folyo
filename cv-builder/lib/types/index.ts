@@ -1,4 +1,4 @@
-// Export all types
+// Export all types from centralized cv.ts file
 export * from './cv'
 export * from './portfolio-schema'
 
@@ -28,88 +28,8 @@ export interface User {
 }
 
 // ============================================
-// CV/Portfolio Types (Centralized from pages)
+// Import Additional Types (not in cv.ts)
 // ============================================
-
-export interface CVSidebar {
-  name: string
-  tagline?: string
-  email?: string
-  phone?: string
-  website?: string
-  linkedin?: string
-  github?: string
-  location?: string
-  avatar?: string
-  languages?: Array<{ idiom: string; level: string }>
-}
-
-export interface CareerProfile {
-  title: string
-  summary: string
-}
-
-export interface Experience {
-  role: string
-  company: string
-  time: string
-  location?: string
-  details?: string
-  tags?: string[]
-  icon?: string
-}
-
-export interface Education {
-  degree: string
-  university: string
-  time: string
-  details?: string
-}
-
-export interface Skill {
-  name: string
-  level: number
-  tags?: string[]
-}
-
-export interface Project {
-  title: string
-  time?: string
-  details?: string
-  link?: string
-}
-
-export interface Certification {
-  name: string
-  organization: string
-  start: string
-  end?: string
-  details?: string
-}
-
-export interface Interest {
-  item: string
-}
-
-export interface Language {
-  idiom: string
-  level: string
-}
-
-export interface PortfolioItem {
-  type: 'video' | 'image' | 'document' | 'link'
-  url: string
-  thumbnail?: string
-  title?: string
-  description?: string
-}
-
-export interface PortfolioSection {
-  title: string
-  intro?: string
-  items: PortfolioItem[]
-  layout: 'grid' | 'carousel' | 'list'
-}
 
 export interface CVAnalytics {
   views: number

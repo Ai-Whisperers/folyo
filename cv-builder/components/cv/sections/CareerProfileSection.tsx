@@ -14,19 +14,19 @@ interface CareerProfileSectionProps {
 export function CareerProfileSection({ data, onChange }: CareerProfileSectionProps) {
   const [aiModal, setAiModal] = useState<{ isOpen: boolean, text: string, path: string } | null>(null)
 
-  const getCareerSummary = () => data.career_profile?.summary || data['career-profile']?.summary || ''
-
+  const getCareerSummary = () => data['career-profile']?.summary || data.career_profile?.summary || ''
+  
   const handleAIComplete = (enhancedText: string) => {
     if (aiModal) {
       // Update both keys for compatibility
       onChange({
         ...data,
-        career_profile: {
-          ...data.career_profile,
-          summary: enhancedText
-        },
         'career-profile': {
           ...data['career-profile'],
+          summary: enhancedText
+        },
+        career_profile: {
+          ...data.career_profile,
           summary: enhancedText
         }
       })
@@ -37,12 +37,12 @@ export function CareerProfileSection({ data, onChange }: CareerProfileSectionPro
   const updateSummary = (value: string) => {
     onChange({
       ...data,
-      career_profile: {
-        ...data.career_profile,
-        summary: value
-      },
       'career-profile': {
         ...data['career-profile'],
+        summary: value
+      },
+      career_profile: {
+        ...data.career_profile,
         summary: value
       }
     })

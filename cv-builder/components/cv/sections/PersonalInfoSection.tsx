@@ -44,24 +44,31 @@ export function PersonalInfoSection({ data, onChange }: PersonalInfoSectionProps
   }
 
   const updateLanguage = (index: number, field: string, value: string) => {
-    const languages = Array.isArray(data.sidebar.languages) ? [...data.sidebar.languages] : []
-    languages[index] = { ...languages[index], [field]: value }
+    const currentLanguages = Array.isArray(data.sidebar.languages) ? data.sidebar.languages : []
+    const updatedLanguages = {
+      title: data.sidebar.languages?.title || 'Languages',
+      info: currentLanguages.map(lang => ({ ...lang, [field]: value }))
+    }
     onChange({
       ...data,
       sidebar: {
         ...data.sidebar,
-        languages
+        languages: updatedLanguages
       }
     })
   }
 
   const removeLanguage = (index: number) => {
-    const languages = Array.isArray(data.sidebar.languages) ? data.sidebar.languages : []
+    const currentLanguages = Array.isArray(data.sidebar.languages) ? data.sidebar.languages : []
+    const updatedLanguages = {
+      title: data.sidebar.languages?.title || 'Languages',
+      info: currentLanguages.filter((_, i) => i !== index)
+    }
     onChange({
       ...data,
       sidebar: {
         ...data.sidebar,
-        languages: languages.filter((_, i) => i !== index)
+        languages: updatedLanguages
       }
     })
   }

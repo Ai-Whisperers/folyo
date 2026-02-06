@@ -77,7 +77,6 @@ export function transformYAMLtoCVData(data: any): CVData {
       website: data.sidebar?.website || '',
       linkedin: data.sidebar?.linkedin || '',
       github: data.sidebar?.github || '',
-      twitter: data.sidebar?.twitter || '',
       instagram: data.sidebar?.instagram || '',
       youtube: data.sidebar?.youtube || '',
       pdf: data.sidebar?.pdf || '',
@@ -94,7 +93,10 @@ export function transformYAMLtoCVData(data: any): CVData {
     'career-profile': data['career-profile'] ? {
       title: data['career-profile'].title || 'Profile',
       summary: data['career-profile'].summary || ''
-    } : undefined,
+    } : {
+      title: 'Profile',
+      summary: ''
+    },
 
     // Education
     education: data.education ? {
@@ -105,7 +107,10 @@ export function transformYAMLtoCVData(data: any): CVData {
         time: edu.time || '',
         details: edu.details || ''
       }))
-    } : undefined,
+    } : {
+      title: 'Education',
+      info: []
+    },
 
     // Experience
     experiences: data.experiences ? {
@@ -118,7 +123,10 @@ export function transformYAMLtoCVData(data: any): CVData {
         tags: exp.tags || [],
         icon: exp.icon || ''
       }))
-    } : undefined,
+    } : {
+      title: 'Experience',
+      info: []
+    },
 
     // Volunteer
     volunteer: data.volunteer ? {
@@ -129,7 +137,10 @@ export function transformYAMLtoCVData(data: any): CVData {
         company: vol.company || '',
         details: vol.details || ''
       }))
-    } : undefined,
+    } : {
+      title: 'Volunteer Work',
+      info: []
+    },
 
     // Projects
     projects: data.projects ? {
@@ -141,7 +152,11 @@ export function transformYAMLtoCVData(data: any): CVData {
         details: proj.details || '',
         link: proj.link || ''
       }))
-    } : undefined,
+    } : {
+      title: 'Projects',
+      intro: '',
+      assignments: []
+    },
 
     // Certifications
     certifications: data.certifications ? {
@@ -153,7 +168,10 @@ export function transformYAMLtoCVData(data: any): CVData {
         organization: cert.organization || '',
         details: cert.details || ''
       }))
-    } : undefined,
+    } : {
+      title: 'Certifications',
+      list: []
+    },
 
     // Skills
     skills: data.skills ? {
@@ -163,7 +181,10 @@ export function transformYAMLtoCVData(data: any): CVData {
         level: skill.level || '0%',
         tags: skill.tags || []
       }))
-    } : undefined,
+    } : {
+      title: 'Skills',
+      toolset: []
+    },
 
     // Interests
     interests: data.interests ? {
@@ -171,7 +192,10 @@ export function transformYAMLtoCVData(data: any): CVData {
       info: (data.interests.info || []).map((interest: any) => ({
         item: interest.item || ''
       }))
-    } : undefined,
+    } : {
+      title: 'Interests',
+      info: []
+    },
 
     // Publications
     publications: data.publications ? {

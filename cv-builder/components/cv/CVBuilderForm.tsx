@@ -291,9 +291,14 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
               className="form-input w-40"
               value={lang.level || 'Intermediate'}
               onChange={(e) => {
-                const langs = [...(data.sidebar?.languages || [])]
-                langs[index] = { ...langs[index], level: e.target.value }
-                updateField('sidebar.languages', langs)
+                const currentLanguages = Array.isArray(data.sidebar?.languages) ? data.sidebar.languages : []
+                const updatedLanguages = {
+                  title: data.sidebar?.languages?.title || 'Languages',
+                  info: currentLanguages.map((lang, i) => 
+                    i === index ? { ...lang, level: e.target.value } : lang
+                  )
+                }
+                updateField('sidebar.languages', updatedLanguages)
               }}
             >
               <option value="Native">Native</option>
@@ -339,7 +344,7 @@ function CVBuilderFormComponent({ data, onChange, onSectionChange }: CVBuilderFo
   )
 
   // Get career profile summary from either key
-  const getCareerSummary = () => data.career_profile?.summary || data['career-profile']?.summary || ''
+  const getCareerSummary = () => data['career-profile']?.summary || data.career_profile?.summary || ''
 
   const renderCareerProfileSection = () => (
     <div className="space-y-6">

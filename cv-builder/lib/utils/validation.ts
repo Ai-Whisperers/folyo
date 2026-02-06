@@ -49,8 +49,8 @@ export interface ValidationResult {
 /**
  * Validate email address
  */
-export function validateEmail(email: string): ValidationResult {
-  const email = email.trim().toLowerCase()
+export function validateEmail(emailInput: string): ValidationResult {
+  const email = emailInput.trim().toLowerCase()
   const errors: string[] = []
 
   if (!email) {
@@ -206,7 +206,7 @@ export function validateCVData(data: any): {
   sanitizedData: any
 } {
   const errors: Record<string, string[]> = {}
-  const sanitizedData = { ...data }
+  let sanitizedData = { ...data }
 
   // Validate personal info
   if (!data.sidebar?.name) {

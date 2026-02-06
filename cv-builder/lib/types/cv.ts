@@ -327,6 +327,7 @@ export interface CV {
 
 export interface CVFormData {
   theme_skin: ThemeSkin
+  templateLayout?: PortfolioLayoutType
   sidebar: ContactInfo & {
     position?: SidebarPosition
     about?: boolean
@@ -398,6 +399,7 @@ export interface CVSaveResponse {
 
 export const DEFAULT_CV_DATA: CVFormData = {
   theme_skin: 'teal',
+  templateLayout: 'classic',
   sidebar: {
     position: 'right',
     about: false,

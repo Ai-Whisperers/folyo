@@ -2,7 +2,7 @@
  * Dynamic imports and lazy loading utilities
  */
 
-import { lazy } from 'react'
+import React, { lazy, useCallback, useEffect, useRef } from 'react'
 
 /**
  * Lazy load components with loading fallback
@@ -15,10 +15,12 @@ export function lazyLoad<T extends React.ComponentType<any>>(
   
   // Return a component that handles loading state
   return (props: React.ComponentProps<T>) => {
-    return (
-      <React.Suspense fallback={fallback ? <fallback /> : <div>Loading...</div>}>
-        <LazyComponent {...props} />
-      </React.Suspense>
+    return React.createElement(
+      React.Suspense,
+      { 
+        fallback: fallback ? React.createElement(fallback) : React.createElement('div', null, 'Loading...') 
+      },
+      React.createElement(LazyComponent, props)
     )
   }
 }
@@ -26,17 +28,17 @@ export function lazyLoad<T extends React.ComponentType<any>>(
 /**
  * Lazy component imports
  */
-export const LazyCVPreview = lazyLoad(() => import('@/components/cv/CVPreview'))
-export const LazyPortfolioView = lazyLoad(() => import('@/components/portfolio/PortfolioView'))
-export const LazyAIAssistant = lazyLoad(() => import('@/components/ai/AIAssistant'))
-export const LazyImageUpload = lazyLoad(() => import('@/components/common/ImageUpload'))
+export const LazyCVPreview = lazyLoad(() => import('@/components/cv/CVPreview').then(m => ({ default: m.CVPreview })))
+export const LazyPortfolioView = lazyLoad(() => import('@/components/portfolio/PortfolioView').then(m => ({ default: m.PortfolioView })))
+export const LazyAIAssistant = lazyLoad(() => import('@/components/ai/AIAssistant').then(m => ({ default: m.AIAssistant })))
+export const LazyImageUpload = lazyLoad(() => import('@/components/common/ImageUpload').then(m => ({ default: m.ImageUpload })))
 
 /**
  * Lazy load heavy utilities only when needed
  */
-export const loadPDFExport = () => import('@/lib/utils/pdfExport')
-export const loadCVValidation = () => import('@/lib/validation/cvValidator')
-export const loadAnalytics = () => import('@/lib/services/analytics')
+export const loadPDFExport = () => import('@/lib/utils/pdfExport').then(m => m.default || m)
+export const loadCVValidation = () => import('@/lib/validation/cvValidator').then(m => m.default || m)
+export const loadAnalytics = () => import('@/lib/services/analytics').then(m => m.default || m)
 
 /**
  * Intersection Observer for lazy loading

@@ -136,7 +136,6 @@ export default function CVBuilderPage() {
   const { user, isLoading: authLoading } = useAuth()
   const [cvData, setCvData] = useState<CVFormData>(defaultCVData as CVFormData)
   const [initialData, setInitialData] = useState<CVFormData>(defaultCVData as CVFormData)
-  const [activeView, setActiveView] = useState<'edit' | 'preview'>('edit')
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop')
   const [isSaving, setIsSaving] = useState(false)
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
@@ -145,6 +144,8 @@ export default function CVBuilderPage() {
   const [showQRModal, setShowQRModal] = useState(false)
   const [copied, setCopied] = useState(false)
   const [fullscreenPreview, setFullscreenPreview] = useState(false)
+  const [mobileEditorCollapsed, setMobileEditorCollapsed] = useState(false)
+  const [mobilePreviewCollapsed, setMobilePreviewCollapsed] = useState(false)
 
   // Storage key changes based on user
   const storageKey = useMemo(() => getStorageKey(user?.id), [user?.id])
@@ -160,7 +161,7 @@ export default function CVBuilderPage() {
     }
 
     // Career profile/summary check (supports both keys)
-    const summary = cvData.career_profile?.summary || cvData['career-profile']?.summary
+    const summary = cvData['career-profile']?.summary || cvData.career_profile?.summary
     if (summary && summary.length > 20) {
       completed.push('summary')
     }
@@ -286,7 +287,7 @@ export default function CVBuilderPage() {
       const newData = {
         ...defaultCVData,
         theme_skin: initialTheme,
-        template_layout: templateParam || 'classic', // Default to classic layout
+        templateLayout: templateParam || 'classic', // Default to classic layout
         sidebar: {
           ...defaultCVData.sidebar,
           name: user?.name || '',
@@ -484,64 +485,34 @@ export default function CVBuilderPage() {
               </div>
             </div>
 
-            {/* Center - View Toggle (desktop) */}
+            {/* Center - Device Preview Toggle */}
             <div className="hidden md:flex items-center" data-section="preview">
               <div className="bg-gray-100 rounded-lg p-1 flex items-center">
                 <button
-                  onClick={() => setActiveView('edit')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                    activeView === 'edit'
+                  onClick={() => setPreviewDevice('desktop')}
+                  className={`p-2 rounded-md transition-all ${
+                    previewDevice === 'desktop'
                       ? 'bg-white text-teal-600 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      : 'text-gray-500 hover:text-gray-700'
                   }`}
-                  aria-pressed={activeView === 'edit'}
+                  aria-label="Desktop preview"
+                  aria-pressed={previewDevice === 'desktop'}
                 >
-                  <PencilIcon className="h-4 w-4 inline mr-2" aria-hidden="true" />
-                  Edit
+                  <ComputerDesktopIcon className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => setActiveView('preview')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                    activeView === 'preview'
+                  onClick={() => setPreviewDevice('mobile')}
+                  className={`p-2 rounded-md transition-all ${
+                    previewDevice === 'mobile'
                       ? 'bg-white text-teal-600 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      : 'text-gray-500 hover:text-gray-700'
                   }`}
-                  aria-pressed={activeView === 'preview'}
+                  aria-label="Mobile preview"
+                  aria-pressed={previewDevice === 'mobile'}
                 >
-                  <EyeIcon className="h-4 w-4 inline mr-2" aria-hidden="true" />
-                  Preview
+                  <DevicePhoneMobileIcon className="h-4 w-4" />
                 </button>
               </div>
-
-              {/* Device toggle for preview */}
-              {activeView === 'preview' && (
-                <div className="ml-2 bg-gray-100 rounded-lg p-1 flex items-center">
-                  <button
-                    onClick={() => setPreviewDevice('desktop')}
-                    className={`p-2 rounded-md transition-all ${
-                      previewDevice === 'desktop'
-                        ? 'bg-white text-teal-600 shadow-sm'
-                        : 'text-gray-500 hover:text-gray-700'
-                    }`}
-                    aria-label="Desktop preview"
-                    aria-pressed={previewDevice === 'desktop'}
-                  >
-                    <ComputerDesktopIcon className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => setPreviewDevice('mobile')}
-                    className={`p-2 rounded-md transition-all ${
-                      previewDevice === 'mobile'
-                        ? 'bg-white text-teal-600 shadow-sm'
-                        : 'text-gray-500 hover:text-gray-700'
-                    }`}
-                    aria-label="Mobile preview"
-                    aria-pressed={previewDevice === 'mobile'}
-                  >
-                    <DevicePhoneMobileIcon className="h-4 w-4" />
-                  </button>
-                </div>
-              )}
             </div>
 
             {/* Right side - Actions */}
@@ -606,18 +577,19 @@ export default function CVBuilderPage() {
         </div>
       </header>
 
-      {/* Main Content */}
+{/* Main Content */}
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+        {/* Desktop Layout - Side by Side */}
+        <div className="hidden lg:grid lg:grid-cols-2 gap-6 h-full">
           {/* Editor Panel */}
-          <div className={`${activeView === 'preview' ? 'hidden lg:block' : ''}`} data-section="contact">
+          <div className="lg:col-span-1" data-section="contact">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 h-full flex flex-col">
               <div className="p-4 sm:p-6 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900">
-                  Build Your Portfolio
+                  Edit Your Portfolio
                 </h2>
                 <p className="text-sm text-gray-500 mt-1">
-                  Fill in your details to create a stunning portfolio
+                  Make changes and see them update live on the right
                 </p>
               </div>
               <div className="flex-1 p-4 sm:p-6 overflow-y-auto">
@@ -630,7 +602,7 @@ export default function CVBuilderPage() {
           </div>
 
           {/* Preview Panel */}
-          <div className={`${activeView === 'edit' ? 'hidden lg:block' : ''}`}>
+          <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 h-full flex flex-col sticky top-28">
               <div className="p-4 sm:p-6 border-b border-gray-200 flex items-center justify-between">
                 <div>
@@ -638,7 +610,7 @@ export default function CVBuilderPage() {
                     Live Preview
                   </h2>
                   <p className="text-sm text-gray-500 mt-1">
-                    See changes in real-time
+                    See your changes in real-time
                   </p>
                 </div>
 
@@ -652,9 +624,94 @@ export default function CVBuilderPage() {
                   >
                     <ArrowsPointingOutIcon className="h-5 w-5" />
                   </button>
+                </div>
+              </div>
+              <div className={`flex-1 p-4 sm:p-6 overflow-y-auto flex justify-center ${
+                previewDevice === 'mobile' ? 'bg-gray-100' : ''
+              }`}>
+                <div className={`
+                  w-full transition-all duration-300
+                  ${previewDevice === 'mobile'
+                    ? 'max-w-[375px] shadow-xl rounded-2xl overflow-hidden border-8 border-gray-800 bg-white'
+                    : ''
+                  }
+                `}>
+                  <CVPreview
+                    data={cvData}
+                    theme={cvData.theme_skin}
+                    templateLayout={cvData.templateLayout}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                  {/* Mobile device toggle (on preview panel header) */}
-                  <div className="lg:hidden bg-gray-100 rounded-lg p-1 flex items-center">
+        {/* Mobile Layout - Collapsible Sections */}
+        <div className="lg:hidden space-y-4">
+          {/* Editor Section */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <button
+              onClick={() => setMobileEditorCollapsed(!mobileEditorCollapsed)}
+              className="w-full p-4 border-b border-gray-200 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+            >
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Edit Your Portfolio
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  Make changes and see them update below
+                </p>
+              </div>
+              <div className={`transform transition-transform duration-200 ${
+                mobileEditorCollapsed ? 'rotate-180' : ''
+              }`}>
+                <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </button>
+            <div className={`transition-all duration-300 overflow-hidden ${
+              mobileEditorCollapsed ? 'max-h-0' : 'max-h-[60vh]'
+            }`}>
+              <div className="p-4 overflow-y-auto">
+                <CVBuilderForm
+                  data={cvData}
+                  onChange={handleDataChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Preview Section */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <button
+              onClick={() => setMobilePreviewCollapsed(!mobilePreviewCollapsed)}
+              className="w-full p-4 border-b border-gray-200 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+            >
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Live Preview
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  See your changes in real-time
+                </p>
+              </div>
+              <div className={`transform transition-transform duration-200 ${
+                mobilePreviewCollapsed ? 'rotate-180' : ''
+              }`}>
+                <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </button>
+            <div className={`transition-all duration-300 overflow-hidden ${
+              mobilePreviewCollapsed ? 'max-h-0' : 'max-h-[60vh]'
+            }`}>
+              <div className="p-4 overflow-y-auto">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <span className="text-sm text-gray-500">Device:</span>
+                  <div className="bg-gray-100 rounded-lg p-1 flex items-center">
                     <button
                       onClick={() => setPreviewDevice('desktop')}
                       className={`p-2 rounded-md transition-all ${
@@ -678,47 +735,35 @@ export default function CVBuilderPage() {
                       <DevicePhoneMobileIcon className="h-4 w-4" />
                     </button>
                   </div>
+                  <button
+                    onClick={() => setFullscreenPreview(true)}
+                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-teal-600 transition-all"
+                    aria-label="Fullscreen preview"
+                    title="View full size preview"
+                  >
+                    <ArrowsPointingOutIcon className="h-5 w-5" />
+                  </button>
                 </div>
-              </div>
-              <div className={`flex-1 p-4 sm:p-6 overflow-y-auto flex justify-center ${
-                previewDevice === 'mobile' ? 'bg-gray-100' : ''
-              }`}>
-                <div className={`
-                  w-full transition-all duration-300
-                  ${previewDevice === 'mobile'
-                    ? 'max-w-[375px] shadow-xl rounded-2xl overflow-hidden border-8 border-gray-800 bg-white'
-                    : ''
-                  }
-                `}>
-                  <CVPreview
-                    data={cvData}
-                    theme={cvData.theme_skin}
-                    templateLayout={cvData.template_layout}
-                  />
+                <div className={`flex justify-center ${
+                  previewDevice === 'mobile' ? 'bg-gray-100 p-4 rounded-lg' : ''
+                }`}>
+                  <div className={`
+                    w-full transition-all duration-300
+                    ${previewDevice === 'mobile'
+                      ? 'max-w-[375px] shadow-xl rounded-2xl overflow-hidden border-8 border-gray-800 bg-white'
+                      : ''
+                    }
+                  `}>
+                    <CVPreview
+                      data={cvData}
+                      theme={cvData.theme_skin}
+                      templateLayout={cvData.templateLayout}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Mobile View Toggle FAB */}
-        <div className="lg:hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30">
-          <button
-            onClick={() => setActiveView(activeView === 'edit' ? 'preview' : 'edit')}
-            className="flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-full shadow-lg text-sm font-medium transition-all active:scale-95"
-          >
-            {activeView === 'edit' ? (
-              <>
-                <EyeIcon className="h-5 w-5" aria-hidden="true" />
-                Preview
-              </>
-            ) : (
-              <>
-                <PencilIcon className="h-5 w-5" aria-hidden="true" />
-                Edit
-              </>
-            )}
-          </button>
         </div>
       </main>
 
