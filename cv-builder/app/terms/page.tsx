@@ -1,6 +1,4 @@
 import Link from 'next/link'
-import { Navbar } from '@/components/common/Navbar'
-import { Footer } from '@/components/common/Footer'
 
 export const metadata = {
   title: 'Terms of Service | Folyo',
@@ -10,7 +8,6 @@ export const metadata = {
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 sm:p-12">
@@ -101,7 +98,6 @@ export default function TermsPage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   )
 }

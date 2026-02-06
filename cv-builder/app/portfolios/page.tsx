@@ -18,7 +18,6 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from '@heroicons/react/24/outline'
-import { Navbar } from '@/components/common/Navbar'
 import { THEME_CONFIGS, type ThemeConfig } from '@/lib/types/cv'
 
 interface PublicPortfolio {
@@ -355,8 +354,6 @@ export default function PortfoliosPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
-
       {/* Hero Section with improved gradient */}
       <div className="relative bg-gradient-to-br from-teal-600 via-teal-700 to-cyan-800 text-white py-16 overflow-hidden">
         {/* Background decoration */}

@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/lib/contexts/AuthContext'
-import { Navbar } from '@/components/common/Navbar'
-import { Footer } from '@/components/common/Footer'
 import {
   SparklesIcon,
   EnvelopeIcon,
@@ -94,7 +92,7 @@ export default function SignUpPage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar variant="light" showAuth={false} />
+  
         <div className="flex-1 flex items-center justify-center">
           <div className="w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin" />
         </div>
@@ -105,7 +103,7 @@ export default function SignUpPage() {
   if (success) {
     return (
       <div className="min-h-screen flex flex-col bg-gray-50">
-        <Navbar variant="light" showAuth={false} />
+  
         <div className="flex-1 flex items-center justify-center">
           <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl text-center mx-4">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -118,14 +116,14 @@ export default function SignUpPage() {
             <div className="w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin mx-auto" />
           </div>
         </div>
-        <Footer variant="light" />
+  
       </div>
     )
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Navbar variant="light" showAuth={false} />
+
 
       <main className="flex-1 flex">
         {/* Left side - Branding (desktop only) */}
@@ -414,7 +412,7 @@ export default function SignUpPage() {
         </div>
       </main>
 
-      <Footer variant="light" />
+
     </div>
   )
 }

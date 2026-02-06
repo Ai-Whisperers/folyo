@@ -17,8 +17,6 @@ import {
 } from '@heroicons/react/24/outline'
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid'
 import { THEME_CONFIGS } from '@/lib/types/cv'
-import { Navbar } from '@/components/common/Navbar'
-import { Footer } from '@/components/common/Footer'
 import {
   fadeInUp,
   staggerContainer,
@@ -141,8 +139,6 @@ export default function HomePage() {
 
   return (
     <div className="bg-white overflow-hidden">
-      <Navbar />
-
       {/* Hero Section */}
       <motion.div
         className="relative overflow-hidden"
@@ -614,8 +610,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <Footer variant="dark" />
     </div>
   )
 }

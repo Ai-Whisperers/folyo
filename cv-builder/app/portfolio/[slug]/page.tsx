@@ -6,8 +6,6 @@ import Link from 'next/link'
 import { CVPreview } from '@/components/cv/CVPreview'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { QRCodeDisplay } from '@/components/ui/QRCodeDisplay'
-import { Navbar } from '@/components/common/Navbar'
-import { Footer } from '@/components/common/Footer'
 import { ThemeConfig } from '@/lib/types/cv'
 import {
   getThemeConfig,
@@ -553,7 +551,7 @@ export default function PortfolioPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar variant="light" showAuth={true} />
+
         <div className="flex-1 flex items-center justify-center bg-gray-50">
           <div className="text-center">
             <div className="relative w-20 h-20 mx-auto mb-6">
@@ -563,7 +561,7 @@ export default function PortfolioPage() {
             <p className="text-gray-600">Loading portfolio...</p>
           </div>
         </div>
-        <Footer variant="light" />
+
       </div>
     )
   }
@@ -571,7 +569,7 @@ export default function PortfolioPage() {
   if (error || !portfolioData) {
     return (
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
-        <Navbar variant="light" showAuth={true} />
+
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center px-4 max-w-md">
             <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
@@ -600,7 +598,7 @@ export default function PortfolioPage() {
             </div>
           </div>
         </div>
-        <Footer variant="light" />
+
       </div>
     )
   }
@@ -645,7 +643,7 @@ export default function PortfolioPage() {
       style={{ backgroundColor: isDark ? theme.bgColor : '#f9fafb' }}
     >
       {/* Navbar with theme-aware styling */}
-      <Navbar variant={isDark ? 'dark' : 'light'} showAuth={true} />
+
 
       {/* Hero Section with Gradient Overlay */}
       <header
@@ -1129,7 +1127,7 @@ export default function PortfolioPage() {
       </main>
 
       {/* Footer */}
-      <Footer variant={isDark ? 'dark' : 'light'} />
+
 
       {/* Share Modal */}
       <ShareModal

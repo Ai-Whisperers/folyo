@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/lib/contexts/AuthContext'
-import { Navbar } from '@/components/common/Navbar'
-import { Footer } from '@/components/common/Footer'
 import { SparklesIcon, EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
 
 export default function SignInPage() {
@@ -49,7 +47,6 @@ export default function SignInPage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar variant="light" showAuth={false} />
         <div className="flex-1 flex items-center justify-center">
           <div className="w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin" />
         </div>
@@ -59,8 +56,6 @@ export default function SignInPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Navbar variant="light" showAuth={false} />
-
       <main className="flex-1 flex">
         {/* Left side - Branding (desktop only) */}
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-teal-600 to-teal-800 relative overflow-hidden">
@@ -254,7 +249,6 @@ export default function SignInPage() {
         </div>
       </main>
 
-      <Footer variant="light" />
     </div>
   )
 }

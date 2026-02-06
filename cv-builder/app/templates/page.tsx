@@ -23,8 +23,6 @@ import {
   StarIcon,
 } from '@heroicons/react/24/outline'
 import { StarIcon as StarSolid, HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
-import { Navbar } from '@/components/common/Navbar'
-import { Footer } from '@/components/common/Footer'
 import {
   TEMPLATE_LAYOUTS,
   COLOR_PALETTES,
@@ -611,8 +609,6 @@ export default function TemplatesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
-
       {/* Hero Section */}
       <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-teal-900 text-white overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -946,7 +942,6 @@ export default function TemplatesPage() {
 
       <div className="h-20 lg:hidden" />
 
-      <Footer />
     </div>
   )
 }

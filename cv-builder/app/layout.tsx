@@ -1,6 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Navbar } from '@/components/common/Navbar'
+import { Footer } from '@/components/common/Footer'
+import { Providers } from '@/components/common/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,8 +23,6 @@ export const metadata: Metadata = {
   },
 }
 
-import { Providers } from '../components/common/Providers'
-
 export default function RootLayout({
   children,
 }: {
@@ -31,8 +32,12 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className={`${inter.className} h-full bg-gray-50`}>
         <Providers>
-          <div className="min-h-full">
-            {children}
+          <div className="min-h-full flex flex-col">
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
           </div>
         </Providers>
       </body>
