@@ -22,41 +22,12 @@ import {
 } from '@heroicons/react/24/outline'
 import { ShareSection } from '@/components/cv/ShareSection'
 import { AnalyticsCard } from '@/components/cv/AnalyticsCard'
-
-interface CV {
-  _id: string
-  title: string
-  slug?: string
-  status: 'draft' | 'published' | 'archived'
-  isPublic: boolean
-  createdAt: string
-  updatedAt: string
-  lastEditedAt: string
-  theme: {
-    skin: string
-  }
-  analytics: {
-    views: number
-    downloads: number
-  }
-  sidebar: {
-    name?: string
-    tagline?: string
-  }
-}
-
-interface UserAnalytics {
-  cv_view: number
-  cv_download: number
-  cv_edit: number
-  cv_created: number
-  export_pdf: number
-}
+import { DashboardCV, UserAnalytics } from '@/lib/types'
 
 export default function DashboardPage() {
   const { user, isLoading, signOut } = useAuth()
   const router = useRouter()
-  const [cvs, setCvs] = useState<CV[]>([])
+  const [cvs, setCvs] = useState<DashboardCV[]>([])
   const [analytics, setAnalytics] = useState<UserAnalytics | null>(null)
   const [loading, setLoading] = useState(true)
   const [selectedCvs, setSelectedCvs] = useState<Set<string>>(new Set())
