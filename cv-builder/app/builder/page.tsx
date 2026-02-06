@@ -239,6 +239,34 @@ export default function CVBuilderPage() {
     const themeParam = searchParams.get('theme')
     const templateParam = searchParams.get('template') // New: template layout ID
     const colorParam = searchParams.get('color') // New: color palette ID
+    const startNew = searchParams.get('new') // Start fresh, ignore saved data
+
+    // Determine theme
+    let initialTheme = 'teal'
+    if (colorParam) {
+      initialTheme = colorParam
+    } else if (themeParam) {
+      initialTheme = themeParam
+    } else if (docType === 'portfolio') {
+      initialTheme = 'video-portfolio'
+    }
+
+    // If ?new=true, start with empty form
+    if (startNew === 'true') {
+      const newData = {
+        ...defaultCVData,
+        theme_skin: initialTheme,
+        templateLayout: templateParam || 'responsive',
+        sidebar: {
+          ...defaultCVData.sidebar,
+          name: user?.name || '',
+          email: user?.email || ''
+        }
+      }
+      setCvData(newData)
+      setInitialData(newData)
+      return
+    }
 
     // Load saved data from localStorage (user-specific if logged in)
     const savedData = localStorage.getItem(storageKey)
@@ -274,20 +302,10 @@ export default function CVBuilderPage() {
       }
     } else {
       // No saved data - create new with requested theme/color
-      let initialTheme = 'teal'
-      if (colorParam) {
-        initialTheme = colorParam
-      } else if (themeParam) {
-        initialTheme = themeParam
-      } else if (docType === 'portfolio') {
-        initialTheme = 'video-portfolio'
-      }
-
-      // Pre-fill name and email if user is logged in
       const newData = {
         ...defaultCVData,
         theme_skin: initialTheme,
-        templateLayout: templateParam || 'classic', // Default to classic layout
+        templateLayout: templateParam || 'responsive',
         sidebar: {
           ...defaultCVData.sidebar,
           name: user?.name || '',

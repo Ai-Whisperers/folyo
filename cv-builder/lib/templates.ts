@@ -1,91 +1,27 @@
 /**
- * Template Layout System
- * Single source of truth for templates and color palettes
- * Provides backward compatibility with legacy THEME_CONFIGS
+ * Template Layout System - Simplified
+ * Single responsive template with beautiful color palette options
  */
 
 // ============================================
-// Template Layout Types
+// Template Layout (Single Template)
 // ============================================
 
-export type TemplateLayoutId =
-  | 'landing'
-  | 'classic'
-  | 'modern'
-  | 'minimal'
-  | 'creative'
-  | 'executive'
-  | 'compact'
-  | 'timeline'
-  | 'cards'
+export type TemplateLayoutId = 'responsive'
 
 export interface TemplateLayout {
   id: TemplateLayoutId
   name: string
   description: string
   features: string[]
-  previewImage?: string
-  popular?: boolean
-  new?: boolean
 }
 
-// Distinct template layouts with different structural designs
 export const TEMPLATE_LAYOUTS: TemplateLayout[] = [
   {
-    id: 'landing',
-    name: 'Landing Page',
-    description: 'Premium portfolio-style landing page with hero section',
-    features: ['Full-width hero', 'Photo gallery', 'Modern sections', 'Best for portfolios'],
-    popular: true,
-    new: true
-  },
-  {
-    id: 'classic',
-    name: 'Classic',
-    description: 'Traditional two-column layout with sidebar on left',
-    features: ['Left sidebar', 'Clear sections', 'ATS-friendly', 'Print optimized'],
-  },
-  {
-    id: 'modern',
-    name: 'Modern',
-    description: 'Contemporary design with bold headers and cards',
-    features: ['Card-based sections', 'Modern typography', 'Visual hierarchy', 'Clean borders']
-  },
-  {
-    id: 'minimal',
-    name: 'Minimal',
-    description: 'Clean, distraction-free design focused on content',
-    features: ['Single column', 'Lots of whitespace', 'Simple typography', 'Content-first']
-  },
-  {
-    id: 'creative',
-    name: 'Creative Portfolio',
-    description: 'Bold design perfect for designers and creatives',
-    features: ['Hero header', 'Project showcase', 'Visual skills display', 'Portfolio grid'],
-  },
-  {
-    id: 'executive',
-    name: 'Executive',
-    description: 'Sophisticated design for senior professionals',
-    features: ['Elegant typography', 'Subtle accents', 'Refined spacing', 'Premium feel']
-  },
-  {
-    id: 'compact',
-    name: 'Compact',
-    description: 'Information-dense layout that fits more content',
-    features: ['Dense layout', 'Small margins', 'Multi-column skills', 'Efficient space']
-  },
-  {
-    id: 'timeline',
-    name: 'Timeline',
-    description: 'Visual timeline-based experience and education display',
-    features: ['Visual timeline', 'Connected dots', 'Date prominence', 'Story flow']
-  },
-  {
-    id: 'cards',
-    name: 'Cards',
-    description: 'Modern card-based design with floating sections',
-    features: ['Floating cards', 'Shadow effects', 'Rounded corners', 'Contemporary']
+    id: 'responsive',
+    name: 'Professional',
+    description: 'Clean, responsive design that works on all devices',
+    features: ['Mobile-first', 'Print optimized', 'ATS-friendly', 'Clean sections'],
   }
 ]
 
@@ -105,28 +41,50 @@ export interface ColorPalette {
   category: 'professional' | 'vibrant' | 'neutral' | 'dark'
 }
 
-// Curated color palettes
+// Beautiful curated color palettes
 export const COLOR_PALETTES: ColorPalette[] = [
-  // Professional
+  // ===== PROFESSIONAL =====
+  {
+    id: 'ocean',
+    name: 'Ocean',
+    primary: '#0077B6',
+    secondary: '#00B4D8',
+    accent: '#E8F6FC',
+    background: '#FFFFFF',
+    text: '#1A202C',
+    isDark: false,
+    category: 'professional'
+  },
   {
     id: 'teal',
     name: 'Teal',
     primary: '#0D9488',
     secondary: '#14B8A6',
-    accent: '#F0FDFA',
+    accent: '#E6FFFA',
     background: '#FFFFFF',
-    text: '#1F2937',
+    text: '#1A202C',
     isDark: false,
     category: 'professional'
   },
   {
-    id: 'blue',
-    name: 'Blue',
-    primary: '#2563EB',
-    secondary: '#3B82F6',
-    accent: '#EFF6FF',
+    id: 'sapphire',
+    name: 'Sapphire',
+    primary: '#3B5998',
+    secondary: '#5B7BD5',
+    accent: '#EEF2FF',
     background: '#FFFFFF',
-    text: '#1F2937',
+    text: '#1A202C',
+    isDark: false,
+    category: 'professional'
+  },
+  {
+    id: 'forest',
+    name: 'Forest',
+    primary: '#2D6A4F',
+    secondary: '#40916C',
+    accent: '#D8F3DC',
+    background: '#FFFFFF',
+    text: '#1A202C',
     isDark: false,
     category: 'professional'
   },
@@ -134,45 +92,23 @@ export const COLOR_PALETTES: ColorPalette[] = [
     id: 'navy',
     name: 'Navy',
     primary: '#1E3A5F',
-    secondary: '#2D5A87',
-    accent: '#F1F5F9',
+    secondary: '#3D5A80',
+    accent: '#E8EEF4',
     background: '#FFFFFF',
-    text: '#1F2937',
-    isDark: false,
-    category: 'professional'
-  },
-  {
-    id: 'slate',
-    name: 'Slate',
-    primary: '#475569',
-    secondary: '#64748B',
-    accent: '#F8FAFC',
-    background: '#FFFFFF',
-    text: '#1E293B',
-    isDark: false,
-    category: 'professional'
-  },
-  {
-    id: 'emerald',
-    name: 'Emerald',
-    primary: '#059669',
-    secondary: '#10B981',
-    accent: '#ECFDF5',
-    background: '#FFFFFF',
-    text: '#1F2937',
+    text: '#1A202C',
     isDark: false,
     category: 'professional'
   },
 
-  // Vibrant
+  // ===== VIBRANT =====
   {
-    id: 'lavender',
-    name: 'Lavender',
-    primary: '#8B5CF6',
-    secondary: '#A78BFA',
-    accent: '#F5F3FF',
-    background: '#FAFAF9',
-    text: '#1F2937',
+    id: 'coral',
+    name: 'Coral',
+    primary: '#E07A5F',
+    secondary: '#F2A69E',
+    accent: '#FFF5F3',
+    background: '#FFFFFF',
+    text: '#2D3748',
     isDark: false,
     category: 'vibrant'
   },
@@ -180,67 +116,56 @@ export const COLOR_PALETTES: ColorPalette[] = [
     id: 'violet',
     name: 'Violet',
     primary: '#7C3AED',
-    secondary: '#8B5CF6',
+    secondary: '#A78BFA',
     accent: '#F5F3FF',
     background: '#FFFFFF',
-    text: '#1F2937',
+    text: '#1A202C',
+    isDark: false,
+    category: 'vibrant'
+  },
+  {
+    id: 'sunset',
+    name: 'Sunset',
+    primary: '#F97316',
+    secondary: '#FB923C',
+    accent: '#FFF7ED',
+    background: '#FFFFFF',
+    text: '#1A202C',
     isDark: false,
     category: 'vibrant'
   },
   {
     id: 'rose',
     name: 'Rose',
-    primary: '#E11D48',
-    secondary: '#F43F5E',
-    accent: '#FFF1F2',
-    background: '#FFFFFF',
-    text: '#1F2937',
-    isDark: false,
-    category: 'vibrant'
-  },
-  {
-    id: 'orange',
-    name: 'Orange',
-    primary: '#EA580C',
-    secondary: '#F97316',
-    accent: '#FFF7ED',
-    background: '#FFFFFF',
-    text: '#1F2937',
-    isDark: false,
-    category: 'vibrant'
-  },
-  {
-    id: 'cyan',
-    name: 'Cyan',
-    primary: '#0891B2',
-    secondary: '#06B6D4',
-    accent: '#ECFEFF',
-    background: '#FFFFFF',
-    text: '#1F2937',
-    isDark: false,
-    category: 'vibrant'
-  },
-  {
-    id: 'pink',
-    name: 'Pink',
     primary: '#DB2777',
-    secondary: '#EC4899',
+    secondary: '#F472B6',
     accent: '#FDF2F8',
     background: '#FFFFFF',
-    text: '#1F2937',
+    text: '#1A202C',
+    isDark: false,
+    category: 'vibrant'
+  },
+  {
+    id: 'emerald',
+    name: 'Emerald',
+    primary: '#059669',
+    secondary: '#34D399',
+    accent: '#D1FAE5',
+    background: '#FFFFFF',
+    text: '#1A202C',
     isDark: false,
     category: 'vibrant'
   },
 
-  // Neutral
+  // ===== NEUTRAL =====
   {
-    id: 'graphite',
-    name: 'Graphite',
-    primary: '#374151',
-    secondary: '#4B5563',
-    accent: '#F3F4F6',
+    id: 'slate',
+    name: 'Slate',
+    primary: '#475569',
+    secondary: '#64748B',
+    accent: '#F1F5F9',
     background: '#FFFFFF',
-    text: '#111827',
+    text: '#1E293B',
     isDark: false,
     category: 'neutral'
   },
@@ -256,59 +181,70 @@ export const COLOR_PALETTES: ColorPalette[] = [
     category: 'neutral'
   },
   {
-    id: 'zinc',
-    name: 'Zinc',
-    primary: '#3F3F46',
-    secondary: '#52525B',
-    accent: '#F4F4F5',
+    id: 'graphite',
+    name: 'Graphite',
+    primary: '#374151',
+    secondary: '#6B7280',
+    accent: '#F3F4F6',
     background: '#FFFFFF',
-    text: '#18181B',
+    text: '#111827',
     isDark: false,
     category: 'neutral'
   },
 
-  // Dark themes
+  // ===== DARK MODE =====
   {
     id: 'midnight',
     name: 'Midnight',
-    primary: '#6366F1',
-    secondary: '#818CF8',
-    accent: '#1E293B',
-    background: '#0F172A',
-    text: '#F8FAFC',
+    primary: '#818CF8',
+    secondary: '#A5B4FC',
+    accent: '#1E1B4B',
+    background: '#0F0E17',
+    text: '#FFFFFE',
     isDark: true,
     category: 'dark'
   },
   {
-    id: 'dark-purple',
-    name: 'Dark Purple',
-    primary: '#8B5CF6',
-    secondary: '#A78BFA',
-    accent: '#2D2D2D',
-    background: '#1A1A1A',
-    text: '#F9FAFB',
+    id: 'aurora',
+    name: 'Aurora',
+    primary: '#22D3EE',
+    secondary: '#67E8F9',
+    accent: '#164E63',
+    background: '#0C1929',
+    text: '#F0F9FF',
     isDark: true,
     category: 'dark'
   },
   {
-    id: 'dark-teal',
-    name: 'Dark Teal',
-    primary: '#14B8A6',
-    secondary: '#2DD4BF',
-    accent: '#1E293B',
-    background: '#0F172A',
-    text: '#F1F5F9',
+    id: 'ember',
+    name: 'Ember',
+    primary: '#F97316',
+    secondary: '#FB923C',
+    accent: '#431407',
+    background: '#18120B',
+    text: '#FFF7ED',
     isDark: true,
     category: 'dark'
   },
   {
-    id: 'charcoal',
-    name: 'Charcoal',
-    primary: '#60A5FA',
-    secondary: '#93C5FD',
-    accent: '#1F2937',
-    background: '#111827',
-    text: '#F9FAFB',
+    id: 'royal',
+    name: 'Royal',
+    primary: '#A855F7',
+    secondary: '#C084FC',
+    accent: '#2E1065',
+    background: '#13061F',
+    text: '#FAF5FF',
+    isDark: true,
+    category: 'dark'
+  },
+  {
+    id: 'matrix',
+    name: 'Matrix',
+    primary: '#10B981',
+    secondary: '#34D399',
+    accent: '#064E3B',
+    background: '#0A1612',
+    text: '#ECFDF5',
     isDark: true,
     category: 'dark'
   }
@@ -341,15 +277,14 @@ export function getColorCSSVars(palette: ColorPalette): Record<string, string> {
   }
 }
 
-// Default selections (Victoria Rolon standard)
-export const DEFAULT_TEMPLATE: TemplateLayoutId = 'landing'
-export const DEFAULT_COLOR: string = 'teal'
+// Default selections
+export const DEFAULT_TEMPLATE: TemplateLayoutId = 'responsive'
+export const DEFAULT_COLOR: string = 'ocean'
 
 // ============================================
-// Backward Compatibility with THEME_CONFIGS
+// Backward Compatibility
 // ============================================
 
-// Legacy ThemeConfig interface (for compatibility)
 export interface LegacyThemeConfig {
   id: string
   name: string
@@ -362,7 +297,6 @@ export interface LegacyThemeConfig {
   category: 'professional' | 'creative' | 'minimal' | 'bold'
 }
 
-// Map new color category to old category
 function mapCategoryToLegacy(category: ColorPalette['category']): LegacyThemeConfig['category'] {
   switch (category) {
     case 'professional': return 'professional'
@@ -373,7 +307,6 @@ function mapCategoryToLegacy(category: ColorPalette['category']): LegacyThemeCon
   }
 }
 
-// Convert ColorPalette to legacy ThemeConfig format
 export function colorPaletteToThemeConfig(palette: ColorPalette): LegacyThemeConfig {
   return {
     id: palette.id,
@@ -388,28 +321,20 @@ export function colorPaletteToThemeConfig(palette: ColorPalette): LegacyThemeCon
   }
 }
 
-// Generate legacy THEME_CONFIGS from COLOR_PALETTES
 export const LEGACY_THEME_CONFIGS: LegacyThemeConfig[] = COLOR_PALETTES.map(colorPaletteToThemeConfig)
 
-// Get legacy theme config by ID
 export function getLegacyThemeConfig(themeId: string): LegacyThemeConfig {
   const palette = getColorPalette(themeId)
   if (palette) {
     return colorPaletteToThemeConfig(palette)
   }
-  // Return default teal theme
   return colorPaletteToThemeConfig(COLOR_PALETTES[0])
 }
 
-// Check if a color palette is dark
 export function isColorDark(colorId: string): boolean {
   const palette = getColorPalette(colorId)
   return palette?.isDark ?? false
 }
-
-// ============================================
-// Theme Config Categories
-// ============================================
 
 export const COLOR_CATEGORIES = [
   { id: 'professional' as const, name: 'Professional' },
@@ -417,8 +342,3 @@ export const COLOR_CATEGORIES = [
   { id: 'neutral' as const, name: 'Neutral' },
   { id: 'dark' as const, name: 'Dark Mode' }
 ]
-
-export const TEMPLATE_CATEGORIES = TEMPLATE_LAYOUTS.map(t => ({
-  id: t.id,
-  name: t.name
-}))

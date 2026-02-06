@@ -28,6 +28,11 @@ export function Navbar({ variant = 'light', showAuth = true }: NavbarProps) {
   const pathname = usePathname()
   const { user, signOut, isLoading } = useAuth()
 
+  // Hide navbar on builder page (it has its own header)
+  if (pathname?.startsWith('/builder')) {
+    return null
+  }
+
   const isActive = (href: string) => pathname === href
 
   const bgClass = variant === 'dark'

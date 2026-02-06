@@ -5,7 +5,7 @@ export default function BuilderLayout({
 }) {
   // Builder has custom header, no default Navbar/Footer
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="min-h-screen flex flex-col builder-layout">
       {children}
     </div>
   )

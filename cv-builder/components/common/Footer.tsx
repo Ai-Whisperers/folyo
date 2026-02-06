@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { SparklesIcon } from '@heroicons/react/24/outline'
 
 interface FooterProps {
@@ -8,6 +9,13 @@ interface FooterProps {
 }
 
 export function Footer({ variant = 'dark' }: FooterProps) {
+  const pathname = usePathname()
+  
+  // Hide footer on builder page (it has its own layout)
+  if (pathname?.startsWith('/builder')) {
+    return null
+  }
+
   const bgClass = variant === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
   const textClass = variant === 'dark' ? 'text-white' : 'text-gray-900'
   const mutedClass = variant === 'dark' ? 'text-gray-400' : 'text-gray-600'

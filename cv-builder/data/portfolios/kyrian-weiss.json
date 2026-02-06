@@ -1,0 +1,166 @@
+{
+  "slug": "kyrian-weiss-van-der-pol",
+  "color_palette": "teal",
+  "layout": "responsive",
+  "sidebar": {
+    "position": "left",
+    "about": true,
+    "education": true,
+    "name": "Kyrian Weiss van der Pol",
+    "tagline": "QA Automation Engineer | Embedded Systems Developer | IoT Enthusiast",
+    "avatar": "/uploads/ProfilePicKyrian.jpg",
+    "email": "kyrian@example.com",
+    "phone": "+595 XXX XXX XXX",
+    "timezone": "America/Asuncion",
+    "citizenship": "Paraguayan/Dutch",
+    "website": "https://kiki-cv.vercel.app",
+    "linkedin": "kyrian-weiss",
+    "github": "kyrianWVDP",
+    "languages": [
+      { "idiom": "Spanish", "level": "Native" },
+      { "idiom": "English", "level": "Fluent" },
+      { "idiom": "Dutch", "level": "Fluent (conversational)" }
+    ]
+  },
+  "career_profile": {
+    "title": "About Me",
+    "summary": "**QA Automation Engineer & Embedded Systems Developer** passionate about solving meaningful, real-world problems with *creative, outside-the-box thinking*.\n\nExperienced in **Python**, **Selenium**, **Postman**, and **ESP32/Arduino** embedded systems. Completed the **MentorMate QA Bootcamp** and certified in **Data Science with Python**. Currently pursuing **ISTQB CTFL** certification.\n\nBuilt award-winning IoT projects including a **Smart Beehive System** (resulting in 2x honey yield) and **Medical Tracker** wearable device. Strong advocate for *human-centered technology* and sustainable solutions.\n\nSeeking opportunities to combine QA automation expertise with embedded systems knowledge in **remote/international roles**, especially in Europe."
+  },
+  "interests": [
+    "QA Automation",
+    "Embedded Systems",
+    "IoT & Smart Devices",
+    "Python Development",
+    "Sustainable Technology",
+    "Data Analysis",
+    "Robotics",
+    "Continuous Learning"
+  ],
+  "education": [
+    {
+      "degree": "Bachelor's in Informatics Engineering (Planned)",
+      "university": "Facultad Politécnica - Universidad Nacional de Asunción (FPUNA)",
+      "time": "2025 - Present",
+      "details": "Preparing for entrance exams. Focus on software engineering and embedded systems."
+    },
+    {
+      "degree": "Technical High School Diploma - Electronics",
+      "university": "Technical School",
+      "time": "2020 - 2023",
+      "details": "Specialized in analog/digital circuit design, microcontrollers, and embedded programming. Graduated with honors."
+    }
+  ],
+  "experiences": [
+    {
+      "role": "QA Automation Trainee",
+      "time": "2024",
+      "company": "MentorMate QA Bootcamp",
+      "details": "**Completed** intensive full-time bootcamp on QA theory, Agile workflows, and automation tools\n**Built** end-to-end automated tests for Pet Adoption web app using Selenium and Postman\n**Practiced** white-box/black-box testing, API testing, and test documentation\n**Presented** projects in English and completed mock interviews",
+      "tags": ["Selenium", "Postman", "JIRA", "Git", "API Testing", "Agile"],
+      "icon": "code"
+    },
+    {
+      "role": "Embedded Systems Developer",
+      "time": "2023 - 2024",
+      "company": "Freelance / Personal Projects",
+      "details": "**Designed** Smart Beehive system with ESP32, distributed thermostats, and live monitoring dashboard\n**Built** Medical Tracker wearable with SpO₂, temperature, and heart rate sensors\n**Developed** Automated Grill system (1st place regional science fair)\n**Implemented** PID control logic, Wi-Fi connectivity, and sensor calibration",
+      "tags": ["ESP32", "Arduino", "Python", "IoT", "Circuit Design", "Dashboard"],
+      "icon": "cpu-chip"
+    },
+    {
+      "role": "Co-Captain - LEGO Robotics Team",
+      "time": "2022 - 2023",
+      "company": "School Robotics Program",
+      "details": "**Led** team in designing and programming autonomous robots for competition\n**Promoted** energy-efficient solutions in robot design\n**Managed** real-time debugging and strategic planning under pressure\n**Delegated** tasks and resolved hardware failures efficiently",
+      "tags": ["Robotics", "Leadership", "Problem Solving", "Teamwork"],
+      "icon": "cog"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Smart Beehive Monitoring System",
+      "time": "2023",
+      "details": "**Built** ESP32-based heating control with 4 distributed thermostats and humidity sensors for family beekeeping business in Netherlands\n**Implemented** voltage-controlled heating and live dashboard with remote monitoring\n**Diagnosed** faulty sensors and resolved Wi-Fi connectivity issues\n**Result**: Significant bee population growth and 2x honey yield after winter",
+      "link": "https://github.com/kyrianWVDP",
+      "tags": ["ESP32", "IoT", "Python", "Dashboard", "PID Control"]
+    },
+    {
+      "title": "Medical Tracker Wearable",
+      "time": "2023",
+      "details": "**Developed** wearable bracelet with SpO₂, temperature, and heart rate monitoring\n**Built** secure web dashboard on Raspberry Pi server\n**Designed** for elderly care in low-resource/rural settings\n**Final project** that earned honors at graduation",
+      "link": null,
+      "tags": ["ESP32", "Sensors", "Raspberry Pi", "Healthcare", "Web Dashboard"]
+    },
+    {
+      "title": "Automated Gas Grill",
+      "time": "2022",
+      "details": "**Engineered** Arduino-controlled grill with LCD interface, keypad input, AC motor rotation, and automated ignition\n**Solved** torque limitations and 220V electrical interference challenges\n**Awarded** 1st place in regional science fair",
+      "tags": ["Arduino", "Safety Systems", "Electronics", "Competition"]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Introduction to QA & QA Automation",
+      "start": "2024",
+      "organization": "MentorMate / Ivan Weiss Bootcamp",
+      "details": "QA fundamentals, Selenium WebDriver, Postman, Git, test design and documentation."
+    },
+    {
+      "name": "Data Science with Python",
+      "start": "2024",
+      "organization": "Penguin Academy",
+      "details": "Pandas, NumPy, Matplotlib, exploratory data analysis with real-world datasets."
+    },
+    {
+      "name": "ISTQB Certified Tester - Foundation Level (In Progress)",
+      "start": "2024",
+      "organization": "ISTQB",
+      "details": "Studying V4.0 syllabus: testing fundamentals, test design techniques, management, and tools."
+    }
+  ],
+  "skills": [
+    {
+      "name": "Programming",
+      "level": 85,
+      "tags": ["Python", "C++", "Arduino IDE", "ESP32", "REST APIs", "JSON"]
+    },
+    {
+      "name": "QA & Test Automation",
+      "level": 80,
+      "tags": ["Selenium", "Postman", "JIRA", "Test Cases", "Manual Testing", "Documentation"]
+    },
+    {
+      "name": "Embedded Systems & IoT",
+      "level": 90,
+      "tags": ["Circuit Design", "Sensors", "PID Control", "Soldering", "Debugging"]
+    },
+    {
+      "name": "Data Analysis",
+      "level": 75,
+      "tags": ["Pandas", "NumPy", "Matplotlib", "Data Visualization"]
+    },
+    {
+      "name": "Web Development",
+      "level": 70,
+      "tags": ["HTML5", "Tailwind CSS", "SQL", "Dashboard UIs", "Raspberry Pi"]
+    }
+  ],
+  "volunteer": [
+    {
+      "role": "Robotics Event Staff Volunteer",
+      "time": "2023 - 2024",
+      "company": "LEGO Robotics Competition",
+      "details": "Assisted match coordination, evaluator logistics, and technical support. Maintained professional environment and practiced QA mindset through event checklists.",
+      "tags": ["Event Management", "Technical Support", "Quality Assurance"]
+    },
+    {
+      "role": "Girl Scout Guide",
+      "time": "2018 - Present",
+      "company": "Girl Scouts",
+      "details": "Participated in reforestation, public space clean-up, and sustainability campaigns. Developed leadership, conflict resolution, and accountability skills.",
+      "tags": ["Leadership", "Sustainability", "Community Service"]
+    }
+  ],
+  "footer": "📍 Paraguay | Open to Remote & International Opportunities | Let's build something meaningful together"
+}
+

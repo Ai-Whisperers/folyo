@@ -374,6 +374,14 @@
   }
 }
 
+/* Builder page - hide navbar and footer */
+.builder-layout ~ nav,
+.builder-layout ~ footer,
+body:has(.builder-layout) > div > nav,
+body:has(.builder-layout) > div > footer {
+  display: none !important;
+}
+
 /* Print styles */
 @media print {
   .no-print {

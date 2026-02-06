@@ -100,43 +100,61 @@ export const getThemeColors = (themeId: string): ThemeColors => {
 }
 
 /**
+ * Check if a color value is dark (based on luminance)
+ */
+const isColorValueDark = (hexColor: string): boolean => {
+  if (!hexColor || !hexColor.startsWith('#')) return false
+  
+  const hex = hexColor.replace('#', '')
+  const r = parseInt(hex.substr(0, 2), 16)
+  const g = parseInt(hex.substr(2, 2), 16)
+  const b = parseInt(hex.substr(4, 2), 16)
+  
+  // Calculate luminance
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+  return luminance < 0.5
+}
+
+/**
  * Check if a theme is dark based on background color
  * Used for determining text colors and UI variants
  */
-export const isDarkTheme = (theme: ThemeConfig | ThemeColors | string): boolean => {
+export const isDarkTheme = (theme: ThemeConfig | ThemeColors | string | { isDark?: boolean }): boolean => {
   // If it's a string (theme ID), check color palette first
   if (typeof theme === 'string') {
     const palette = getColorPalette(theme)
     if (palette) {
-      return isColorDark(palette.background)
+      return palette.isDark
     }
     const config = getThemeConfig(theme)
     return isDarkTheme(config)
   }
 
-  const bgColor = ('bgColor' in theme ? theme.bgColor : theme.bg)?.toLowerCase() || ''
+  // If it has isDark property, use that
+  if ('isDark' in theme && typeof theme.isDark === 'boolean') {
+    return theme.isDark
+  }
 
-  // Use the isColorDark function for consistent dark detection
-  if (bgColor) {
-    return isColorDark(bgColor)
+  const bgColor = ('bgColor' in theme ? theme.bgColor : ('bg' in theme ? theme.bg : ''))?.toLowerCase() || ''
+
+  // Check if background color is dark
+  if (bgColor && bgColor.startsWith('#')) {
+    return isColorValueDark(bgColor)
   }
 
   // Check category for known dark themes
-  const isDarkCategory = theme.category === 'bold'
+  const category = 'category' in theme ? theme.category : ''
+  const isDarkCategory = category === 'bold' || category === 'dark'
 
   // Known dark theme IDs
   const darkThemeIds = [
     'video-portfolio',
     'midnight',
-    'indigo',
+    'aurora',
+    'ember',
+    'royal',
+    'matrix',
     'charcoal',
-    'crimson',
-    'burgundy',
-    'plum',
-    'rust',
-    'wine',
-    'mocha',
-    'graphite'
   ]
 
   const themeId = 'id' in theme ? (theme as ThemeConfig).id : null

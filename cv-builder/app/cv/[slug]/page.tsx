@@ -3,62 +3,66 @@ import { notFound } from 'next/navigation'
 import { CVPreview } from '@/components/cv/CVPreview'
 import { CVDocument } from '@/lib/types'
 
-// Demo CV data for /cv/demo route (fallback when no DB)
+// Demo CV data for /cv/demo route - Kyrian Weiss van der Pol
 const demoCV = {
   theme_skin: 'teal',
   sidebar: {
-    name: 'Alex Johnson',
-    tagline: 'Senior Product Designer',
-    email: 'alex@example.com',
-    phone: '+1 (555) 123-4567',
-    citizenship: 'San Francisco, CA',
-    website: 'alexjohnson.design',
-    linkedin: 'alexjohnson',
-    github: 'alexjohnson',
+    name: 'Kyrian Weiss van der Pol',
+    tagline: 'QA Automation Engineer | Embedded Systems Developer',
+    avatar: '/uploads/ProfilePicKyrian.jpg',
+    email: 'kyrian@example.com',
+    phone: '+595 XXX XXX XXX',
+    citizenship: 'Paraguayan/Dutch',
+    website: 'kiki-cv.vercel.app',
+    linkedin: 'kyrian-weiss',
+    github: 'kyrianWVDP',
     languages: {
       title: 'Languages',
       info: [
-        { idiom: 'English', level: 'Native' },
-        { idiom: 'Spanish', level: 'Professional' }
+        { idiom: 'Spanish', level: 'Native' },
+        { idiom: 'English', level: 'Fluent' },
+        { idiom: 'Dutch', level: 'Fluent (conversational)' }
       ]
     }
   },
   interests: {
     title: 'Interests',
     info: [
-      { item: 'UI/UX Design' },
-      { item: 'Design Systems' },
-      { item: 'User Research' },
-      { item: 'Typography' }
+      { item: 'QA Automation' },
+      { item: 'Embedded Systems' },
+      { item: 'IoT & Smart Devices' },
+      { item: 'Python Development' },
+      { item: 'Sustainable Technology' },
+      { item: 'Robotics' }
     ]
   },
   'career-profile': {
-    title: 'Career Profile',
-    summary: 'Creative product designer with 8+ years of experience crafting intuitive digital experiences for Fortune 500 companies. Passionate about user-centered design and building products that make a difference. Led design teams at TechCorp and StartupXYZ, consistently delivering solutions that increased user engagement and business metrics.'
+    title: 'About Me',
+    summary: 'QA Automation Engineer & Embedded Systems Developer passionate about solving meaningful, real-world problems with creative, outside-the-box thinking. Experienced in Python, Selenium, Postman, and ESP32/Arduino embedded systems. Completed the MentorMate QA Bootcamp and certified in Data Science with Python. Currently pursuing ISTQB CTFL certification.\n\nBuilt award-winning IoT projects including a Smart Beehive System (resulting in 2x honey yield) and Medical Tracker wearable device. Strong advocate for human-centered technology and sustainable solutions. Seeking opportunities to combine QA automation expertise with embedded systems knowledge in remote/international roles.'
   },
   experiences: {
     title: 'Experience',
     info: [
       {
-        role: 'Senior Product Designer',
-        time: '2021 - Present',
-        company: 'TechCorp Inc.',
-        details: 'Lead design for flagship products serving 2M+ users. Increased conversion by 34% through data-driven design iterations. Established design system adopted across 5 product teams.',
-        tags: ['Figma', 'User Research', 'Design Systems', 'A/B Testing']
+        role: 'QA Automation Trainee',
+        time: '2024',
+        company: 'MentorMate QA Bootcamp',
+        details: 'Completed intensive full-time bootcamp on QA theory, Agile workflows, and automation tools. Built end-to-end automated tests for Pet Adoption web app using Selenium and Postman. Practiced white-box/black-box testing, API testing, and test documentation. Presented projects in English and completed mock interviews.',
+        tags: ['Selenium', 'Postman', 'JIRA', 'Git', 'API Testing', 'Agile']
       },
       {
-        role: 'Product Designer',
-        time: '2018 - 2021',
-        company: 'StartupXYZ',
-        details: 'Designed mobile app from 0 to 500K downloads. Collaborated with engineering to build component library. Conducted 50+ user interviews to inform product decisions.',
-        tags: ['Mobile Design', 'Prototyping', 'Usability Testing']
+        role: 'Embedded Systems Developer',
+        time: '2023 - 2024',
+        company: 'Freelance / Personal Projects',
+        details: 'Designed Smart Beehive system with ESP32, distributed thermostats, and live monitoring dashboard. Built Medical Tracker wearable with SpO₂, temperature, and heart rate sensors. Developed Automated Grill system (1st place regional science fair). Implemented PID control logic, Wi-Fi connectivity, and sensor calibration.',
+        tags: ['ESP32', 'Arduino', 'Python', 'IoT', 'Circuit Design']
       },
       {
-        role: 'UI Designer',
-        time: '2016 - 2018',
-        company: 'DesignStudio',
-        details: 'Created visual designs for web and mobile applications. Worked with clients across fintech, healthcare, and e-commerce sectors.',
-        tags: ['Visual Design', 'Branding', 'Illustration']
+        role: 'Co-Captain - LEGO Robotics Team',
+        time: '2022 - 2023',
+        company: 'School Robotics Program',
+        details: 'Led team in designing and programming autonomous robots for competition. Promoted energy-efficient solutions in robot design. Managed real-time debugging and strategic planning under pressure.',
+        tags: ['Robotics', 'Leadership', 'Problem Solving', 'Teamwork']
       }
     ]
   },
@@ -66,42 +70,46 @@ const demoCV = {
     title: 'Education',
     info: [
       {
-        degree: 'M.S. Human-Computer Interaction',
-        university: 'Stanford University',
-        time: '2014 - 2016',
-        details: 'Focus on user research methods and interaction design. Thesis on accessible design patterns.'
+        degree: "Bachelor's in Informatics Engineering (Planned)",
+        university: 'Facultad Politécnica - FPUNA',
+        time: '2025 - Present',
+        details: 'Preparing for entrance exams. Focus on software engineering and embedded systems.'
       },
       {
-        degree: 'B.A. Graphic Design',
-        university: 'Rhode Island School of Design',
-        time: '2010 - 2014',
-        details: "Dean's List. Minor in Computer Science."
+        degree: 'Technical High School Diploma - Electronics',
+        university: 'Technical School',
+        time: '2020 - 2023',
+        details: 'Specialized in analog/digital circuit design, microcontrollers, and embedded programming. Graduated with honors.'
       }
     ]
   },
   skills: {
     title: 'Skills & Proficiency',
     toolset: [
-      { name: 'UI/UX Design', level: '95%' },
-      { name: 'Figma', level: '90%' },
-      { name: 'Prototyping', level: '85%' },
-      { name: 'User Research', level: '80%' },
-      { name: 'Design Systems', level: '85%' },
-      { name: 'HTML/CSS', level: '75%' }
+      { name: 'Embedded Systems & IoT', level: '90%' },
+      { name: 'Programming (Python, C++)', level: '85%' },
+      { name: 'QA & Test Automation', level: '80%' },
+      { name: 'Data Analysis', level: '75%' },
+      { name: 'Web Development', level: '70%' }
     ]
   },
   projects: {
     title: 'Projects',
-    intro: 'Notable projects that showcase my design approach and impact.',
+    intro: 'Award-winning IoT and embedded systems projects.',
     assignments: [
       {
-        title: 'Enterprise Dashboard Redesign',
-        tagline: 'Reduced task completion time by 40%',
+        title: 'Smart Beehive Monitoring System',
+        tagline: 'ESP32-based heating control with live dashboard - 2x honey yield',
+        link: 'https://github.com/kyrianWVDP'
+      },
+      {
+        title: 'Medical Tracker Wearable',
+        tagline: 'SpO₂, temperature & heart rate monitoring for elderly care',
         link: '#'
       },
       {
-        title: 'Mobile Banking App',
-        tagline: 'Featured in App Store Best of 2022',
+        title: 'Automated Gas Grill',
+        tagline: '1st place regional science fair - Arduino safety automation',
         link: '#'
       }
     ]
@@ -110,14 +118,36 @@ const demoCV = {
     title: 'Certifications',
     list: [
       {
-        name: 'Google UX Design Professional Certificate',
-        start: '2023',
-        organization: 'Google'
+        name: 'Introduction to QA & QA Automation',
+        start: '2024',
+        organization: 'MentorMate / Ivan Weiss Bootcamp'
       },
       {
-        name: 'Certified Usability Analyst',
-        start: '2022',
-        organization: 'Human Factors International'
+        name: 'Data Science with Python',
+        start: '2024',
+        organization: 'Penguin Academy'
+      },
+      {
+        name: 'ISTQB CTFL (In Progress)',
+        start: '2024',
+        organization: 'ISTQB'
+      }
+    ]
+  },
+  volunteer: {
+    title: 'Volunteer',
+    info: [
+      {
+        role: 'Robotics Event Staff Volunteer',
+        time: '2023 - 2024',
+        company: 'LEGO Robotics Competition',
+        details: 'Assisted match coordination, evaluator logistics, and technical support.'
+      },
+      {
+        role: 'Girl Scout Guide',
+        time: '2018 - Present',
+        company: 'Girl Scouts',
+        details: 'Participated in reforestation, public space clean-up, and sustainability campaigns.'
       }
     ]
   }
@@ -128,7 +158,7 @@ interface PageProps {
 }
 
 /**
- * Fetch public portfolio by slug from database
+ * Fetch public portfolio by slug from database or static files
  */
 async function getPublicPortfolio(slug: string): Promise<CVDocument | null> {
   // Return demo data for 'demo' slug
@@ -137,26 +167,54 @@ async function getPublicPortfolio(slug: string): Promise<CVDocument | null> {
   }
 
   try {
-    // Dynamic import to avoid issues during build
+    // First try database
     const { connectDB } = await import('@/lib/database')
     const connection = await connectDB()
 
-    if (!connection) {
-      console.log('Database not connected, using demo mode')
-      return null
+    if (connection) {
+      const CV = (await import('@/models/CV')).default
+
+      const cv = await CV.findOne({
+        slug: slug.toLowerCase(),
+        isPublic: true,
+        status: 'published'
+      }).lean()
+
+      if (cv) {
+        return cv as CVDocument | null
+      }
     }
 
-    const CV = (await import('@/models/CV')).default
-
-    const cv = await CV.findOne({
-      slug: slug.toLowerCase(),
-      isPublic: true,
-      status: 'published'
-    }).lean()
-
-    return cv as CVDocument | null
+    // Fallback to static JSON files
+    console.log('Trying static portfolio files for slug:', slug)
+    return await getStaticPortfolio(slug)
   } catch (error) {
     console.error('Error fetching portfolio:', error)
+    // Try static files as last resort
+    return await getStaticPortfolio(slug)
+  }
+}
+
+/**
+ * Load portfolio from static JSON files in data/portfolios
+ */
+async function getStaticPortfolio(slug: string): Promise<any | null> {
+  try {
+    const fs = await import('fs/promises')
+    const path = await import('path')
+    
+    const filePath = path.join(process.cwd(), 'data', 'portfolios', `${slug}.json`)
+    
+    try {
+      const data = await fs.readFile(filePath, 'utf-8')
+      const portfolio = JSON.parse(data)
+      return portfolio
+    } catch {
+      // File doesn't exist
+      return null
+    }
+  } catch (error) {
+    console.error('Error loading static portfolio:', error)
     return null
   }
 }
@@ -242,6 +300,127 @@ function transformCVData(portfolio: CVDocument) {
 }
 
 /**
+ * Transform static JSON portfolio to preview format
+ */
+function transformStaticPortfolio(portfolio: any) {
+  // Handle languages array format
+  const languagesInfo = Array.isArray(portfolio.sidebar?.languages) 
+    ? portfolio.sidebar.languages.map((l: any) => ({ idiom: l.idiom, level: l.level }))
+    : []
+
+  // Handle interests array format
+  const interestsInfo = Array.isArray(portfolio.interests)
+    ? portfolio.interests.map((i: string) => ({ item: i }))
+    : []
+
+  // Handle skills array format
+  const skillsToolset = Array.isArray(portfolio.skills)
+    ? portfolio.skills.map((s: any) => ({ name: s.name, level: `${s.level}%` }))
+    : []
+
+  // Handle experiences array format
+  const experiencesInfo = Array.isArray(portfolio.experiences)
+    ? portfolio.experiences.map((e: any) => ({
+        role: e.role,
+        time: e.time,
+        company: e.company,
+        details: e.details,
+        tags: e.tags || []
+      }))
+    : []
+
+  // Handle education array format
+  const educationInfo = Array.isArray(portfolio.education)
+    ? portfolio.education.map((e: any) => ({
+        degree: e.degree,
+        university: e.university,
+        time: e.time,
+        details: e.details
+      }))
+    : []
+
+  // Handle projects array format
+  const projectsAssignments = Array.isArray(portfolio.projects)
+    ? portfolio.projects.map((p: any) => ({
+        title: p.title,
+        tagline: p.details || p.tagline,
+        time: p.time,
+        link: p.link
+      }))
+    : []
+
+  // Handle certifications array format
+  const certificationsList = Array.isArray(portfolio.certifications)
+    ? portfolio.certifications.map((c: any) => ({
+        name: c.name,
+        start: c.start,
+        organization: c.organization,
+        details: c.details
+      }))
+    : []
+
+  // Handle volunteer array format  
+  const volunteerInfo = Array.isArray(portfolio.volunteer)
+    ? portfolio.volunteer.map((v: any) => ({
+        role: v.role,
+        time: v.time,
+        company: v.company || v.organization,
+        details: v.details
+      }))
+    : []
+
+  return {
+    theme_skin: portfolio.color_palette || 'teal',
+    sidebar: {
+      name: portfolio.sidebar?.name || '',
+      tagline: portfolio.sidebar?.tagline || '',
+      email: portfolio.sidebar?.email || '',
+      phone: portfolio.sidebar?.phone || '',
+      website: portfolio.sidebar?.website || '',
+      linkedin: portfolio.sidebar?.linkedin || '',
+      github: portfolio.sidebar?.github || '',
+      citizenship: portfolio.sidebar?.citizenship || '',
+      avatar: portfolio.sidebar?.avatar || '',
+      languages: { title: 'Languages', info: languagesInfo }
+    },
+    'career-profile': {
+      title: portfolio.career_profile?.title || 'About',
+      summary: portfolio.career_profile?.summary || ''
+    },
+    experiences: {
+      title: 'Experience',
+      info: experiencesInfo
+    },
+    education: {
+      title: 'Education',
+      info: educationInfo
+    },
+    skills: {
+      title: 'Skills',
+      toolset: skillsToolset
+    },
+    projects: {
+      title: 'Projects',
+      intro: '',
+      assignments: projectsAssignments
+    },
+    certifications: {
+      title: 'Certifications',
+      list: certificationsList
+    },
+    interests: {
+      title: 'Interests',
+      info: interestsInfo
+    },
+    volunteer: {
+      title: 'Volunteer',
+      info: volunteerInfo
+    },
+    footer: portfolio.footer || null
+  }
+}
+
+/**
  * Generate dynamic metadata for SEO
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -269,9 +448,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
+  // Handle both static and database portfolio formats
+  const isStaticPortfolio = 'color_palette' in portfolio || 'career_profile' in portfolio
   const name = portfolio.sidebar?.name || 'Portfolio'
   const tagline = portfolio.sidebar?.tagline || ''
-  const summary = portfolio.careerProfile?.summary || ''
+  const summary = isStaticPortfolio 
+    ? portfolio.career_profile?.summary || ''
+    : portfolio.careerProfile?.summary || ''
   const description = tagline || summary.slice(0, 160)
 
   return {
@@ -326,18 +509,38 @@ export default async function PublicPortfolioPage({ params }: PageProps) {
     )
   }
 
-  // Fetch from database
+  // Fetch from database or static files
   const portfolio = await getPublicPortfolio(slug)
 
   if (!portfolio) {
     notFound()
   }
 
-  // Track view (non-blocking)
-  trackView(slug)
+  // Detect if this is a static portfolio (has color_palette) or database portfolio (has theme)
+  const isStaticPortfolio = 'color_palette' in portfolio || 'career_profile' in portfolio
+  
+  // Transform data for CVPreview using appropriate transformer
+  const cvData = isStaticPortfolio 
+    ? transformStaticPortfolio(portfolio)
+    : transformCVData(portfolio)
 
-  // Transform data for CVPreview
-  const cvData = transformCVData(portfolio)
+  // Get theme from appropriate field
+  const theme = isStaticPortfolio 
+    ? portfolio.color_palette || 'teal'
+    : portfolio.theme?.skin || 'teal'
+
+  // Track view (non-blocking) - only for database portfolios
+  if (!isStaticPortfolio) {
+    trackView(slug)
+  }
+
+  // Get sidebar info for SEO
+  const sidebarName = portfolio.sidebar?.name || ''
+  const sidebarTagline = portfolio.sidebar?.tagline || ''
+  const sidebarEmail = portfolio.sidebar?.email || ''
+  const sidebarLinkedin = portfolio.sidebar?.linkedin || ''
+  const sidebarGithub = portfolio.sidebar?.github || ''
+  const sidebarWebsite = portfolio.sidebar?.website || ''
 
   return (
     <>
@@ -348,14 +551,14 @@ export default async function PublicPortfolioPage({ params }: PageProps) {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Person',
-            name: portfolio.sidebar?.name,
-            jobTitle: portfolio.sidebar?.tagline,
-            email: portfolio.sidebar?.email,
+            name: sidebarName,
+            jobTitle: sidebarTagline,
+            email: sidebarEmail,
             url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/cv/${slug}`,
             sameAs: [
-              portfolio.sidebar?.linkedin ? `https://linkedin.com/in/${portfolio.sidebar.linkedin}` : null,
-              portfolio.sidebar?.github ? `https://github.com/${portfolio.sidebar.github}` : null,
-              portfolio.sidebar?.website || null
+              sidebarLinkedin ? `https://linkedin.com/in/${sidebarLinkedin}` : null,
+              sidebarGithub ? `https://github.com/${sidebarGithub}` : null,
+              sidebarWebsite || null
             ].filter(Boolean)
           })
         }}
@@ -365,7 +568,7 @@ export default async function PublicPortfolioPage({ params }: PageProps) {
       <div className="min-h-screen">
         <CVPreview
           data={cvData}
-          theme={portfolio.theme?.skin || 'teal'}
+          theme={theme}
         />
       </div>
     </>
@@ -377,38 +580,59 @@ export default async function PublicPortfolioPage({ params }: PageProps) {
  * Pre-builds popular portfolios for faster loading
  */
 export async function generateStaticParams() {
-  try {
-    const { connectDB } = await import('@/lib/database')
-    const connection = await connectDB()
+  const params: { slug: string }[] = [{ slug: 'demo' }]
 
-    if (!connection) {
-      // Return demo as fallback
-      return [{ slug: 'demo' }]
+  try {
+    // Add static portfolio files
+    const fs = await import('fs/promises')
+    const path = await import('path')
+    
+    const portfoliosDir = path.join(process.cwd(), 'data', 'portfolios')
+    
+    try {
+      const files = await fs.readdir(portfoliosDir)
+      const jsonFiles = files.filter(f => f.endsWith('.json'))
+      
+      for (const file of jsonFiles) {
+        const slug = file.replace('.json', '')
+        params.push({ slug })
+      }
+    } catch {
+      // Directory doesn't exist, skip
     }
 
-    const CV = (await import('@/models/CV')).default
+    // Also try database portfolios
+    try {
+      const { connectDB } = await import('@/lib/database')
+      const connection = await connectDB()
 
-    // Get most viewed public portfolios for static generation
-    const portfolios = await CV.find({
-      isPublic: true,
-      status: 'published'
-    })
-      .sort({ 'analytics.views': -1 })
-      .limit(100)
-      .select('slug')
-      .lean()
+      if (connection) {
+        const CV = (await import('@/models/CV')).default
 
-    const params = portfolios.map((p: { slug?: string }) => ({
-      slug: p.slug || "demo"
-    }))
+        const portfolios = await CV.find({
+          isPublic: true,
+          status: 'published'
+        })
+          .sort({ 'analytics.views': -1 })
+          .limit(100)
+          .select('slug')
+          .lean()
 
-    // Always include demo
-    params.unshift({ slug: 'demo' })
+        for (const p of portfolios) {
+          const slug = (p as { slug?: string }).slug
+          if (slug && !params.some(param => param.slug === slug)) {
+            params.push({ slug })
+          }
+        }
+      }
+    } catch {
+      // Database not available, skip
+    }
 
     return params
   } catch (error) {
     console.error('Error generating static params:', error)
-    return [{ slug: 'demo' }]
+    return params
   }
 }
 
