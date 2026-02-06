@@ -261,10 +261,10 @@ export function isLegacyFormat(data: unknown): data is LegacyPortfolio {
   const d = data as Record<string, unknown>
   
   // Check for legacy nested structures
-  const hasLegacyExperiences = d.experiences && typeof d.experiences === 'object' && 'info' in (d.experiences as object)
-  const hasLegacySkills = d.skills && typeof d.skills === 'object' && 'toolset' in (d.skills as object)
-  const hasLegacyEducation = d.education && typeof d.education === 'object' && 'info' in (d.education as object)
-  const hasLegacyInterests = d.interests && typeof d.interests === 'object' && !Array.isArray(d.interests) && 'info' in (d.interests as object)
+  const hasLegacyExperiences = Boolean(d.experiences && typeof d.experiences === 'object' && 'info' in (d.experiences as object))
+  const hasLegacySkills = Boolean(d.skills && typeof d.skills === 'object' && 'toolset' in (d.skills as object))
+  const hasLegacyEducation = Boolean(d.education && typeof d.education === 'object' && 'info' in (d.education as object))
+  const hasLegacyInterests = Boolean(d.interests && typeof d.interests === 'object' && !Array.isArray(d.interests) && 'info' in (d.interests as object))
   const hasHyphenatedCareerProfile = 'career-profile' in d
   
   return hasLegacyExperiences || hasLegacySkills || hasLegacyEducation || hasLegacyInterests || hasHyphenatedCareerProfile

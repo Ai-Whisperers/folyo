@@ -118,7 +118,7 @@ describe('Pricing Module', () => {
 
     describe('Premium tier', () => {
       it('can use all features', () => {
-        const features = [
+        const features: (keyof PricingFeatures)[] = [
           'aiBuilder',
           'videoPortfolio',
           'analytics',

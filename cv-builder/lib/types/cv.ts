@@ -347,6 +347,9 @@ export interface CVFormData {
   portfolio?: PortfolioSection
 }
 
+// Alias for backward compatibility
+export type CVData = CVFormData
+
 // ============================================
 // API Response Types
 // ============================================

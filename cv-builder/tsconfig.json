@@ -29,6 +29,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "jest-dom.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"

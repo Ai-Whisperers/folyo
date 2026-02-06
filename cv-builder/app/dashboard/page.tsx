@@ -210,7 +210,7 @@ export default function DashboardPage() {
                 <UserCircleIcon className="h-8 w-8 text-gray-400" />
                 <div>
                   <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-                  <p className="text-xs text-gray-500">{'Free' || 'Free'}</p>
+                  <p className="text-xs text-gray-500">{(user as any)?.plan || 'Free'}</p>
                 </div>
               </div>
               <button

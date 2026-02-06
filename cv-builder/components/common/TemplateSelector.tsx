@@ -126,6 +126,20 @@ function TemplatePreview({ template, color }: { template: TemplateLayout; color:
         <div className="h-2.5 bg-white rounded shadow-sm border-l-2" style={{ borderColor: color }} />
         <div className="h-2.5 bg-white rounded shadow-sm border-l-2" style={{ borderColor: color }} />
       </div>
+    ),
+    landing: (
+      // Landing: Full-width hero with gallery
+      <div className="h-full flex flex-col">
+        <div className="h-1/2 w-full flex items-center justify-center" style={{ backgroundColor: color }}>
+          <div className="w-8 h-8 bg-white/20 rounded-full" />
+        </div>
+        <div className="flex-1 p-2 grid grid-cols-3 gap-1">
+          <div className="h-3 bg-gray-200 rounded" />
+          <div className="h-3 bg-gray-200 rounded" />
+          <div className="h-3 bg-gray-200 rounded" />
+          <div className="h-3 bg-gray-100 rounded col-span-3" />
+        </div>
+      </div>
     )
   }
 

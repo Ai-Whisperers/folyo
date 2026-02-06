@@ -201,6 +201,19 @@ function TemplatePreview({ template, color }: { template: TemplateLayout; color:
         <div className="h-3.5 bg-white rounded shadow-sm border-l-2" style={{ borderColor: color }} />
         <div className="h-3.5 bg-white rounded shadow-sm border-l-2" style={{ borderColor: color }} />
       </div>
+    ),
+    landing: (
+      <div className="h-full flex flex-col">
+        <div className="h-1/2 w-full flex items-center justify-center" style={{ backgroundColor: color }}>
+          <div className="w-10 h-10 bg-white/20 rounded-full" />
+        </div>
+        <div className="flex-1 p-2 grid grid-cols-3 gap-1.5">
+          <div className="h-4 bg-gray-200 rounded" />
+          <div className="h-4 bg-gray-200 rounded" />
+          <div className="h-4 bg-gray-200 rounded" />
+          <div className="h-4 bg-gray-100 rounded col-span-3" />
+        </div>
+      </div>
     )
   }
 

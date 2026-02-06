@@ -16,6 +16,7 @@ import {
 } from '../../components/ui'
 import { useUnsavedChanges } from '../../lib/hooks'
 import { useAuth } from '@/lib/contexts/AuthContext'
+import { CVFormData } from '@/lib/types/cv'
 import {
   EyeIcon,
   PencilIcon,
@@ -132,8 +133,8 @@ const CV_SECTIONS = [
 
 export default function CVBuilderPage() {
   const { user, isLoading: authLoading } = useAuth()
-  const [cvData, setCvData] = useState(defaultCVData)
-  const [initialData, setInitialData] = useState(defaultCVData)
+  const [cvData, setCvData] = useState<CVFormData>(defaultCVData as CVFormData)
+  const [initialData, setInitialData] = useState<CVFormData>(defaultCVData as CVFormData)
   const [activeView, setActiveView] = useState<'edit' | 'preview'>('edit')
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop')
   const [isSaving, setIsSaving] = useState(false)
@@ -164,31 +165,41 @@ export default function CVBuilderPage() {
     }
 
     // Experience check (new: direct array, legacy: .info)
-    const experiences = Array.isArray(cvData.experiences) ? cvData.experiences : cvData.experiences?.info
+    const experiences = Array.isArray(cvData.experiences) 
+      ? cvData.experiences 
+      : (cvData.experiences as any)?.info || []
     if (experiences && experiences.length > 0) {
       completed.push('experience')
     }
 
     // Education check (new: direct array, legacy: .info)
-    const education = Array.isArray(cvData.education) ? cvData.education : cvData.education?.info
+    const education = Array.isArray(cvData.education) 
+      ? cvData.education 
+      : (cvData.education as any)?.info || []
     if (education && education.length > 0) {
       completed.push('education')
     }
 
     // Skills check (new: direct array, legacy: .toolset)
-    const skills = Array.isArray(cvData.skills) ? cvData.skills : cvData.skills?.toolset
+    const skills = Array.isArray(cvData.skills) 
+      ? cvData.skills 
+      : (cvData.skills as any)?.toolset || []
     if (skills && skills.length > 0) {
       completed.push('skills')
     }
 
     // Projects check (new: direct array, legacy: .assignments)
-    const projects = Array.isArray(cvData.projects) ? cvData.projects : cvData.projects?.assignments
+    const projects = Array.isArray(cvData.projects) 
+      ? cvData.projects 
+      : (cvData.projects as any)?.assignments || []
     if (projects && projects.length > 0) {
       completed.push('projects')
     }
 
     // Certifications check (new: direct array, legacy: .list)
-    const certifications = Array.isArray(cvData.certifications) ? cvData.certifications : cvData.certifications?.list
+    const certifications = Array.isArray(cvData.certifications) 
+      ? cvData.certifications 
+      : (cvData.certifications as any)?.list || []
     if (certifications && certifications.length > 0) {
       completed.push('certifications')
     }
